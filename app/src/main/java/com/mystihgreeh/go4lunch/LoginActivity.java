@@ -39,8 +39,7 @@ public class LoginActivity extends AppCompatActivity {
                         .createSignInIntentBuilder()
                         .setTheme(R.style.LoginTheme)
                         .setAvailableProviders(
-                                Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
-                                        new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
+                                Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
                                     .setIsSmartLockEnabled(false, true)
                                     .setLogo(R.drawable.common_google_signin_btn_icon_light).build(),
                 RC_SIGN_IN);
