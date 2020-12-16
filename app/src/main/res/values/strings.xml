@@ -3,6 +3,17 @@
     <string name="welcome">Find a nice restaurant and invite your co-workers for lunch!</string>
     <!-- FACEBOOK PURPOSE -->
     <string name="facebook_application_id" translatable="false">414272769614737</string>
-    <string name="facebook_login_protocol_scheme" translatable="false"
-        tools:ignore="UnusedResources">fb414272769614737</string>
+    <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb414272769614737</string>
+    <string name="title_activity_main">MainActivity</string>
+
+
+    <!-- BOTTOM NAVIGATION VIEW -->
+    <string name="title_map">Map</string>
+    <string name="title_list_view">List View</string>
+    <string name="title_workmates">Workmates</string>
+
+    <!-- SEARCH MENU -->
+    <string name="title_menu">I\'m Hungry!</string>
+    <string name="search_menu">search!</string>
+
 </resources>
