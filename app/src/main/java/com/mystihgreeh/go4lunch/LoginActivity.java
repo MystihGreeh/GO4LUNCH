@@ -20,7 +20,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         initIdentification();
 
-
     }
 
     private void initIdentification(){
@@ -40,6 +39,8 @@ public class LoginActivity extends AppCompatActivity {
                         .build(),
                 RC_SIGN_IN);
     }
+
+
 
 
 }
