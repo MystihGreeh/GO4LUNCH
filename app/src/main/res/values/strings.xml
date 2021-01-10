@@ -11,6 +11,7 @@
     <string name="title_map">Map</string>
     <string name="title_list_view">List View</string>
     <string name="title_workmates">Workmates</string>
+    <string name="title_chat">Chat</string>
 
     <!-- SEARCH MENU -->
     <string name="title_menu">I\'m Hungry!</string>

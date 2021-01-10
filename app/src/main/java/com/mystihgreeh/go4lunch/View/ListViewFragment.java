@@ -1,4 +1,4 @@
-package com.mystihgreeh.go4lunch;
+package com.mystihgreeh.go4lunch.View;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,12 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mystihgreeh.go4lunch.ViewModel.MyrestaurantRecyclerViewAdapter;
+import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.dummy.DummyContent;
 
 /**
  * A fragment representing a list of Items.
  */
-public class listViewFragment extends Fragment {
+public class ListViewFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -28,17 +30,18 @@ public class listViewFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public listViewFragment() {
+    public ListViewFragment() {
     }
 
     // TODO: Customize parameter initialization
-    public static listViewFragment newInstance(int columnCount) {
-        listViewFragment fragment = new listViewFragment();
+    public static ListViewFragment newInstance(int columnCount) {
+        ListViewFragment fragment = new ListViewFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -1,4 +1,4 @@
-package com.mystihgreeh.go4lunch;
+package com.mystihgreeh.go4lunch.View;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,12 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mystihgreeh.go4lunch.ViewModel.MyworkmatesRecyclerViewAdapter;
+import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.dummy.DummyContent;
 
 /**
  * A fragment representing a list of Items.
  */
-public class workmatesFragment extends Fragment {
+public class WorkmatesFragment extends Fragment implements View.OnClickListener {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -28,12 +30,12 @@ public class workmatesFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public workmatesFragment() {
+    public WorkmatesFragment() {
     }
 
     // TODO: Customize parameter initialization
-    public static workmatesFragment newInstance(int columnCount) {
-        workmatesFragment fragment = new workmatesFragment();
+    public static WorkmatesFragment newInstance(int columnCount) {
+        WorkmatesFragment fragment = new WorkmatesFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -54,6 +56,7 @@ public class workmatesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_workmates_list, container, false);
 
+
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -66,5 +69,10 @@ public class workmatesFragment extends Fragment {
             recyclerView.setAdapter(new MyworkmatesRecyclerViewAdapter(DummyContent.ITEMS));
         }
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

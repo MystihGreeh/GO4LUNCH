@@ -1,10 +1,21 @@
-package com.mystihgreeh.go4lunch;
+package com.mystihgreeh.go4lunch.View;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.SignInButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.mystihgreeh.go4lunch.R;
+import com.mystihgreeh.go4lunch.SettingsActivity;
+
 import java.util.Collections;
 
 public class LoginActivity extends AppCompatActivity {
@@ -25,6 +36,18 @@ public class LoginActivity extends AppCompatActivity {
     private void initIdentification(){
         SignInButton googleSignInButton = findViewById(R.id.google_button);
         googleSignInButton.setOnClickListener(v -> startSignInWithGoogle());
+        // Start appropriate activity
+        if (this.isCurrentUserLogged()){
+            this.startMainActivity();
+        } else {
+            this.startSignInWithGoogle();
+        }
+    }
+
+    // 3 - Launching Profile Activity
+    private void startMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     //SIGN IN WITH GOOGLE
@@ -39,6 +62,13 @@ public class LoginActivity extends AppCompatActivity {
                         .build(),
                 RC_SIGN_IN);
     }
+
+
+    //GET USER
+    @Nullable
+    protected FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
+
+    protected Boolean isCurrentUserLogged(){ return (this.getCurrentUser() != null); }
 
 
 

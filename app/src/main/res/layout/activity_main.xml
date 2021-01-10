@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".View.MainActivity"
     android:id="@+id/activity_main_drawer_layout">
+
+
 
     <!-- 1 | MainActivity RootView -->
     <LinearLayout
@@ -13,6 +15,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
+        
 
         <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
@@ -33,22 +36,12 @@
 
     </LinearLayout>
 
-    <!-- 2 | NavigationView -->
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/activity_main_nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/activity_main_nav_header"
-        app:menu="@menu/activity_main_menu_drawer"
-        android:background="@color/orange_light"
-        app:itemTextColor="@color/white"/>
+
 
     <FrameLayout
-        android:id="@+id/main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@id/activity_main_bottom_navigation"/>
 
 
@@ -68,6 +61,20 @@
         app:menu="@menu/bottom_navigation_menu"
         android:layout_alignParentBottom="true" />
     </RelativeLayout>
+
+
+
+    <!-- 2 | NavigationView -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/activity_main_nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/activity_main_nav_header"
+        app:menu="@menu/activity_main_menu_drawer"
+        android:background="@color/orange_light"
+        app:itemTextColor="@color/white"/>
 
 
 

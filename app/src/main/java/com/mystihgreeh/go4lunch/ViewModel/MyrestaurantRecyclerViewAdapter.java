@@ -1,4 +1,4 @@
-package com.mystihgreeh.go4lunch;
+package com.mystihgreeh.go4lunch.ViewModel;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.dummy.DummyContent.DummyItem;
 
 import org.jetbrains.annotations.NotNull;
