@@ -3,15 +3,173 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".View.SettingsActivity">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/activity_main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/orange_dark"
+        app:theme="@style/ToolBarStyle"
+        app:menu="@menu/main_toolbar"
+        tools:ignore="MissingConstraints" />
+
+
+
+    <!-- Theme -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/theme_settings"
+        android:text="@string/theme_settings"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        app:layout_constraintTop_toBottomOf="@id/activity_main_toolbar"
+        android:layout_marginVertical="@dimen/activity_vertical_margin"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/theme_switch"
+        app:layout_constraintTop_toTopOf="@id/theme_settings"
+        app:layout_constraintTop_toBottomOf="@id/theme_settings"
+        app:layout_constraintStart_toEndOf="@id/lunch_notification"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="settings"
-        android:textSize="50sp"
-        android:textColor="@color/white"
-        tools:ignore="HardcodedText,MissingConstraints"
-        tools:layout_editor_absoluteX="116dp"
-        tools:layout_editor_absoluteY="308dp" />
+        app:layout_constraintEnd_toStartOf="@id/theme_switch"
+        app:layout_constraintTop_toTopOf="@id/theme_switch"
+        app:layout_constraintBottom_toBottomOf="@id/theme_switch"
+        android:text="@string/spinner_off"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/theme_switch"
+        app:layout_constraintTop_toTopOf="@id/theme_switch"
+        app:layout_constraintBottom_toBottomOf="@id/theme_switch"
+        android:text="@string/spinner_on"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"/>
+
+
+
+
+    <!-- Language -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/language_settings"
+        android:text="@string/language_setting"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        app:layout_constraintTop_toBottomOf="@id/theme_settings"
+        android:layout_marginVertical="@dimen/activity_vertical_margin"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/lunch_switch"
+        app:layout_constraintEnd_toEndOf="@id/lunch_switch"
+        app:layout_constraintTop_toTopOf="@id/language_settings"
+        app:layout_constraintBottom_toBottomOf="@id/language_settings"/>
+
+
+    <!-- notification -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notifications"
+        android:text="@string/notifications"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        app:layout_constraintTop_toBottomOf="@id/language_settings"
+        android:layout_marginVertical="@dimen/activity_vertical_margin"/>
+
+
+        <!-- Lunch notification -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lunch_notification"
+            android:text="@string/lunch_notification"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            app:layout_constraintTop_toBottomOf="@id/notifications"
+            android:layout_marginVertical="@dimen/activity_vertical_margin"/>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lunch_switch"
+            app:layout_constraintTop_toTopOf="@id/lunch_notification"
+            app:layout_constraintTop_toBottomOf="@id/lunch_notification"
+            app:layout_constraintStart_toEndOf="@id/lunch_notification"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/lunch_switch"
+            app:layout_constraintTop_toTopOf="@id/lunch_switch"
+            app:layout_constraintBottom_toBottomOf="@id/lunch_switch"
+            android:text="@string/spinner_off"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/lunch_switch"
+            app:layout_constraintTop_toTopOf="@id/lunch_switch"
+            app:layout_constraintBottom_toBottomOf="@id/lunch_switch"
+            android:text="@string/spinner_on"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"/>
+
+
+    <!-- Tchat notification -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tchat_notification"
+            android:text="@string/tchat_notification"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            app:layout_constraintTop_toBottomOf="@id/lunch_notification"
+            android:layout_marginVertical="@dimen/activity_vertical_margin"/>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tchat_switch"
+            app:layout_constraintTop_toTopOf="@id/tchat_notification"
+            app:layout_constraintTop_toBottomOf="@id/tchat_notification"
+            app:layout_constraintStart_toEndOf="@id/lunch_notification"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/tchat_switch"
+        app:layout_constraintTop_toTopOf="@id/tchat_switch"
+        app:layout_constraintBottom_toBottomOf="@id/tchat_switch"
+        android:text="@string/spinner_off"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/tchat_switch"
+        app:layout_constraintTop_toTopOf="@id/tchat_switch"
+        app:layout_constraintBottom_toBottomOf="@id/tchat_switch"
+        android:text="@string/spinner_on"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

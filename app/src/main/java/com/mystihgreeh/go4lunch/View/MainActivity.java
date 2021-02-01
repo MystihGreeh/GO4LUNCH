@@ -1,5 +1,6 @@
 package com.mystihgreeh.go4lunch.View;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,18 +13,24 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.mystihgreeh.go4lunch.R;
-import com.mystihgreeh.go4lunch.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -57,10 +64,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     BottomNavigationView bottomNavigationView;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialize the SDK
+        //Places.initialize(getApplicationContext(), apiKey);
+        // Create a new PlacesClient instance
+        //PlacesClient placesClient = Places.createClient(this);
 
         // Configure all views
         this.configureToolBar();
@@ -68,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.configureNavigationView();
         this.configureBottomView();
         this.showFirstFragment();
-
 
     }
 
@@ -156,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        updateUIWhenCreating();
 
         // 4 - Handle Navigation Item Click
         int id = item.getItemId();
@@ -177,26 +190,50 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-
-
-
-
-
-
     // ---- Logout button ----
     private void signOutUserFromFirebase(){
         AuthUI.getInstance()
                 .signOut(this)
-                .addOnSuccessListener(this, this.updateUIAfterRESTRequestsCompleted());
+                .addOnSuccessListener(this, this.updateUIAfterRESTRequestsCompleted(SIGN_OUT_TASK));
     }
 
-
     // Create OnCompleteListener called after tasks ended
-    private OnSuccessListener<Void> updateUIAfterRESTRequestsCompleted(){
+    private OnSuccessListener<Void> updateUIAfterRESTRequestsCompleted(int signOutTask){
         return aVoid -> finish();
     }
 
+    // Get current user info
+    @Nullable
+    protected FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
+    protected Boolean isCurrentUserLogged(){ return (this.getCurrentUser() != null); }
 
+
+
+    // Update UI when activity is creating
+    private void updateUIWhenCreating(){
+
+        ImageView userPicture = findViewById(R.id.user_picture);
+        TextView textViewUserEmail = findViewById(R.id.user_email);
+        TextView textViewUserName = findViewById(R.id.user_name);
+
+        if (this.getCurrentUser() != null){
+            //Get picture URL from Firebase
+            if (this.getCurrentUser().getPhotoUrl() != null) {
+                Glide.with(this)
+                        .load(this.getCurrentUser().getPhotoUrl())
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(userPicture);
+            }
+
+            //Get email & username from Firebase
+            String userEmail = this.getCurrentUser().getEmail();
+            String userName = this.getCurrentUser().getDisplayName();
+
+            //Update views with data
+            textViewUserName.setText(userName);
+            textViewUserEmail.setText(userEmail);
+        }
+    }
 
 
     // ----------------------- BOTTOM NAVIGATION VIEW ---------------------- //
@@ -271,13 +308,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    //STARTING ACTIVITIES
-
-    //Login
-    private void startLoginActivity(){
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-    }
 
     //Settings
     private void startSettingsActivity(){

@@ -4,6 +4,8 @@
     <!-- FACEBOOK PURPOSE -->
     <string name="facebook_application_id" translatable="false">414272769614737</string>
     <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb414272769614737</string>
+    <string name="facebook_app_id">414272769614737</string> <string name="fb_login_protocol_scheme">fb414272769614737</string>
+
     <string name="title_activity_main">MainActivity</string>
 
 
@@ -32,9 +34,19 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="info_no_email_found">No email found</string>
+    <string name="info_no_username_found">No username found</string>
+
 
     <!-- HINTS -->
     <string name="user_name">John SMITH</string>
     <string name="user_email">jsmith.1337@gmail.com</string>
+    <string name="theme_settings">Dark theme</string>
+    <string name="language_setting">Language</string>
+    <string name="lunch_notification">Lunch</string>
+    <string name="tchat_notification">Tchat</string>
+    <string name="notifications">Notifications</string>
+    <string name="spinner_on">On</string>
+    <string name="spinner_off">Off</string>
 
 </resources>

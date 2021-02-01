@@ -5,16 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
+import com.facebook.login.widget.LoginButton;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.SignInButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mystihgreeh.go4lunch.R;
-import com.mystihgreeh.go4lunch.SettingsActivity;
 
 import java.util.Collections;
 
@@ -35,12 +32,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initIdentification(){
         SignInButton googleSignInButton = findViewById(R.id.google_button);
+        LoginButton facebookSignInButton = findViewById(R.id.facebook_button);
         googleSignInButton.setOnClickListener(v -> startSignInWithGoogle());
+        facebookSignInButton.setOnClickListener(v -> startSignInWithFacebook());
         // Start appropriate activity
         if (this.isCurrentUserLogged()){
             this.startMainActivity();
-        } else {
-            this.startSignInWithGoogle();
         }
     }
 
@@ -55,13 +52,28 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setTheme(R.style.LoginTheme)
                         .setAvailableProviders(
                                 Collections.singletonList(new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build())) //GOOGLE
                         .setIsSmartLockEnabled(false, true)
                         .build(),
                 RC_SIGN_IN);
     }
+
+
+    private void startSignInWithFacebook(){
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setTheme(R.style.LoginTheme)
+                        .setAvailableProviders(
+                                Collections.singletonList( new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build())) //GOOGLE
+                        .setIsSmartLockEnabled(false, true)
+                        .build(),
+                RC_SIGN_IN);
+    }
+
+
+
 
 
     //GET USER
@@ -71,6 +83,9 @@ public class LoginActivity extends AppCompatActivity {
     protected Boolean isCurrentUserLogged(){ return (this.getCurrentUser() != null); }
 
 
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        initIdentification();
+    }
 }
