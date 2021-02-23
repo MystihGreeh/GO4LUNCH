@@ -1,4 +1,4 @@
-package com.mystihgreeh.go4lunch.View;
+package com.mystihgreeh.go4lunch.view;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

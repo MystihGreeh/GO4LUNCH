@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".View.SettingsActivity">
+    tools:context=".view.SettingsActivity">
 
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
@@ -13,7 +13,6 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/orange_dark"
         app:theme="@style/ToolBarStyle"
-        app:menu="@menu/main_toolbar"
         tools:ignore="MissingConstraints" />
 
 

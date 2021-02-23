@@ -8,21 +8,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mystihgreeh.go4lunch.R;
-import com.mystihgreeh.go4lunch.dummy.DummyContent.DummyItem;
+import com.mystihgreeh.go4lunch.model.Workmate;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
+ * {@link RecyclerView.Adapter} that can display a {@link Workmate}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyworkmatesRecyclerViewAdapter extends RecyclerView.Adapter<MyworkmatesRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Workmate> mValues;
 
-    public MyworkmatesRecyclerViewAdapter(List<DummyItem> items) {
+    public MyworkmatesRecyclerViewAdapter(List<Workmate> items) {
         mValues = items;
     }
 
@@ -37,8 +37,13 @@ public class MyworkmatesRecyclerViewAdapter extends RecyclerView.Adapter<Myworkm
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mIdView.setText(mValues.get(position).getWorkmateName());
+        holder.mContentView.setText(mValues.get(position).getWorkmateEmail());
+
+        /*final Reunion reunion = mReunion.get(position);
+
+        holder.mRoom.setText(reunion.getObject()+" - "+reunion.getTime()+ " - "+reunion.getRoom());
+        holder.mEmails.setText(reunion.getEmails());*/
     }
 
     @Override
@@ -50,7 +55,7 @@ public class MyworkmatesRecyclerViewAdapter extends RecyclerView.Adapter<Myworkm
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public Workmate mItem;
 
         public ViewHolder(View view) {
             super(view);
@@ -64,4 +69,5 @@ public class MyworkmatesRecyclerViewAdapter extends RecyclerView.Adapter<Myworkm
             return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
+
 }

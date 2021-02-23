@@ -4,7 +4,8 @@
     <!-- FACEBOOK PURPOSE -->
     <string name="facebook_application_id" translatable="false">414272769614737</string>
     <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb414272769614737</string>
-    <string name="facebook_app_id">414272769614737</string> <string name="fb_login_protocol_scheme">fb414272769614737</string>
+    <string name="facebook_app_id">414272769614737</string>
+    <string name="fb_login_protocol_scheme">fb414272769614737</string>
 
     <string name="title_activity_main">MainActivity</string>
 

@@ -1,13 +1,4 @@
-package com.mystihgreeh.go4lunch.View;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.core.view.MenuItemCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
+package com.mystihgreeh.go4lunch.view;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -22,6 +13,18 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.AuthUI;
@@ -31,6 +34,11 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mystihgreeh.go4lunch.R;
+import com.mystihgreeh.go4lunch.ViewModel.ViewModelWorkmates;
+import com.mystihgreeh.go4lunch.model.Workmate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -39,9 +47,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Fragment fragmentLunch;
     private Activity activitySettings;
     private Activity activityLogin;
-    private Fragment fragmentMap;
+    private Fragment mapViewActivity;
     private Fragment fragmentListView;
     private Fragment fragmentWorkmates;
+    private Workmate workmate;
+
+    List<Workmate> listOfMovies = new ArrayList<>();
+    //WorkmateAdapter mAdapter;
+    RecyclerView mPoster;
+    ViewModelWorkmates viewModelWorkmates;
 
     //FOR DATAS
     // 2 - Identify each fragment with a number
@@ -50,7 +64,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int ACTIVITY_LOGIN = 2;
     private static final int FRAGMENT_MAP = 3;
     private static final int FRAGMENT_LISTVIEW = 4;
-    private static final int FRAGMENT_WORKMATES = 5;
+    private static final int FRAGMENT_WORKMATES = 5;private final String TAG = MainActivity.class.getSimpleName();
+    public final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
 
 
     private static final int SIGN_OUT_TASK = 10;
@@ -70,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         // Initialize the SDK
         //Places.initialize(getApplicationContext(), apiKey);
         // Create a new PlacesClient instance
@@ -81,6 +97,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.configureNavigationView();
         this.configureBottomView();
         this.showFirstFragment();
+
+        /*vie= ViewModelProviders.of(this).get(Workmate.class);
+        Workmate.init();
+        Workmate.getWorkmatesRepository().observe(this, movieResponse -> {
+            List<EntityMovieItem> mItems = movieResponse.getResults();
+            listOfMovies.addAll(mItems);
+            mAdapter.notifyDataSetChanged();
+        });
+        setupRecyclerView();*/
+
 
     }
 
@@ -114,12 +140,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
     }
 
     // 3 - Configure NavigationView
     private void configureNavigationView(){
         NavigationView navigationView = findViewById(R.id.activity_main_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        //this.updateUIWhenCreating();
+
     }
 
 
@@ -168,8 +197,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        updateUIWhenCreating();
-
         // 4 - Handle Navigation Item Click
         int id = item.getItemId();
         switch (id) {
@@ -217,6 +244,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView textViewUserName = findViewById(R.id.user_name);
 
         if (this.getCurrentUser() != null){
+
             //Get picture URL from Firebase
             if (this.getCurrentUser().getPhotoUrl() != null) {
                 Glide.with(this)
@@ -226,12 +254,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
             //Get email & username from Firebase
-            String userEmail = this.getCurrentUser().getEmail();
-            String userName = this.getCurrentUser().getDisplayName();
+            String email = TextUtils.isEmpty(this.getCurrentUser().getEmail()) ? getString(R.string.info_no_email_found) : this.getCurrentUser().getEmail();
+            String username = TextUtils.isEmpty(this.getCurrentUser().getDisplayName()) ? getString(R.string.info_no_username_found) : this.getCurrentUser().getDisplayName();
 
             //Update views with data
-            textViewUserName.setText(userName);
-            textViewUserEmail.setText(userEmail);
+            textViewUserName.setText(username);
+            textViewUserEmail.setText(email);
         }
     }
 
@@ -275,8 +303,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void showMapFragment(){
-        if (this.fragmentMap == null) this.fragmentMap = new MapsFragment();
-        this.startTransactionFragment(this.fragmentMap);
+        if (this.mapViewActivity == null) this.mapViewActivity = new MapViewFragment();
+        this.startTransactionFragment(this.mapViewActivity);
     }
 
     private void showListViewFragment(){
@@ -313,5 +341,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void startSettingsActivity(){
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);}
+
+
+
+    /*private void showSettingsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.settings));
+        builder.setMessage(getString(R.string.setting_dialog_msg));
+        builder.setPositiveButton(getString(R.string.yes),
+                (dialogInterface, i) -> {
+                    SharedPrefManager.getInstance(this).saveBoolean(Constants.NOTIFICATION_ENABLED, true);
+                    WorkerNotificationController.startWorkRequest(getApplicationContext());
+                });
+        builder.setNegativeButton(getString(R.string.no),
+                (dialog, which) -> {
+                    SharedPrefManager.getInstance(this).saveBoolean(Constants.NOTIFICATION_ENABLED, false);
+                    WorkerNotificationController.stopWorkRequest(getApplicationContext());
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }*/
+
 
 }

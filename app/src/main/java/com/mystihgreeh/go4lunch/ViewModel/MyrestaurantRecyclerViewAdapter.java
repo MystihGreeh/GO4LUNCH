@@ -8,21 +8,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mystihgreeh.go4lunch.R;
-import com.mystihgreeh.go4lunch.dummy.DummyContent.DummyItem;
+import com.mystihgreeh.go4lunch.model.Restaurant;
+
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
+ * {@link RecyclerView.Adapter} that can display a {@link com.mystihgreeh.go4lunch.model.Restaurant}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyrestaurantRecyclerViewAdapter extends RecyclerView.Adapter<MyrestaurantRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Restaurant> mValues;
 
-    public MyrestaurantRecyclerViewAdapter(List<DummyItem> items) {
+    public MyrestaurantRecyclerViewAdapter(List<Restaurant> items) {
         mValues = items;
     }
 
@@ -37,8 +38,8 @@ public class MyrestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Myrest
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mIdView.setText(mValues.get(position).getPlaceId());
+        holder.mContentView.setText(mValues.get(position).getAddress());
     }
 
     @Override
@@ -50,7 +51,7 @@ public class MyrestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Myrest
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public Restaurant mItem;
 
         public ViewHolder(View view) {
             super(view);
