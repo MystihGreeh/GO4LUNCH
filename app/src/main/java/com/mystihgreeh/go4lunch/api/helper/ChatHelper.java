@@ -1,4 +1,4 @@
-package com.mystihgreeh.go4lunch.helper;
+package com.mystihgreeh.go4lunch.api.helper;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;

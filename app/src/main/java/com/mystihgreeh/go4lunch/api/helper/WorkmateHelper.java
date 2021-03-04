@@ -1,4 +1,4 @@
-package com.mystihgreeh.go4lunch.helper;
+package com.mystihgreeh.go4lunch.api.helper;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -8,7 +8,7 @@ import com.mystihgreeh.go4lunch.model.Workmate;
 
 public class WorkmateHelper {
 
-    /*private static final String COLLECTION_NAME = "workmate";
+    private static final String COLLECTION_NAME = "workmate";
 
     // --- COLLECTION REFERENCE ---
 
@@ -19,7 +19,7 @@ public class WorkmateHelper {
     // --- CREATE ---
 
     public static Task<Void> createWorkmate(String wid, String workmateName, String workmateEmail, String urlPicture) {
-        Workmate workmateToCreate = new Workmate(workmateName, workmateEmail, urlPicture);
+        Workmate workmateToCreate = new Workmate(wid, workmateName, workmateEmail, urlPicture);
         return WorkmateHelper.getWorkmatesCollection().document(wid).set(workmateToCreate);
     }
 
@@ -41,10 +41,10 @@ public class WorkmateHelper {
 
     // --- DELETE ---
 
- /*   public static Task<Void> deleteWorkmate(String wid) {
+   public static Task<Void> deleteWorkmate(String wid) {
         return WorkmateHelper.getWorkmatesCollection().document(wid).delete();
     }
 
-    */
+
 
 }

@@ -31,7 +31,7 @@ public class MyrestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Myrest
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_list_view, parent, false);
+                .inflate(R.layout.fragment_restaurant_list, parent, false);
         return new ViewHolder(view);
     }
 
@@ -56,7 +56,7 @@ public class MyrestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Myrest
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = view.findViewById(R.id.item_number);
+            mIdView = view.findViewById(R.id.restaurant_avatar);
             mContentView = view.findViewById(R.id.content);
         }
 

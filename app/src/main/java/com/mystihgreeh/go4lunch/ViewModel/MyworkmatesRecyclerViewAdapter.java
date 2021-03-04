@@ -5,8 +5,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.model.Workmate;
 
@@ -20,10 +23,10 @@ import java.util.List;
  */
 public class MyworkmatesRecyclerViewAdapter extends RecyclerView.Adapter<MyworkmatesRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Workmate> mValues;
+    private final List<Workmate> mWorkmate;
 
     public MyworkmatesRecyclerViewAdapter(List<Workmate> items) {
-        mValues = items;
+        mWorkmate = items;
     }
 
     @NotNull
@@ -36,9 +39,13 @@ public class MyworkmatesRecyclerViewAdapter extends RecyclerView.Adapter<Myworkm
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getWorkmateName());
-        holder.mContentView.setText(mValues.get(position).getWorkmateEmail());
+        Workmate workmate = mWorkmate.get(position);
+        holder.mItem = mWorkmate.get(position);
+        Glide.with(holder.mWorkmateAvatar.getContext())
+                .load(workmate.getWorkmatePhotoUrl())
+                .apply(RequestOptions.circleCropTransform())
+                .into(holder.mWorkmateAvatar);
+        holder.mWorkmateName.setText(mWorkmate.get(position).getWorkmateName());
 
         /*final Reunion reunion = mReunion.get(position);
 
@@ -48,25 +55,25 @@ public class MyworkmatesRecyclerViewAdapter extends RecyclerView.Adapter<Myworkm
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mWorkmate.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
+        public final ImageView mWorkmateAvatar;
+        public final TextView mWorkmateName;
         public Workmate mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = view.findViewById(R.id.item_number);
-            mContentView = view.findViewById(R.id.content);
+            mWorkmateAvatar = view.findViewById(R.id.workmate_avatar);
+            mWorkmateName = view.findViewById(R.id.workmate_name);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mWorkmateName.getText() + "'";
         }
     }
 

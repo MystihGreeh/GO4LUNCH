@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,37 +12,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mystihgreeh.go4lunch.ViewModel.MyrestaurantRecyclerViewAdapter;
 import com.mystihgreeh.go4lunch.R;
-import com.mystihgreeh.go4lunch.model.Restaurant;
+import com.mystihgreeh.go4lunch.ViewModel.MyworkmatesRecyclerViewAdapter;
+import com.mystihgreeh.go4lunch.model.Workmate;
 
 
-/**
- * A fragment representing a list of Items.
- */
-public class ListViewFragment extends Fragment {
+public class WorkmatesListFragment extends Fragment implements View.OnClickListener {
 
-    // TODO: Customize parameter argument names
+
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public ListViewFragment() {
+    public WorkmatesListFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    public static ListViewFragment newInstance(int columnCount) {
-        ListViewFragment fragment = new ListViewFragment();
+
+    public static WorkmatesListFragment newInstance(int columnCount) {
+        WorkmatesListFragment fragment = new WorkmatesListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +46,8 @@ public class ListViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_view_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_workmates_list, container, false);
+
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -68,8 +58,13 @@ public class ListViewFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyrestaurantRecyclerViewAdapter(Restaurant.ITEMS));
+            recyclerView.setAdapter(new MyworkmatesRecyclerViewAdapter(Workmate.ITEMS));
         }
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

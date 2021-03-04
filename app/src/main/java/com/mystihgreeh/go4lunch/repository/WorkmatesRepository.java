@@ -1,54 +1,53 @@
 package com.mystihgreeh.go4lunch.repository;
 
 
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
+import android.content.Context;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.mystihgreeh.go4lunch.model.Restaurant;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mystihgreeh.go4lunch.model.Workmate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WorkmatesRepository {
 
-    public CollectionReference getCollectionWorkmate() {
-        return FirebaseFirestore.getInstance().collection("workmates");
+    static WorkmatesRepository instance;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final String TAG = "Repository";
+
+    public static WorkmatesRepository getInstance(Context context){
+        if (instance == null){
+            instance = new WorkmatesRepository();
+        }
+        return instance;
     }
 
+    //----------------------------------------------------------------------------------------------
+    //----------------------------- Get all workmates ----------------------------------------------
+    //----------------------------------------------------------------------------------------------
 
-    public Query getListWorkmates() {
-        return getCollectionWorkmate().orderBy("chooseRestaurant", Query.Direction.DESCENDING);
-
+    public MutableLiveData<ArrayList<Workmate>> getAllWorkmates(){
+        MutableLiveData<ArrayList<Workmate>> allWorkmates = new MutableLiveData<>();
+        db.collection("workmates")
+                .get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    if(!queryDocumentSnapshots.isEmpty()){
+                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                        ArrayList<Workmate> workmates = new ArrayList<>();
+                        for (DocumentSnapshot documentSnapshot : list) {
+                            workmates.add(documentSnapshot.toObject(Workmate.class));
+                        }
+                        allWorkmates.setValue(workmates);
+                    }
+                }).addOnFailureListener(e -> Log.d(TAG, "Impossible to get workmates list", e));
+        return allWorkmates;
     }
 
-
-    public Task<Void> createWorkmate(String workmateId, String workmateName, String workmateEmail, String wormateUrlPicture) {
-        Workmate toCreate = new Workmate(workmateId, workmateName, workmateEmail, wormateUrlPicture);
-        return getCollectionWorkmate().document(workmateId).set(toCreate);
-    }
-
-
-    public Task<DocumentSnapshot> getWorkmates(String workmateId) {
-        return getCollectionWorkmate().document(workmateId).get();
-    }
-
-
-    public Task<Void> updateWorkmateChooseRestaurant(String workmateId, Boolean isChooseRestaurant) {
-        return getCollectionWorkmate().document(workmateId).update("chooseRestaurant", isChooseRestaurant);
-
-    }
-
-
-    public Task<Void> updateWorkmateRestaurant(String workmateId, Restaurant restaurantChoose) {
-        return getCollectionWorkmate().document(workmateId).update("restaurantChoose", restaurantChoose);
-
-    }
-
-
-    public Task<Void> updateWorkmateRestaurantListFavorites(String workmateId, List<Restaurant> restaurantListFavorites) {
-        return getCollectionWorkmate().document(workmateId).update("restaurantListFavorites", restaurantListFavorites);
-
-    }
 }

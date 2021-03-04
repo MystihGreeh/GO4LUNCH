@@ -8,26 +8,30 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -64,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int ACTIVITY_LOGIN = 2;
     private static final int FRAGMENT_MAP = 3;
     private static final int FRAGMENT_LISTVIEW = 4;
-    private static final int FRAGMENT_WORKMATES = 5;private final String TAG = MainActivity.class.getSimpleName();
+    private static final int FRAGMENT_WORKMATES = 5;
     public final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
 
 
@@ -98,17 +102,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.configureBottomView();
         this.showFirstFragment();
 
-        /*vie= ViewModelProviders.of(this).get(Workmate.class);
-        Workmate.init();
-        Workmate.getWorkmatesRepository().observe(this, movieResponse -> {
-            List<EntityMovieItem> mItems = movieResponse.getResults();
-            listOfMovies.addAll(mItems);
-            mAdapter.notifyDataSetChanged();
-        });
-        setupRecyclerView();*/
-
-
     }
+
 
     @Override
     public void onBackPressed() {
@@ -140,14 +135,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
     }
 
     // 3 - Configure NavigationView
     private void configureNavigationView(){
         NavigationView navigationView = findViewById(R.id.activity_main_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        //this.updateUIWhenCreating();
+        ImageView imageUser = navigationView.getHeaderView(0).findViewById(R.id.user_picture);
+        TextView userNameTextView = navigationView.getHeaderView(0).findViewById(R.id.user_name);
+        TextView emailTextView = navigationView.getHeaderView(0).findViewById(R.id.user_email);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            userNameTextView.setText(user.getDisplayName());
+            emailTextView.setText(user.getEmail());
+            Glide.with(this)
+                    .load(user.getPhotoUrl())
+                    .transform(new CircleCrop())
+                    .into(imageUser);
+        }
 
     }
 
@@ -217,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+
     // ---- Logout button ----
     private void signOutUserFromFirebase(){
         AuthUI.getInstance()
@@ -234,34 +241,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
     protected Boolean isCurrentUserLogged(){ return (this.getCurrentUser() != null); }
 
-
-
-    // Update UI when activity is creating
-    private void updateUIWhenCreating(){
-
-        ImageView userPicture = findViewById(R.id.user_picture);
-        TextView textViewUserEmail = findViewById(R.id.user_email);
-        TextView textViewUserName = findViewById(R.id.user_name);
-
-        if (this.getCurrentUser() != null){
-
-            //Get picture URL from Firebase
-            if (this.getCurrentUser().getPhotoUrl() != null) {
-                Glide.with(this)
-                        .load(this.getCurrentUser().getPhotoUrl())
-                        .apply(RequestOptions.circleCropTransform())
-                        .into(userPicture);
-            }
-
-            //Get email & username from Firebase
-            String email = TextUtils.isEmpty(this.getCurrentUser().getEmail()) ? getString(R.string.info_no_email_found) : this.getCurrentUser().getEmail();
-            String username = TextUtils.isEmpty(this.getCurrentUser().getDisplayName()) ? getString(R.string.info_no_username_found) : this.getCurrentUser().getDisplayName();
-
-            //Update views with data
-            textViewUserName.setText(username);
-            textViewUserEmail.setText(email);
-        }
-    }
 
 
     // ----------------------- BOTTOM NAVIGATION VIEW ---------------------- //
@@ -308,31 +287,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void showListViewFragment(){
-        if (this.fragmentListView == null) this.fragmentListView = ListViewFragment.newInstance(1);
+        if (this.fragmentListView == null) this.fragmentListView = RestaurantsListFragment.newInstance(1);
         this.startTransactionFragment(this.fragmentListView);
     }
 
     private void showWorkmatesFragment(){
-        if (this.fragmentWorkmates == null) this.fragmentWorkmates = WorkmatesFragment.newInstance(1);
+        if (this.fragmentWorkmates == null) this.fragmentWorkmates = WorkmatesListFragment.newInstance(2);
         this.startTransactionFragment(this.fragmentWorkmates);
     }
 
     private void startTransactionFragment(Fragment fragment){
-        if (!fragment.isVisible()){
+        if (!fragment.isVisible())
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.activity_main_frame_layout, fragment).commit();
-        }
+
     }
 
     // Show first fragment when activity is created
     private void showFirstFragment(){
         Fragment visibleFragment = getSupportFragmentManager().findFragmentById(R.id.activity_main_frame_layout);
-        if (visibleFragment == null){
+        if (visibleFragment == null)
             // 1.1 - Show Map Fragment
             this.showFragment(FRAGMENT_MAP);
             // 1.2 - Mark as selected the menu item corresponding to NewsFragment
             this.bottomNavigationView.getMenu().getItem(0).setChecked(true);
-        }
     }
 
 
@@ -362,5 +340,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         alertDialog.show();
     }*/
 
+
+    // --------------------
+    // ERROR HANDLER
+    // --------------------
+
+    protected OnFailureListener onFailureListener(){
+        return e -> Toast.makeText(getApplicationContext(), getString(R.string.unknown_error), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
 }

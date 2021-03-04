@@ -1,6 +1,4 @@
-package com.mystihgreeh.go4lunch.helper;
-
-import com.mystihgreeh.go4lunch.helper.ChatHelper;
+package com.mystihgreeh.go4lunch.api.helper;
 
 import retrofit2.http.Query;
 
