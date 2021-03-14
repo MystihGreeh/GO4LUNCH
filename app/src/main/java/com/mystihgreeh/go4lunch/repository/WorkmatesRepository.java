@@ -9,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -38,16 +40,15 @@ public class WorkmatesRepository {
         MutableLiveData<ArrayList<Workmate>> allWorkmates = new MutableLiveData<>();
         db.collection("workmates")
                 .get().addOnSuccessListener(queryDocumentSnapshots -> {
-                    if(!queryDocumentSnapshots.isEmpty()){
-                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                        ArrayList<Workmate> workmates = new ArrayList<>();
-                        for (DocumentSnapshot documentSnapshot : list) {
-                            workmates.add(documentSnapshot.toObject(Workmate.class));
-                        }
-                        allWorkmates.setValue(workmates);
-                    }
-                }).addOnFailureListener(e -> Log.d(TAG, "Impossible to get workmates list", e));
+            if(!queryDocumentSnapshots.isEmpty()){
+                List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                ArrayList<Workmate> workmates = new ArrayList<>();
+                for (DocumentSnapshot documentSnapshot : list) {
+                    workmates.add(documentSnapshot.toObject(Workmate.class));
+                }
+                allWorkmates.setValue(workmates);
+            }
+        }).addOnFailureListener(e -> Log.d(TAG, "Impossible to get workmates list", e));
         return allWorkmates;
     }
-
 }

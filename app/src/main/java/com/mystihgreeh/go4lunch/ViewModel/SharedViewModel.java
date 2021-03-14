@@ -5,12 +5,13 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.mystihgreeh.go4lunch.api.helper.WorkmateHelper;
 import com.mystihgreeh.go4lunch.model.Workmate;
 import com.mystihgreeh.go4lunch.repository.WorkmatesRepository;
 
 import java.util.ArrayList;
 
-public class ViewModelWorkmates extends androidx.lifecycle.ViewModel {
+public class SharedViewModel extends androidx.lifecycle.ViewModel {
 
     private MutableLiveData<ArrayList<Workmate>> workmates;
 

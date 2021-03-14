@@ -1,5 +1,6 @@
 package com.mystihgreeh.go4lunch.ViewModel;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -15,7 +16,7 @@ import com.mystihgreeh.go4lunch.model.Workmate;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.Objects;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Workmate}.
@@ -23,9 +24,9 @@ import java.util.List;
  */
 public class MyworkmatesRecyclerViewAdapter extends RecyclerView.Adapter<MyworkmatesRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Workmate> mWorkmate;
+    private final MutableLiveData mWorkmate;
 
-    public MyworkmatesRecyclerViewAdapter(List<Workmate> items) {
+    public MyworkmatesRecyclerViewAdapter(MutableLiveData items) {
         mWorkmate = items;
     }
 
@@ -39,19 +40,19 @@ public class MyworkmatesRecyclerViewAdapter extends RecyclerView.Adapter<Myworkm
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Workmate workmate = mWorkmate.get(position);
-        holder.mItem = mWorkmate.get(position);
+        Workmate workmate = (Workmate) mWorkmate.getValue();
+        holder.mItem = (Workmate) mWorkmate.getValue();
         Glide.with(holder.mWorkmateAvatar.getContext())
-                .load(workmate.getUrlPicture())
+                .load(Objects.requireNonNull(workmate).getUrlPicture())
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.mWorkmateAvatar);
-        holder.mWorkmateName.setText(mWorkmate.get(position).getUsername());
+        holder.mWorkmateName.setText((CharSequence) mWorkmate.getValue());
 
     }
 
     @Override
     public int getItemCount() {
-        return mWorkmate.size();
+        return (int) Objects.requireNonNull(mWorkmate.getValue());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -67,6 +68,7 @@ public class MyworkmatesRecyclerViewAdapter extends RecyclerView.Adapter<Myworkm
             mWorkmateName = view.findViewById(R.id.workmate_name);
         }
 
+        @NotNull
         @Override
         public String toString() {
             return super.toString() + " '" + mWorkmateName.getText() + "'";

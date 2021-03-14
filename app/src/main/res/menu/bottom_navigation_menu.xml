@@ -21,11 +21,5 @@
         android:title="@string/title_workmates"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/chat"
-        android:enabled="true"
-        android:icon="@drawable/ic_round_chat_bubble_outline_24"
-        android:title="@string/title_chat"
-        app:showAsAction="ifRoom" />
 
 </menu>

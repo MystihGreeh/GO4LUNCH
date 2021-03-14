@@ -4,22 +4,18 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.MenuItemCompat;
@@ -29,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,7 +33,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mystihgreeh.go4lunch.R;
-import com.mystihgreeh.go4lunch.ViewModel.ViewModelWorkmates;
+import com.mystihgreeh.go4lunch.ViewModel.SharedViewModel;
 import com.mystihgreeh.go4lunch.api.helper.WorkmateHelper;
 import com.mystihgreeh.go4lunch.model.Workmate;
 
@@ -60,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     List<Workmate> listOfMovies = new ArrayList<>();
     //WorkmateAdapter mAdapter;
     RecyclerView mPoster;
-    ViewModelWorkmates viewModelWorkmates;
+    SharedViewModel sharedViewModel;
 
     //FOR DATAS
     // 2 - Identify each fragment with a number

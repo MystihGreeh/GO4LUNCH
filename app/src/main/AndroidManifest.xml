@@ -25,6 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         tools:ignore="AllowBackup">
+
         <activity
             android:name=".view.MapViewFragment"
             tools:ignore="Instantiatable" />
@@ -63,6 +64,7 @@
         </activity>
         <activity android:name=".view.MainActivity" />
         <activity android:name=".view.LoginActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

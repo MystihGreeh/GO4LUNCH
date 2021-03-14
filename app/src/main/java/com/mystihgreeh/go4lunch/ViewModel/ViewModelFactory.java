@@ -12,6 +12,7 @@ public class ViewModelFactory {
     public ViewModelFactory(RestaurantRepository restaurantRepository,
                             WorkmatesRepository workmatesRepository) {
         this.restaurantRepository = restaurantRepository;
+        this.workmatesRepository = workmatesRepository;
 
     }
 
