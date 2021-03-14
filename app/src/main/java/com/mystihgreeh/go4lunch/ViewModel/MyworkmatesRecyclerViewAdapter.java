@@ -42,15 +42,11 @@ public class MyworkmatesRecyclerViewAdapter extends RecyclerView.Adapter<Myworkm
         Workmate workmate = mWorkmate.get(position);
         holder.mItem = mWorkmate.get(position);
         Glide.with(holder.mWorkmateAvatar.getContext())
-                .load(workmate.getWorkmatePhotoUrl())
+                .load(workmate.getUrlPicture())
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.mWorkmateAvatar);
-        holder.mWorkmateName.setText(mWorkmate.get(position).getWorkmateName());
+        holder.mWorkmateName.setText(mWorkmate.get(position).getUsername());
 
-        /*final Reunion reunion = mReunion.get(position);
-
-        holder.mRoom.setText(reunion.getObject()+" - "+reunion.getTime()+ " - "+reunion.getRoom());
-        holder.mEmails.setText(reunion.getEmails());*/
     }
 
     @Override

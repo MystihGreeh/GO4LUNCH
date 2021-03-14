@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.ViewModel.MyworkmatesRecyclerViewAdapter;
+import com.mystihgreeh.go4lunch.ViewModel.ViewModelWorkmates;
 import com.mystihgreeh.go4lunch.model.Workmate;
 
 

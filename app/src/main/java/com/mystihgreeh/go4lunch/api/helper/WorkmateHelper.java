@@ -8,41 +8,38 @@ import com.mystihgreeh.go4lunch.model.Workmate;
 
 public class WorkmateHelper {
 
-    private static final String COLLECTION_NAME = "workmate";
+    private static final String COLLECTION_NAME = "users";
 
     // --- COLLECTION REFERENCE ---
 
-    public static CollectionReference getWorkmatesCollection(){
+    public static CollectionReference getUsersCollection(){
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
 
     // --- CREATE ---
 
-    public static Task<Void> createWorkmate(String wid, String workmateName, String workmateEmail, String urlPicture) {
-        Workmate workmateToCreate = new Workmate(wid, workmateName, workmateEmail, urlPicture);
-        return WorkmateHelper.getWorkmatesCollection().document(wid).set(workmateToCreate);
+    public static Task<Void> createUser(String uid, String username, String urlPicture, String useremail) {
+        Workmate userToCreate = new Workmate(uid, username, urlPicture, useremail);
+        return WorkmateHelper.getUsersCollection().document(uid).set(userToCreate);
     }
 
     // --- GET ---
 
-    public static Task<DocumentSnapshot> getWorkmate(String wid){
-        return WorkmateHelper.getWorkmatesCollection().document(wid).get();
+    public static Task<DocumentSnapshot> getUser(String uid){
+        return WorkmateHelper.getUsersCollection().document(uid).get();
     }
 
     // --- UPDATE ---
 
-    public static Task<Void> updateWorkmateName(String workmateName, String wid) {
-        return WorkmateHelper.getWorkmatesCollection().document(wid).update("workmateName", workmateName);
+    public static Task<Void> updateUsername(String username, String uid) {
+        return WorkmateHelper.getUsersCollection().document(uid).update("username", username);
     }
 
-    /*public static Task<Void> updateIsMentor(String wid, Boolean isMentor) {
-        return WorkmateHelper.getWorkmatesCollection().document(wid).update("isMentor", isMentor);
-    }*/
 
     // --- DELETE ---
 
-   public static Task<Void> deleteWorkmate(String wid) {
-        return WorkmateHelper.getWorkmatesCollection().document(wid).delete();
+    public static Task<Void> deleteUser(String uid) {
+        return WorkmateHelper.getUsersCollection().document(uid).delete();
     }
 
 

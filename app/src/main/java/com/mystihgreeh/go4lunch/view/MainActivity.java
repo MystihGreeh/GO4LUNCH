@@ -39,6 +39,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.ViewModel.ViewModelWorkmates;
+import com.mystihgreeh.go4lunch.api.helper.WorkmateHelper;
 import com.mystihgreeh.go4lunch.model.Workmate;
 
 import java.util.ArrayList;
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.configureNavigationView();
         this.configureBottomView();
         this.showFirstFragment();
+        this.createUserInFirestore();
 
     }
 
@@ -322,25 +324,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-    /*private void showSettingsDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.settings));
-        builder.setMessage(getString(R.string.setting_dialog_msg));
-        builder.setPositiveButton(getString(R.string.yes),
-                (dialogInterface, i) -> {
-                    SharedPrefManager.getInstance(this).saveBoolean(Constants.NOTIFICATION_ENABLED, true);
-                    WorkerNotificationController.startWorkRequest(getApplicationContext());
-                });
-        builder.setNegativeButton(getString(R.string.no),
-                (dialog, which) -> {
-                    SharedPrefManager.getInstance(this).saveBoolean(Constants.NOTIFICATION_ENABLED, false);
-                    WorkerNotificationController.stopWorkRequest(getApplicationContext());
-                });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }*/
-
-
     // --------------------
     // ERROR HANDLER
     // --------------------
@@ -354,4 +337,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
     }
 
+    private void createUserInFirestore(){
+
+        if (this.getCurrentUser() != null){
+
+            String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
+            String username = this.getCurrentUser().getDisplayName();
+            String uid = this.getCurrentUser().getUid();
+            String useremail = this.getCurrentUser().getEmail();
+
+            WorkmateHelper.createUser(uid, username, urlPicture, useremail).addOnFailureListener(this.onFailureListener());
+        }
+    }
 }
