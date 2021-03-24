@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="FirebaseUiTheme" parent="AppTheme">
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
+        <item name="color">@color/orange_dark</item>
+        <item name="backgroundColor">@color/orange_dark</item>
+        <item name="android:includeFontPadding">true</item>
+        <item name="android:textDirection">ltr</item>
+        <item name="android:layoutDirection">ltr</item>
+        <item name="android:fontFamily">sans-serif</item>
+
+    </style>
+
     <!-- STYLE SIGN-IN ACTIVITY -->
     <style name="LoginTheme" parent="TextAppearance.AppCompat">
         <item name="colorPrimary">@color/orange_light</item>

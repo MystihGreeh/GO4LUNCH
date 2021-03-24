@@ -37,8 +37,9 @@ public class WorkmatesRepository {
     //----------------------------------------------------------------------------------------------
 
     public MutableLiveData<ArrayList<Workmate>> getAllWorkmates(){
+
         MutableLiveData<ArrayList<Workmate>> allWorkmates = new MutableLiveData<>();
-        db.collection("workmates")
+        db.collection("users")
                 .get().addOnSuccessListener(queryDocumentSnapshots -> {
             if(!queryDocumentSnapshots.isEmpty()){
                 List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();

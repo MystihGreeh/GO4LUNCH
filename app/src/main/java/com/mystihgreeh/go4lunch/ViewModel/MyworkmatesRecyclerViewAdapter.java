@@ -16,6 +16,8 @@ import com.mystihgreeh.go4lunch.model.Workmate;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -24,9 +26,9 @@ import java.util.Objects;
  */
 public class MyworkmatesRecyclerViewAdapter extends RecyclerView.Adapter<MyworkmatesRecyclerViewAdapter.ViewHolder> {
 
-    private final MutableLiveData mWorkmate;
+    private final ArrayList<Workmate> mWorkmate;
 
-    public MyworkmatesRecyclerViewAdapter(MutableLiveData items) {
+    public MyworkmatesRecyclerViewAdapter(ArrayList<Workmate> items) {
         mWorkmate = items;
     }
 
@@ -40,19 +42,18 @@ public class MyworkmatesRecyclerViewAdapter extends RecyclerView.Adapter<Myworkm
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Workmate workmate = (Workmate) mWorkmate.getValue();
-        holder.mItem = (Workmate) mWorkmate.getValue();
+        Workmate workmate = (Workmate) mWorkmate.get(position);
+        holder.mItem = (Workmate) mWorkmate.get(position);
         Glide.with(holder.mWorkmateAvatar.getContext())
                 .load(Objects.requireNonNull(workmate).getUrlPicture())
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.mWorkmateAvatar);
-        holder.mWorkmateName.setText((CharSequence) mWorkmate.getValue());
-
+        holder.mWorkmateName.setText((CharSequence) mWorkmate.get(position).getUsername());
     }
 
     @Override
     public int getItemCount() {
-        return (int) Objects.requireNonNull(mWorkmate.getValue());
+        return (int)(mWorkmate.size());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

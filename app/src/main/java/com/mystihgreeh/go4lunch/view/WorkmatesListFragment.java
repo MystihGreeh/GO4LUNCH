@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,9 @@ import android.view.ViewGroup;
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.ViewModel.MyworkmatesRecyclerViewAdapter;
 import com.mystihgreeh.go4lunch.ViewModel.SharedViewModel;
+import com.mystihgreeh.go4lunch.model.Workmate;
+
+import java.util.ArrayList;
 
 
 public class WorkmatesListFragment extends Fragment implements View.OnClickListener {
@@ -59,7 +63,7 @@ public class WorkmatesListFragment extends Fragment implements View.OnClickListe
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        recyclerView.setAdapter(new MyworkmatesRecyclerViewAdapter((MutableLiveData) sharedViewModel.getAllWorkmatesData()));
+        sharedViewModel.getAllWorkmatesData().observe(getViewLifecycleOwner(), workmates -> recyclerView.setAdapter(new MyworkmatesRecyclerViewAdapter(workmates)));
 
         return view;
     }

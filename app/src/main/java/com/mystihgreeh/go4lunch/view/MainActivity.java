@@ -340,7 +340,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String username = this.getCurrentUser().getDisplayName();
             String uid = this.getCurrentUser().getUid();
             String useremail = this.getCurrentUser().getEmail();
-
             WorkmateHelper.createUser(uid, username, urlPicture, useremail).addOnFailureListener(this.onFailureListener());
         }
     }
