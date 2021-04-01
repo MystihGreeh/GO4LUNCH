@@ -28,6 +28,7 @@ public class WorkmatesListFragment extends Fragment implements View.OnClickListe
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private SharedViewModel sharedViewModel;
+    public MyworkmatesRecyclerViewAdapter mWorkmateAdapter;
     public WorkmatesListFragment() {
     }
 

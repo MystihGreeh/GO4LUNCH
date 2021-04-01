@@ -51,8 +51,6 @@
     <string name="notifications">Notifications</string>
     <string name="spinner_on">On</string>
     <string name="spinner_off">Off</string>
-
-    <!-- CHAT -->
     <string name="unknown_error">error_unknown_error</string>
 
 </resources>

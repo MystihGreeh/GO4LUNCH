@@ -3,10 +3,14 @@ package com.mystihgreeh.go4lunch.view;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -27,18 +31,23 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.mystihgreeh.go4lunch.BuildConfig;
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.ViewModel.SharedViewModel;
 import com.mystihgreeh.go4lunch.api.helper.WorkmateHelper;
 import com.mystihgreeh.go4lunch.model.Workmate;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,6 +74,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_WORKMATES = 5;
     public final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
 
+    private SharedViewModel mSharedViewModel;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private Location mLocation;
+    private SearchView mSearchView;
+    private static final String PLACES_KEY = "google_places_key";
+
+
 
     private static final int SIGN_OUT_TASK = 10;
 
@@ -75,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     ArrayAdapter<String > adapter;
     BottomNavigationView bottomNavigationView;
+
 
 
 
@@ -139,18 +156,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView imageUser = navigationView.getHeaderView(0).findViewById(R.id.user_picture);
         TextView userNameTextView = navigationView.getHeaderView(0).findViewById(R.id.user_name);
         TextView emailTextView = navigationView.getHeaderView(0).findViewById(R.id.user_email);
-        @SuppressLint("ResourceType") ImageView avatar = navigationView.getHeaderView(0).findViewById(R.drawable.user);
+        Uri avatar = Uri.parse("https://mechanicsburgpolice.org/wp-content/uploads/2020/06/hacker-icon-2.jpg");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             userNameTextView.setText(user.getDisplayName());
             emailTextView.setText(user.getEmail());
-            if (imageUser != null){Glide.with(this)
+            if (user.getPhotoUrl() != null){Glide.with(this)
                     .load(user.getPhotoUrl())
                     .transform(new CircleCrop())
                     .into(imageUser);}
             else {
-                assert false;
                 Glide.with(this)
                             .load(avatar)
                             .apply(RequestOptions.circleCropTransform())
@@ -352,5 +368,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             WorkmateHelper.createUser(uid, username, urlPicture, useremail).addOnFailureListener(this.onFailureListener());
         }
+    }
+
+
+    // -------------------------------------------RESTAURANTS------------------------------------
+    public void initPlaces() {
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), PLACES_KEY);
+        }
+        PlacesClient mPlacesClient = Places.createClient(this);
     }
 }
