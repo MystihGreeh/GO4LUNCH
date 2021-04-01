@@ -51,29 +51,26 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
     private final String TAG = "LoginActivity";
+    private FirebaseAuth mAuth;
 
-    private List<AuthUI.IdpConfig> providers = Arrays.asList(
-            new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-            new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build(),
-            new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
-            new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build()
+
+    private final List<AuthUI.IdpConfig> providers = Arrays.asList(
+           //new AuthUI.IdpConfig.TwitterBuilder().build(),
+            new AuthUI.IdpConfig.EmailBuilder().build(),
+            new AuthUI.IdpConfig.FacebookBuilder().build(),
+            new AuthUI.IdpConfig.GoogleBuilder().build()
     );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        twitterLogin();
         super.onCreate(savedInstanceState);
-        TwitterAuthConfig mTwitterAuthConfig = new TwitterAuthConfig(getString(R.string.twitter_api_key),
-                getString(R.string.twitter_secret_key));
-        TwitterConfig twitterConfig = new TwitterConfig.Builder(this)
-                .twitterAuthConfig(mTwitterAuthConfig)
-                .build();
-        Twitter.initialize(twitterConfig);
         setContentView(R.layout.activity_login);
         initIdentification();
     }
 
     private void initIdentification() {
-        Button loginButton = findViewById(R.id.main_activity_button_login);
+        ImageView loginButton = findViewById(R.id.main_activity_button_login);
         loginButton.setOnClickListener(v -> startSignIn());
         if (this.isCurrentUserLogged()) {
             this.startMainActivity();
@@ -93,6 +90,18 @@ public class LoginActivity extends AppCompatActivity {
                         .build(),
                 RC_SIGN_IN);
     }
+
+
+    private void twitterLogin(){
+        mAuth = FirebaseAuth.getInstance();
+        TwitterAuthConfig mTwitterAuthConfig = new TwitterAuthConfig(getString(R.string.twitter_api_key),
+                getString(R.string.twitter_secret_key));
+        TwitterConfig twitterConfig = new TwitterConfig.Builder(this)
+                .twitterAuthConfig(mTwitterAuthConfig)
+                .build();
+        Twitter.initialize(twitterConfig);
+    }
+
 
 
     @Override

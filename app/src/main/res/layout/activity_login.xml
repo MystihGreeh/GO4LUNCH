@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".view.LoginActivity"
     android:background="@color/black"
+    style="@style/LoginTheme"
     >
 
     <ImageView
@@ -13,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/restaurant"
-        android:alpha=".50"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,9 +23,10 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        app:srcCompat="@drawable/ic_baseline_food_bank_24"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        app:srcCompat="@drawable/logorestaurant"
+        android:alpha=".95"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,6 +42,7 @@
         android:text="@string/app_name"
         android:textColor="@color/white"
         android:textStyle="bold"
+        style="@style/LoginTheme"
         app:layout_constraintTop_toBottomOf="@id/logo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,6 +56,7 @@
         android:textSize="12sp"
         android:text="@string/welcome"
         android:textColor="@color/white"
+        style="@style/LoginTheme"
         android:textStyle="italic"
         app:layout_constraintTop_toBottomOf="@id/app_name"
         app:layout_constraintStart_toStartOf="@id/main"
@@ -73,20 +76,32 @@
         tools:ignore="MissingConstraints" />
 
     <!-- BUTTON LOGIN -->
-    <Button
+    <ImageView
         android:id="@+id/main_activity_button_login"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:alpha=".95"
+        android:src="@drawable/login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/welcome"
+        app:layout_constraintVertical_bias="0.657"
+        tools:ignore="ContentDescription,HardcodedText" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
         android:textStyle="bold"
-        android:textSize="20sp"
         android:textColor="@color/orange_light"
-        style="?android:attr/borderlessButtonStyle"
-        app:layout_constraintTop_toBottomOf="@id/welcome"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/LoginTheme"
+        app:layout_constraintTop_toBottomOf="@id/main_activity_button_login"
+        app:layout_constraintStart_toStartOf="@id/main_activity_button_login"
+        app:layout_constraintEnd_toEndOf="@id/main_activity_button_login"
         tools:ignore="HardcodedText" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

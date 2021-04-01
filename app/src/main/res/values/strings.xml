@@ -6,8 +6,8 @@
     <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb414272769614737</string>
     <string name="facebook_app_id">414272769614737</string>
     <string name="fb_login_protocol_scheme">fb414272769614737</string>
-    <string name="twitter_api_key">pAUnVm42rkXfLDbHP5FSOO734</string>
-    <string name="twitter_secret_key">JQ6iUo9josuuIYZ3DytXmoj2aIfGAu8V1FWc7mDofD93r6VIe9</string>
+    <string name="twitter_api_key">301010003-EjMkghcoXHb7hOL9neagNkIzg3KVj9PLgrMEasaW</string>
+    <string name="twitter_secret_key">K35D15FERvwgMnheQFmW128nms2oKtrKzzORMOtZOFMer</string>
 
     <string name="title_activity_main">MainActivity</string>
 

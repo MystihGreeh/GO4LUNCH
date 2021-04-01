@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,12 +33,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.ViewModel.SharedViewModel;
 import com.mystihgreeh.go4lunch.api.helper.WorkmateHelper;
 import com.mystihgreeh.go4lunch.model.Workmate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -50,12 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Fragment mapViewActivity;
     private Fragment fragmentListView;
     private Fragment fragmentWorkmates;
-    private Workmate workmate;
 
-    List<Workmate> listOfMovies = new ArrayList<>();
-    //WorkmateAdapter mAdapter;
-    RecyclerView mPoster;
-    SharedViewModel sharedViewModel;
 
     //FOR DATAS
     // 2 - Identify each fragment with a number
@@ -141,15 +139,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView imageUser = navigationView.getHeaderView(0).findViewById(R.id.user_picture);
         TextView userNameTextView = navigationView.getHeaderView(0).findViewById(R.id.user_name);
         TextView emailTextView = navigationView.getHeaderView(0).findViewById(R.id.user_email);
+        @SuppressLint("ResourceType") ImageView avatar = navigationView.getHeaderView(0).findViewById(R.drawable.user);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             userNameTextView.setText(user.getDisplayName());
             emailTextView.setText(user.getEmail());
-            Glide.with(this)
+            if (imageUser != null){Glide.with(this)
                     .load(user.getPhotoUrl())
                     .transform(new CircleCrop())
-                    .into(imageUser);
+                    .into(imageUser);}
+            else {
+                assert false;
+                Glide.with(this)
+                            .load(avatar)
+                            .apply(RequestOptions.circleCropTransform())
+                            .into(imageUser);
+            }
         }
 
     }
@@ -337,9 +343,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (this.getCurrentUser() != null){
 
             String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
+            String useremail = this.getCurrentUser().getEmail();
             String username = this.getCurrentUser().getDisplayName();
             String uid = this.getCurrentUser().getUid();
-            String useremail = this.getCurrentUser().getEmail();
+            List<? extends UserInfo> provider = this.getCurrentUser().getProviderData();
+            for (UserInfo p : provider){
+                if (p.getEmail()!= null) useremail = p.getEmail();
+            }
             WorkmateHelper.createUser(uid, username, urlPicture, useremail).addOnFailureListener(this.onFailureListener());
         }
     }

@@ -17,6 +17,7 @@
     <style name="Theme.GO4LUNCH.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
     </style>
 
     <style name="Theme.GO4LUNCH.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
