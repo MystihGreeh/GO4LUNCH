@@ -2,19 +2,16 @@ package com.mystihgreeh.go4lunch.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.mystihgreeh.go4lunch.ViewModel.MyrestaurantRecyclerViewAdapter;
 import com.mystihgreeh.go4lunch.R;
-import com.mystihgreeh.go4lunch.model.Restaurant;
 
 
 /**
@@ -67,7 +64,7 @@ public class RestaurantsListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyrestaurantRecyclerViewAdapter(Restaurant.ITEMS));
+            //recyclerView.setAdapter(new MyrestaurantRecyclerViewAdapter(Restaurant.));
         }
         return view;
     }

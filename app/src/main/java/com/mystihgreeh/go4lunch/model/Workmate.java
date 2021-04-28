@@ -4,12 +4,8 @@ package com.mystihgreeh.go4lunch.model;
 import androidx.annotation.Nullable;
 
 import java.io.Serializable;
-import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 
 public class Workmate implements Serializable {
@@ -42,5 +38,7 @@ public class Workmate implements Serializable {
     public void setUid(String uid) { this.uid = uid; }
     public void setUrlPicture(@org.jetbrains.annotations.Nullable String urlPicture) { this.urlPicture = urlPicture; }
     public void setIsMentor(String useremail) { this.useremail = useremail; }
+
+
 
 }

@@ -1,15 +1,14 @@
 package com.mystihgreeh.go4lunch.ViewModel;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.model.Restaurant;
-
 
 import org.jetbrains.annotations.NotNull;
 
@@ -38,8 +37,8 @@ public class MyrestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Myrest
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getPlaceId());
-        holder.mContentView.setText(mValues.get(position).getAddress());
+        /*holder.mIdView.setText(mValues.get(position).getPlaceId());
+        holder.mContentView.setText(mValues.get(position).getAddress());*/
     }
 
     @Override
