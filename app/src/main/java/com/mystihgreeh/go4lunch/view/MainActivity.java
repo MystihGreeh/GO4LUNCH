@@ -39,9 +39,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.mystihgreeh.go4lunch.R;
+import com.mystihgreeh.go4lunch.ViewModel.MyrestaurantRecyclerViewAdapter;
 import com.mystihgreeh.go4lunch.ViewModel.SharedViewModel;
 import com.mystihgreeh.go4lunch.api.helper.WorkmateHelper;
+import com.mystihgreeh.go4lunch.model.Restaurant;
+import com.mystihgreeh.go4lunch.repository.RestaurantRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -72,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Location mLocation;
     private SearchView mSearchView;
     private static final String PLACES_KEY = "google_places_key";
+    List<Restaurant> listOfRestaurants = new ArrayList<>();
+    private MyrestaurantRecyclerViewAdapter myrestaurantRecyclerViewAdapter;
+    private RestaurantRepository restaurantRepository;
 
 
 
@@ -84,8 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     ArrayAdapter<String > adapter;
     BottomNavigationView bottomNavigationView;
-
-
+    private SharedViewModel SharedViewModel;
 
 
     @Override
@@ -106,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.configureBottomView();
         this.showFirstFragment();
         this.createUserInFirestore();
+        //this.configureViewModel();
 
     }
 
@@ -180,6 +187,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> updateMainFragment(item.getItemId()));
     }
 
+   /* private void configureViewModel(){
+        SharedViewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
+        //mSharedViewModel.init();
+        mSharedViewModel.getRestaurantRepository().observe(this, movieResponse -> {
+            MutableLiveData<NearbySearchResponse> mItems = restaurantRepository.getListOfRestaurants();
+            listOfRestaurants.addAll((Collection<? extends Restaurant>) mItems);
+            adapter.notifyDataSetChanged();
+        });
+    }*/
 
 
     // ----------------------- SEARCH VIEW ---------------------- //
@@ -370,6 +386,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     // -------------------------------------------RESTAURANTS------------------------------------
+
+
+
+
     public void initPlaces() {
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), PLACES_KEY);

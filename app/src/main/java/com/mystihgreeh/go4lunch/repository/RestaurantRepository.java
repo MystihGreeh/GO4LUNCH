@@ -1,44 +1,50 @@
 package com.mystihgreeh.go4lunch.repository;
 
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.mystihgreeh.go4lunch.model.Restaurant;
-import com.mystihgreeh.go4lunch.model.Workmate;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
-import java.util.List;
+import com.mystihgreeh.go4lunch.api.GooglePlacesApi;
+import com.mystihgreeh.go4lunch.api.RetrofitService;
+import com.mystihgreeh.go4lunch.model.NearbySearchResponse;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RestaurantRepository {
 
-    public CollectionReference getCollectionRestaurant() {
-        return FirebaseFirestore.getInstance().collection("restaurant");
+    private static GooglePlacesApi myInterface;
+    private final MutableLiveData<NearbySearchResponse> listOfRestaurants = new MutableLiveData<>();
+    String KEY = "key";
+    String LOCATION = "location";
+    String TYPE = "Restaurant";
+    int RADIUS = 10;
+
+    private static RestaurantRepository restaurantRepository;
+
+    public static RestaurantRepository getInstance(){
+        if (restaurantRepository == null){
+            restaurantRepository = new RestaurantRepository();
+        }
+        return restaurantRepository;
     }
 
-
-    public Task<Void> createRestaurant(String placeId, List<Workmate> userList, String name, String address) {
-        Restaurant toCreate = new Restaurant();
-        return getCollectionRestaurant().document(placeId).set(toCreate);
+    public RestaurantRepository(){
+        myInterface = RetrofitService.getInterface();
     }
 
-
-    public Task<DocumentSnapshot> getRestaurant(String placeId) {
-        return getCollectionRestaurant().document(placeId).get();
-    }
-
-
-    public Query getListRestaurants() {
-        return getCollectionRestaurant().orderBy("name");
-    }
-
-    public Query getListRestaurantsWithFriends()
-    {
-        return getCollectionRestaurant().whereGreaterThanOrEqualTo("userList", 1);
-    }
-
-
-    public Task<Void> updateRestaurantUserList(String placeId, List<Workmate> userList) {
-        return getCollectionRestaurant().document(placeId).update("userList", userList);
+    public MutableLiveData<NearbySearchResponse> getListOfRestaurants() {
+        Call<NearbySearchResponse> listOfRestaurantsOutput = myInterface.getNearByPlaces(KEY, LOCATION, TYPE, RADIUS);
+        listOfRestaurantsOutput.enqueue(new Callback<NearbySearchResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<NearbySearchResponse> call, @NonNull Response<NearbySearchResponse> response) {
+                listOfRestaurants.setValue(response.body());
+            }
+            @Override
+            public void onFailure(@NonNull Call<NearbySearchResponse> call, @NonNull Throwable t) {
+                listOfRestaurants.postValue(null);
+            }
+        });
+        return listOfRestaurants;
     }
 }

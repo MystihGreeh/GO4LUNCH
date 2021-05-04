@@ -1,105 +1,188 @@
-
 package com.mystihgreeh.go4lunch.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import androidx.annotation.Nullable;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-//@Generated("jsonschema2pojo")
-public class Restaurant implements Serializable
-{
+public class Restaurant {
 
-    @SerializedName("type")
-    @Expose
-    private String type;
-    @SerializedName("properties")
-    @Expose
-    private Properties properties;
-    private final static long serialVersionUID = 4992765895520617727L;
+    public static final List<Restaurant> ITEMS = new ArrayList<>();
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
-    public Restaurant() {
+    private String name;
+    private String address;
+    private double rating;
+    private String illustration;
+    private String placeId;
+    private List<Workmate> workmateList;
+    private String phoneNumber;
+    private String website;
+    private Boolean openNow;
+    //private RestaurantResponse.Location location;
+    private int distanceCurrentUser;
+
+    //////// CONSTRUCTORS ////////
+
+    public Restaurant(String name, String address, String illustration, String placeId, double rating,
+                      String phoneNumber, String website /*RestaurantResponse.Location location*/) {
+
+        this.name = name;
+        this.address = address;
+        this.illustration = illustration;
+        this.placeId = placeId;
+        this.rating = rating;
+        this.phoneNumber = phoneNumber;
+        this.website = website;
+        //this.location = location;
+
+
     }
 
     /**
-     * 
-     * @param type
-     * @param properties
+     * Empty constructor for Firebase
      */
-    public Restaurant(String type, Properties properties) {
-        super();
-        this.type = type;
-        this.properties = properties;
+    public Restaurant () {}
+
+    /**
+     * Constructor for Detail when it's not a Restaurant
+     */
+    public Restaurant (String name)
+    {
+        this.name = name;
     }
 
-    public String getType() {
-        return type;
+    /**
+     * Constructor for Notification tests
+     */
+    public Restaurant(String name, String address)
+    {
+        this.name = name;
+        this.address = address;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    /**
+     * Constructor for Places' Request
+     */
+    public Restaurant(String name, String address, String illustration, String placeId, double rating, Boolean openNow /*RestaurantResponse.Location location*/)
+    {
+        this.name = name;
+        this.address = address;
+        this.illustration = illustration;
+        this.placeId = placeId;
+        this.rating = rating;
+        this.openNow = openNow;
+        //this.location = location;
     }
 
-    public Restaurant withType(String type) {
-        this.type = type;
-        return this;
+    /**
+     * Constructor to create a Restaurant in Firebase
+     */
+    public Restaurant (String placeId, List<Workmate> workmateList, String name, String address)
+    {
+        this.placeId = placeId;
+        this.workmateList = workmateList;
+        this.name = name;
+        this.address = address;
     }
 
-    public Properties getProperties() {
-        return properties;
+    //////// GETTERS ////////
+
+
+    public String getName() {
+        return name;
     }
 
-    public void setProperties(Properties properties) {
-        this.properties = properties;
+    public String getAddress() {
+        return address;
     }
 
-    public Restaurant withProperties(Properties properties) {
-        this.properties = properties;
-        return this;
+    public double getRating() {
+        return rating;
+    }
+
+    public String getIllustration() {
+        return illustration;
+    }
+
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public List<Workmate> getUserList() {
+        return workmateList;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public Boolean getOpenNow() {
+        return openNow;
+    }
+
+    /*public RestaurantResponse.Location getLocation() {
+        return location;
+    }*/
+
+    public int getDistanceCurrentUser() {
+        return distanceCurrentUser;
+    }
+
+    //////// SETTERS ////////
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setWorkmateList(List<Workmate> workmateList) {
+        this.workmateList = workmateList;
+    }
+
+    /*public void setLocation(RestaurantResponse.Location location) {
+        this.location = location;
+    }*/
+
+    public void setDistanceCurrentUser(int distanceCurrentUser) {
+        this.distanceCurrentUser = distanceCurrentUser;
     }
 
     @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Restaurant.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("type");
-        sb.append('=');
-        sb.append(((this.type == null)?"<null>":this.type));
-        sb.append(',');
-        sb.append("properties");
-        sb.append('=');
-        sb.append(((this.properties == null)?"<null>":this.properties));
-        sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
-        } else {
-            sb.append(']');
+    public boolean equals(@Nullable Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
         }
-        return sb.toString();
+
+        if (obj == null || obj.getClass() != getClass())
+        {
+            return false;
+        }
+
+        return Objects.equals(this.getPlaceId(),((Restaurant) obj).getPlaceId());
     }
 
     @Override
     public int hashCode() {
-        int result = 1;
-        result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
-        result = ((result* 31)+((this.properties == null)? 0 :this.properties.hashCode()));
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if ((other instanceof Restaurant) == false) {
-            return false;
-        }
-        Restaurant rhs = ((Restaurant) other);
-        return (((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type)))&&((this.properties == rhs.properties)||((this.properties!= null)&&this.properties.equals(rhs.properties))));
+        return Objects.hash(this.getPlaceId());
     }
 
 }

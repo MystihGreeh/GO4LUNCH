@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".model.RestaurantDetailActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <!-- Profile image with name and return button -->
+        <ImageView
+            android:id="@+id/restaurant_picture"
+            android:layout_width="match_parent"
+            android:layout_height="315dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/restaurantinside"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+
+
+        <!-- First block with name, coordinates, phone number and web -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/restaurant_info"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            app:cardBackgroundColor="@color/orange_dark"
+            app:layout_constraintTop_toBottomOf="@+id/restaurant_picture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/restaurant_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Le Zinc"
+                    android:textColor="@color/white"
+                    android:textSize="25sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginHorizontal="@dimen/activity_vertical_margin"
+                    android:layout_marginVertical="@dimen/activity_vertical_margin"/>
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/star"
+                    app:srcCompat="@drawable/ic_baseline_star_24"
+                    android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                    app:layout_constraintStart_toEndOf="@id/restaurant_name"
+                    app:layout_constraintTop_toTopOf="@id/restaurant_name"
+                    app:layout_constraintBottom_toBottomOf="@id/restaurant_name"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="French restaurant - 12 rue du Faubourg Poissonnière"
+                    app:layout_constraintTop_toBottomOf="@id/restaurant_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginHorizontal="@dimen/activity_vertical_margin" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- Second block with the about me text -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/aboutrestaurant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/restaurant_info"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="350dp">
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/call_img"
+                    app:srcCompat="@drawable/ic_baseline_local_phone_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/like_img"
+                    android:layout_marginVertical="@dimen/activity_vertical_margin" />
+                <TextView
+                    android:id="@+id/call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CALL"
+                    android:textColor="@color/orange_dark"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@id/call_img"
+                    app:layout_constraintTop_toBottomOf="@id/call_img"
+                    app:layout_constraintBottom_toTopOf="@id/separation_mark"
+                    app:layout_constraintEnd_toEndOf="@id/call_img"
+                    />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/like_img"
+                    app:srcCompat="@drawable/ic_baseline_star_rate_24"
+                    app:layout_constraintStart_toEndOf="@id/call_img"
+                    app:layout_constraintEnd_toStartOf="@id/website_img"
+                    app:layout_constraintTop_toTopOf="@id/call_img"
+                    android:layout_marginHorizontal="@dimen/activity_horizontal_margin"/>
+                <TextView
+                    android:id="@+id/like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LIKE"
+                    android:textColor="@color/orange_dark"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@id/like_img"
+                    app:layout_constraintTop_toTopOf="@id/call"
+                    app:layout_constraintBottom_toBottomOf="@id/call"
+                    app:layout_constraintEnd_toEndOf="@id/like_img"
+                    />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/website_img"
+                    app:srcCompat="@drawable/ic_baseline_web_24"
+                    app:layout_constraintStart_toEndOf="@id/like_img"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/call_img"/>
+                <TextView
+                    android:id="@+id/website"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="WEBSITE"
+                    android:textColor="@color/orange_dark"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@id/website_img"
+                    app:layout_constraintTop_toBottomOf="@id/website_img"
+                    app:layout_constraintBottom_toTopOf="@id/separation_mark"
+                    app:layout_constraintEnd_toEndOf="@id/website_img"/>
+
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:id="@+id/separation_mark"
+                    android:layout_marginVertical="@dimen/activity_horizontal_margin"
+                    android:background="@color/grey"
+                    app:layout_constraintTop_toBottomOf="@id/like" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- Favorite button star -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/favoriteButton"
+            android:layout_width="58dp"
+            android:layout_height="64dp"
+            android:backgroundTint="@color/white"
+            app:srcCompat="@drawable/ic_baseline_check_circle_24"
+            app:layout_constraintBottom_toTopOf="@+id/restaurant_info"
+            app:layout_constraintTop_toBottomOf="@+id/restaurant_picture"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:layout_editor_absoluteX="337dp"
+            tools:layout_editor_absoluteY="289dp"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
