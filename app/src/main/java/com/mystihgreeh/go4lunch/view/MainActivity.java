@@ -316,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void showWorkmatesFragment() {
         if (this.fragmentWorkmates == null)
-            this.fragmentWorkmates = WorkmatesListFragment.newInstance(2);
+            this.fragmentWorkmates = WorkmatesListFragment.newInstance();
         this.startTransactionFragment(this.fragmentWorkmates);
     }
 
