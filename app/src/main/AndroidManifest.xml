@@ -25,11 +25,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         tools:ignore="AllowBackup">
-        <activity android:name=".view.RestaurantDetailActivity"></activity>
+        <activity android:name=".view.RestaurantDetailActivity" />
         <activity
             android:name=".view.MapViewFragment"
             tools:ignore="Instantiatable" />
-        <activity android:name=".view.SettingsActivity" />
+        <activity android:name=".view.SettingsActivity"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

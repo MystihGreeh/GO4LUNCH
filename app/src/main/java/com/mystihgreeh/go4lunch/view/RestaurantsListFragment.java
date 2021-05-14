@@ -12,6 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mystihgreeh.go4lunch.R;
+import com.mystihgreeh.go4lunch.ViewModel.MyrestaurantRecyclerViewAdapter;
+import com.mystihgreeh.go4lunch.ViewModel.SharedViewModel;
+import com.mystihgreeh.go4lunch.model.NearbySearchResponse;
+
+import java.util.Collections;
 
 
 /**
@@ -23,6 +28,8 @@ public class RestaurantsListFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
+    private NearbySearchResponse nearbySearchResponse;
+    private SharedViewModel sharedViewModel;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -64,7 +71,7 @@ public class RestaurantsListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            //recyclerView.setAdapter(new MyrestaurantRecyclerViewAdapter(Restaurant.));
+            sharedViewModel.getRestaurantRepository().observe(getViewLifecycleOwner(), nearbySearchResponse -> recyclerView.setAdapter(new MyrestaurantRecyclerViewAdapter(Collections.singletonList(nearbySearchResponse))));
         }
         return view;
     }

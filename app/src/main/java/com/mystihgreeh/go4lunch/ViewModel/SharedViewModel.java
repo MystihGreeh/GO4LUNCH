@@ -11,6 +11,7 @@ import com.mystihgreeh.go4lunch.model.NearbySearchResponse;
 import com.mystihgreeh.go4lunch.model.Restaurant;
 import com.mystihgreeh.go4lunch.model.Workmate;
 import com.mystihgreeh.go4lunch.repository.RestaurantRepository;
+import com.mystihgreeh.go4lunch.repository.SaveDataRepository;
 import com.mystihgreeh.go4lunch.repository.WorkmatesRepository;
 
 import java.util.ArrayList;
@@ -21,6 +22,10 @@ public class SharedViewModel extends AndroidViewModel {
     private MutableLiveData<ArrayList<Workmate>> workmates;
     private MutableLiveData<ArrayList<Restaurant>> restaurants;
     private RestaurantRepository restaurantRepository;
+    private SaveDataRepository saveDataRepository;
+    private WorkmatesRepository workmatesRepository;
+
+
 
     //----------------------------- Get all workmates ----------------------------------------------
     public void initAllWorkmates(Context context){
@@ -35,18 +40,22 @@ public class SharedViewModel extends AndroidViewModel {
     private final RestaurantRepository repository;
 
     @SuppressWarnings({"FieldCanBeLocal"})
-    private MutableLiveData<NearbySearchResponse> listOfMovies = new MutableLiveData<>();
+    private MutableLiveData<NearbySearchResponse> listOfRestaurants = new MutableLiveData<>();
     public SharedViewModel(Application application) {
         super(application);
         repository = new RestaurantRepository();
     }
     public MutableLiveData<NearbySearchResponse> getRestaurantRepository() {
-        listOfMovies = loadMoviesData();
-        return listOfMovies;
+        listOfRestaurants = loadRestaurantsData();
+        return listOfRestaurants;
     }
-    private MutableLiveData<NearbySearchResponse> loadMoviesData() {
+    private MutableLiveData<NearbySearchResponse> loadRestaurantsData() {
         return repository.getListOfRestaurants();
     }
+
+
+
+    // --------------------------SHARED PREFERENCES ------------------------------------------------
 
 
 }

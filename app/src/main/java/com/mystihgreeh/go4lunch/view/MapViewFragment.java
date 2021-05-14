@@ -1,6 +1,5 @@
 package com.mystihgreeh.go4lunch.view;
 
-import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -13,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,20 +22,17 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-
 import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.mystihgreeh.go4lunch.R;
-import com.mystihgreeh.go4lunch.model.Restaurant;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Objects;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class MapViewFragment extends Fragment implements OnMapReadyCallback, LocationListener, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
@@ -49,6 +44,9 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
     LocationRequest mLocationRequest;
     private MapView mapView;
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
+    private float zoom;
+    private PlacesClient mPlacesClient;
+    private Marker restaurantMarker;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -66,7 +64,7 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
             mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (ContextCompat.checkSelfPermission(requireActivity(),
-                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
                     buildGoogleApiClient();
                     mMap.setMyLocationEnabled(true);
@@ -86,7 +84,7 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(requireActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 buildGoogleApiClient();
                 mMap.setMyLocationEnabled(true);
@@ -114,7 +112,7 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         if (ContextCompat.checkSelfPermission(requireActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION)
+                ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, (com.google.android.gms.location.LocationListener) this);
         }
@@ -138,7 +136,7 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.usermarker_orange));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
         //move map camera
@@ -149,6 +147,8 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, (com.google.android.gms.location.LocationListener) this);
         }
+
+        //getNearbyPlaces();
 
     }
 
@@ -198,6 +198,12 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
         }
         mapView.onSaveInstanceState(mapViewBundle);
     }
+
+    /*public void getNearbyPlaces(){
+
+    }*/
+
+
 
 
 }

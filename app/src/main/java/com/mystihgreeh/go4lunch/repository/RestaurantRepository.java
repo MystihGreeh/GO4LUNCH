@@ -3,6 +3,7 @@ package com.mystihgreeh.go4lunch.repository;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.api.GooglePlacesApi;
 import com.mystihgreeh.go4lunch.api.RetrofitService;
 import com.mystihgreeh.go4lunch.model.NearbySearchResponse;
@@ -13,12 +14,12 @@ import retrofit2.Response;
 
 public class RestaurantRepository {
 
-    private static GooglePlacesApi myInterface;
+    private static GooglePlacesApi googlePlacesApi;
     private final MutableLiveData<NearbySearchResponse> listOfRestaurants = new MutableLiveData<>();
-    String KEY = "key";
-    String LOCATION = "location";
+    int KEY = R.string.google_key;
+    String LOCATION = "48.68478497157418, 2.4085079624649626";
     String TYPE = "Restaurant";
-    int RADIUS = 10;
+    int RADIUS = 300;
 
     private static RestaurantRepository restaurantRepository;
 
@@ -30,11 +31,11 @@ public class RestaurantRepository {
     }
 
     public RestaurantRepository(){
-        myInterface = RetrofitService.getInterface();
+        googlePlacesApi = RetrofitService.getInterface();
     }
 
     public MutableLiveData<NearbySearchResponse> getListOfRestaurants() {
-        Call<NearbySearchResponse> listOfRestaurantsOutput = myInterface.getNearByPlaces(KEY, LOCATION, TYPE, RADIUS);
+        Call<NearbySearchResponse> listOfRestaurantsOutput = googlePlacesApi.getNearByPlaces(KEY, LOCATION, TYPE, RADIUS);
         listOfRestaurantsOutput.enqueue(new Callback<NearbySearchResponse>() {
             @Override
             public void onResponse(@NonNull Call<NearbySearchResponse> call, @NonNull Response<NearbySearchResponse> response) {

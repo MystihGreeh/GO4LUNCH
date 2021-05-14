@@ -11,7 +11,7 @@ public class RetrofitService {
     static OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
     public static final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://maps.googleapis.com/maps/api/place/nearbysearch/json")
+            .baseUrl("https://maps.googleapis.com/maps/api/place/nearbysearch/json/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build();

@@ -8,21 +8,21 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mystihgreeh.go4lunch.R;
-import com.mystihgreeh.go4lunch.model.Restaurant;
+import com.mystihgreeh.go4lunch.model.NearbySearchResponse;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link com.mystihgreeh.go4lunch.model.Restaurant}.
+ * {@link RecyclerView.Adapter} that can display a {@link com.mystihgreeh.go4lunch.model.NearbySearchResponse}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyrestaurantRecyclerViewAdapter extends RecyclerView.Adapter<MyrestaurantRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Restaurant> mValues;
+    private final List<NearbySearchResponse> mValues;
 
-    public MyrestaurantRecyclerViewAdapter(List<Restaurant> items) {
+    public MyrestaurantRecyclerViewAdapter(List<NearbySearchResponse> items) {
         mValues = items;
     }
 
@@ -37,8 +37,8 @@ public class MyrestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Myrest
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        /*holder.mIdView.setText(mValues.get(position).getPlaceId());
-        holder.mContentView.setText(mValues.get(position).getAddress());*/
+        //holder.mIdView.setText(mValues.get(position).getPlaceId());
+        //holder.mContentView.setText(mValues.get(position).getAddress());*/
     }
 
     @Override
@@ -50,7 +50,7 @@ public class MyrestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Myrest
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public Restaurant mItem;
+        public NearbySearchResponse mItem;
 
         public ViewHolder(View view) {
             super(view);

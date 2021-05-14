@@ -8,6 +8,12 @@
     android:id="@+id/activity_main_drawer_layout">
 
 
+    <TextView
+        android:id="@+id/txtPrefs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="@string/data" />
 
     <!-- 1 | MainActivity RootView -->
     <androidx.constraintlayout.widget.ConstraintLayout

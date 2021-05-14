@@ -42,7 +42,7 @@ import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.ViewModel.MyrestaurantRecyclerViewAdapter;
 import com.mystihgreeh.go4lunch.ViewModel.SharedViewModel;
 import com.mystihgreeh.go4lunch.api.helper.WorkmateHelper;
-import com.mystihgreeh.go4lunch.model.Restaurant;
+import com.mystihgreeh.go4lunch.model.NearbySearchResponse;
 import com.mystihgreeh.go4lunch.repository.RestaurantRepository;
 
 import java.util.ArrayList;
@@ -76,20 +76,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Location mLocation;
     private SearchView mSearchView;
     private static final String PLACES_KEY = "google_places_key";
-    List<Restaurant> listOfRestaurants = new ArrayList<>();
+    List<NearbySearchResponse> listOfRestaurants = new ArrayList<>();
     private MyrestaurantRecyclerViewAdapter myrestaurantRecyclerViewAdapter;
     private RestaurantRepository restaurantRepository;
-
 
 
     private static final int SIGN_OUT_TASK = 10;
 
 
-
     //FOR DESIGN
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
-    ArrayAdapter<String > adapter;
+    ArrayAdapter<String> adapter;
     BottomNavigationView bottomNavigationView;
     private SharedViewModel SharedViewModel;
 
@@ -101,9 +99,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         // Initialize the SDK
-        //Places.initialize(getApplicationContext(), apiKey);
+        Places.initialize(getApplicationContext(), String.valueOf(R.string.google_key));
         // Create a new PlacesClient instance
-        //PlacesClient placesClient = Places.createClient(this);
+        PlacesClient placesClient = Places.createClient(this);
 
         // Configure all views
         this.configureToolBar();
@@ -112,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.configureBottomView();
         this.showFirstFragment();
         this.createUserInFirestore();
-        //this.configureViewModel();
+
 
     }
 
@@ -128,21 +126,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
-
     // ----------------------------------------------------------------
     // CONFIGURATION
     // ----------------------------------------------------------------
 
     // 1 - Configure Toolbar
     @SuppressLint("NewApi")
-    private void configureToolBar(){
+    private void configureToolBar() {
         this.toolbar = findViewById(R.id.activity_main_toolbar);
         setSupportActionBar(toolbar);
     }
 
     // 2 - Configure Drawer Layout
-    private void configureDrawerLayout(){
+    private void configureDrawerLayout() {
         this.drawerLayout = findViewById(R.id.activity_main_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
@@ -150,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     // 3 - Configure NavigationView
-    private void configureNavigationView(){
+    private void configureNavigationView() {
         NavigationView navigationView = findViewById(R.id.activity_main_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         ImageView imageUser = navigationView.getHeaderView(0).findViewById(R.id.user_picture);
@@ -164,38 +160,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             userNameTextView.setText(user.getDisplayName());
             String useremail = Objects.requireNonNull(this.getCurrentUser()).getEmail();
             List<? extends UserInfo> provider = this.getCurrentUser().getProviderData();
-            for (UserInfo p : provider){
-                if (p.getEmail()!= null) useremail = p.getEmail();
+            for (UserInfo p : provider) {
+                if (p.getEmail() != null) useremail = p.getEmail();
             }
             emailTextView.setText(useremail);
-            if (user.getPhotoUrl() != null){Glide.with(this)
-                    .load(user.getPhotoUrl())
-                    .transform(new CircleCrop())
-                    .into(imageUser);}
-            else {
+            if (user.getPhotoUrl() != null) {
                 Glide.with(this)
-                            .load(avatar)
-                            .apply(RequestOptions.circleCropTransform())
-                            .into(imageUser);
+                        .load(user.getPhotoUrl())
+                        .transform(new CircleCrop())
+                        .into(imageUser);
+            } else {
+                Glide.with(this)
+                        .load(avatar)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(imageUser);
             }
         }
     }
 
 
-    private void configureBottomView(){
+    private void configureBottomView() {
         bottomNavigationView = findViewById(R.id.activity_main_bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> updateMainFragment(item.getItemId()));
     }
-
-   /* private void configureViewModel(){
-        SharedViewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
-        //mSharedViewModel.init();
-        mSharedViewModel.getRestaurantRepository().observe(this, movieResponse -> {
-            MutableLiveData<NearbySearchResponse> mItems = restaurantRepository.getListOfRestaurants();
-            listOfRestaurants.addAll((Collection<? extends Restaurant>) mItems);
-            adapter.notifyDataSetChanged();
-        });
-    }*/
 
 
     // ----------------------- SEARCH VIEW ---------------------- //
@@ -229,8 +216,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
-
     // ----------------------- NAVIGATION DRAWER ---------------------- //
 
     @SuppressLint("NonConstantResourceId")
@@ -258,28 +243,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     // ---- Logout button ----
-    private void signOutUserFromFirebase(){
+    private void signOutUserFromFirebase() {
         AuthUI.getInstance()
                 .signOut(this)
                 .addOnSuccessListener(this, this.updateUIAfterRESTRequestsCompleted(SIGN_OUT_TASK));
     }
 
     // Create OnCompleteListener called after tasks ended
-    private OnSuccessListener<Void> updateUIAfterRESTRequestsCompleted(int signOutTask){
+    private OnSuccessListener<Void> updateUIAfterRESTRequestsCompleted(int signOutTask) {
         return aVoid -> finish();
     }
 
     // Get current user info
     @Nullable
-    protected FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
-    protected Boolean isCurrentUserLogged(){ return (this.getCurrentUser() != null); }
+    protected FirebaseUser getCurrentUser() {
+        return FirebaseAuth.getInstance().getCurrentUser();
+    }
 
+    protected Boolean isCurrentUserLogged() {
+        return (this.getCurrentUser() != null);
+    }
 
 
     // ----------------------- BOTTOM NAVIGATION VIEW ---------------------- //
 
     @SuppressLint("NonConstantResourceId")
-    private Boolean updateMainFragment(Integer integer){
+    private Boolean updateMainFragment(Integer integer) {
         switch (integer) {
             case R.id.map:
                 this.showFragment(FRAGMENT_MAP);
@@ -298,9 +287,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // FRAGMENTS
     // ---------------------
 
-    private void showFragment(int fragmentIdentifier){
-        switch (fragmentIdentifier){
-            case FRAGMENT_MAP :
+    private void showFragment(int fragmentIdentifier) {
+        switch (fragmentIdentifier) {
+            case FRAGMENT_MAP:
                 this.showMapFragment();
                 break;
             case FRAGMENT_LISTVIEW:
@@ -314,22 +303,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void showMapFragment(){
+    private void showMapFragment() {
         if (this.mapViewActivity == null) this.mapViewActivity = new MapViewFragment();
         this.startTransactionFragment(this.mapViewActivity);
     }
 
-    private void showListViewFragment(){
-        if (this.fragmentListView == null) this.fragmentListView = RestaurantsListFragment.newInstance(1);
+    private void showListViewFragment() {
+        if (this.fragmentListView == null)
+            this.fragmentListView = RestaurantsListFragment.newInstance(1);
         this.startTransactionFragment(this.fragmentListView);
     }
 
-    private void showWorkmatesFragment(){
-        if (this.fragmentWorkmates == null) this.fragmentWorkmates = WorkmatesListFragment.newInstance(2);
+    private void showWorkmatesFragment() {
+        if (this.fragmentWorkmates == null)
+            this.fragmentWorkmates = WorkmatesListFragment.newInstance(2);
         this.startTransactionFragment(this.fragmentWorkmates);
     }
 
-    private void startTransactionFragment(Fragment fragment){
+    private void startTransactionFragment(Fragment fragment) {
         if (!fragment.isVisible())
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.activity_main_frame_layout, fragment).commit();
@@ -337,29 +328,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     // Show first fragment when activity is created
-    private void showFirstFragment(){
+    private void showFirstFragment() {
         Fragment visibleFragment = getSupportFragmentManager().findFragmentById(R.id.activity_main_frame_layout);
         if (visibleFragment == null)
             // 1.1 - Show Map Fragment
             this.showFragment(FRAGMENT_MAP);
-            // 1.2 - Mark as selected the menu item corresponding to NewsFragment
-            this.bottomNavigationView.getMenu().getItem(0).setChecked(true);
+        // 1.2 - Mark as selected the menu item corresponding to NewsFragment
+        this.bottomNavigationView.getMenu().getItem(0).setChecked(true);
     }
 
 
-
     //Settings
-    private void startSettingsActivity(){
+    private void startSettingsActivity() {
         Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);}
-
+        startActivity(intent);
+    }
 
 
     // --------------------
     // ERROR HANDLER
     // --------------------
 
-    protected OnFailureListener onFailureListener(){
+    protected OnFailureListener onFailureListener() {
         return e -> Toast.makeText(getApplicationContext(), getString(R.string.unknown_error), Toast.LENGTH_LONG).show();
     }
 
@@ -368,17 +358,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
     }
 
-    private void createUserInFirestore(){
+    private void createUserInFirestore() {
 
-        if (this.getCurrentUser() != null){
+        if (this.getCurrentUser() != null) {
 
             String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
             String username = this.getCurrentUser().getDisplayName();
             String useremail = this.getCurrentUser().getEmail();
             String uid = this.getCurrentUser().getUid();
             List<? extends UserInfo> provider = this.getCurrentUser().getProviderData();
-            for (UserInfo p : provider){
-                if (p.getEmail()!= null) useremail = p.getEmail();
+            for (UserInfo p : provider) {
+                if (p.getEmail() != null) useremail = p.getEmail();
             }
             WorkmateHelper.createUser(uid, username, urlPicture, useremail).addOnFailureListener(this.onFailureListener());
         }
@@ -388,8 +378,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // -------------------------------------------RESTAURANTS------------------------------------
 
 
-
-
     public void initPlaces() {
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), PLACES_KEY);
@@ -397,3 +385,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         PlacesClient mPlacesClient = Places.createClient(this);
     }
 }
+
+    // -------------------------------------------SHAREDPREFERENCES------------------------------------
+
