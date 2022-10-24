@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list"
+    android:name="com.mystihgreeh.go4lunch.workmatesFragment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    app:layoutManager="LinearLayoutManager"
+    tools:context=".ui.WorkmatesListFragment"
+    tools:listitem="@layout/fragment_workmates">
+
+    <ImageView
+        android:id="@+id/workmate_avatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:srcCompat="@drawable/ic_baseline_account_circle_24"
+        tools:ignore="ContentDescription"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/workmate_name"
+        android:textSize="13sp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="Workmate name"
+        app:layout_constraintTop_toTopOf="@id/workmate_avatar"
+        app:layout_constraintBottom_toBottomOf="@id/workmate_avatar"
+        app:layout_constraintStart_toEndOf="@id/workmate_avatar"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"/>
+
+    <TextView
+        android:id="@+id/workmate_eating"
+        android:textSize="13sp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:lines="2"
+        app:layout_constraintBottom_toBottomOf="@+id/workmate_avatar"
+        app:layout_constraintStart_toEndOf="@+id/workmate_name"
+        app:layout_constraintTop_toTopOf="@+id/workmate_avatar"/>
+
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_marginVertical="@dimen/activity_horizontal_margin"
+        android:background="@color/grey"
+        app:layout_constraintTop_toBottomOf="@id/workmate_avatar"
+        app:layout_constraintStart_toEndOf="@id/workmate_avatar"/>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+        android:defaultValue="-1"
+        android:entries="@array/themeNames"
+        android:entryValues="@array/themeCodes"
+        android:key="theme"
+        android:summary="%s"
+        android:title="@string/theme"
+        android:persistent="true"/>
+
+
+    <ListPreference
+        android:defaultValue="en"
+        android:entries="@array/shortLanguageNames"
+        android:entryValues="@array/shortLanguageCodes"
+        android:key="api_lang"
+        android:summary="%s"
+        android:title="@string/content_language"
+        android:persistent="true"/>
+
+
+</PreferenceScreen>

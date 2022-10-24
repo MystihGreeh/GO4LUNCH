@@ -1,0 +1,96 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Go4Lunch</string>
+    <string name="welcome">Find a nice restaurant and invite your co-workers for lunch!</string>
+    <!-- FACEBOOK PURPOSE -->
+    <string name="facebook_application_id" translatable="false">414272769614737</string>
+    <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb414272769614737</string>
+    <string name="facebook_app_id">414272769614737</string>
+    <string name="fb_login_protocol_scheme">fb414272769614737</string>
+    <string name="twitter_api_key">80fHPybYcU2UbZCdSSUhiPKZK</string>
+    <string name="twitter_secret_key" translatable="false">kgv8tR9dvQSywfm6PcreKxyZhCxzCdY5hWm7OMd7BuHa2q9Xkv</string>
+    <string name="twitter_consumer_key" translatable="false">80fHPybYcU2UbZCdSSUhiPKZK</string>
+    <string name="twitter_consumer_secret" translatable="false">kgv8tR9dvQSywfm6PcreKxyZhCxzCdY5hWm7OMd7BuHa2q9Xkv</string>
+    <string name="twitter_token" translatable="false">301010003-EjMkghcoXHb7hOL9neagNkIzg3KVj9PLgrMEasaW</string>
+    <string name="twitter_token_secret">K35D15FERvwgMnheQFmW128nms2oKtrKzzORMOtZOFMer</string>
+
+    <string name="title_activity_main">MainActivity</string>
+
+
+    <!-- BOTTOM NAVIGATION VIEW -->
+    <string name="title_map">Carte</string>
+    <string name="title_list_view">Restaurants</string>
+    <string name="title_workmates">Collègues</string>
+
+
+    <!-- SEARCH MENU -->
+    <string name="title_menu">J\'ai Faim !</string>
+    <string name="search_menu">search!</string>
+    <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Paramètres</string>
+
+
+    <!-- NAVIGATION DRAWER -->
+    <string name="your_lunch">VOTRE REPAS</string>
+    <string name="settings">PARAMETRES</string>
+    <string name="logout">DECONNEXION</string>
+    <string name="menu_home">Acceuil</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="info_no_email_found">Aucun e-mail trouvé</string>
+    <string name="info_no_username_found">Aucun utilisateur trouvé</string>
+    <string name="no_restaurant_picked">Aucun restaurant sélectionné</string>
+
+
+    <!-- HINTS -->
+    <string name="user_name">John SMITH</string>
+    <string name="user_email">jsmith.1337@gmail.com</string>
+    <string name="theme_settings">Dark theme</string>
+    <string name="language_setting">Language</string>
+    <string name="lunch_notification">Lunch</string>
+    <string name="tchat_notification">Tchat</string>
+    <string name="notifications">Notifications</string>
+    <string name="spinner_on">On</string>
+    <string name="spinner_off">Off</string>
+    <string name="unknown_error">error_unknown_error</string>
+
+
+    <!-- SETTINGS -->
+    <string name="auto">Auto</string>
+    <string name="dark">Dark</string>
+    <string name="light">Light</string>
+    <string name="english_us">English (US)</string>
+    <string name="french">French</string>
+    <string name="theme">Theme</string>
+    <string name="content_language">Language</string>
+    <string name="data">Data:</string>
+
+    <!-- RESTAURANT DETAILS -->
+    <string name="no_website">Pas de site web</string>
+    <string name="no_phone_number">Pas de téléphone</string>
+    <string name="no_name">Nom du restaurant inconnu</string>
+    <string name="no_address">Adresse du restaurant inconnue</string>
+    <string name="is_joining"> y mange</string>
+
+    <!-- RESTAURANT LIST -->
+    <string name="restaurant_closed_today">Fermé aujourd\'hui. Ouvre à</string>
+    <string name="open">Ouvert</string>
+    <string name="closed">Fermé</string>
+    <string name="no_opening_hours">Pas d\'horaires spécifiés</string>
+
+
+
+    <!-- NOTIFICATION -->
+    <string name="restaurant_notification">Rejoignez votre restaurant</string>
+    <string name="time_to_eat">C\'est l\'heure de manger !</string>
+
+    <!-- CHOOSEN RESTAURANT -->
+    <string name="has_not_decided">n\'a pas encore décidé</string>
+    <string name="is_eating">mange à</string>
+    <string name="joining">mange ici !</string>
+
+</resources>

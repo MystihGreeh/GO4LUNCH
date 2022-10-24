@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/settings"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.SettingsActivity"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/action_settings"
+        android:id="@+id/toolbar"
+        app:titleTextColor="@color/white"
+        android:background="@color/orange_dark"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notification_image"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintStart_toStartOf="@id/toolbar"
+        android:src="@drawable/ic_baseline_notifications_active_24"
+        android:layout_margin="20dp"
+        tools:ignore="ContentDescription,VectorDrawableCompat" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/notification_image"
+        app:layout_constraintTop_toTopOf="@+id/notification_image"
+        app:layout_constraintBottom_toBottomOf="@+id/notification_image"
+        android:layout_marginHorizontal="16dp"
+        android:id="@+id/notification_text"
+        android:text="Notification :"
+        android:textColor="@color/teal_700"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/notification_text"
+        app:layout_constraintTop_toBottomOf="@+id/notification_text"
+        android:id="@+id/enable_notification"
+        android:layout_marginVertical="16dp"
+        android:text="Enable notification"
+        android:textColor="@color/dark_grey"
+        android:textStyle="normal"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/enable_notification"
+        app:layout_constraintTop_toBottomOf="@+id/enable_notification"
+        android:id="@+id/lunch_reminder_text"
+        android:layout_marginVertical="16dp"
+        android:text="Lunch reminder time"
+        android:textColor="@color/dark_grey"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/lunch_reminder_text"
+        app:layout_constraintTop_toBottomOf="@+id/lunch_reminder_text"
+        android:id="@+id/noon"
+        android:text="12:00"
+        android:textColor="@color/grey"
+        android:textStyle="italic"/>
+
+
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notification_checkbox"
+        app:layout_constraintTop_toTopOf="@+id/enable_notification"
+        app:layout_constraintBottom_toBottomOf="@+id/enable_notification"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="16dp"
+        android:onClick="onCheckboxClicked"
+        android:checked="false"
+        tools:ignore="UsingOnClickInXml" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/save_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/fui_button_text_save"
+        android:textColor="@color/white"
+        android:background="@drawable/custom_save_button"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="themeNames">
+        <item>@string/auto</item>
+        <item>@string/light</item>
+        <item>@string/dark</item>
+    </string-array>
+    <string-array name="themeCodes">
+        <item>-1</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="languageNames">
+        <item>@string/auto</item>
+        <item>@string/english_us</item>
+        <item>@string/french</item>
+    </string-array>
+    <string-array name="languageCodes">
+        <item>XX</item>
+        <item>en_US</item>
+        <item>fr</item>
+    </string-array>
+    <string-array name="shortLanguageCodes">
+        <item>en</item>
+        <item>fr</item>
+    </string-array>
+    <string-array name="shortLanguageNames">
+        <item>@string/english_us</item>
+        <item>@string/french</item>
+    </string-array>
+
+
+</resources>
