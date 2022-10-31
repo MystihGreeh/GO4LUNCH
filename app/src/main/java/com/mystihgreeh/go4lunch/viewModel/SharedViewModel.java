@@ -124,9 +124,9 @@ public class SharedViewModel extends ViewModel {
         mWorkmateRepository.getUser(uid)
                 .addOnSuccessListener(documentSnapshot -> {
                     Workmate coworker = documentSnapshot.toObject(Workmate.class);
-                    /*if (coworker != null && coworker.getWorkmatePickedRestaurant() != null) {
-                        selectedRestaurantId.setValue(coworker.getWorkmatePickedRestaurant().getRestaurantId());
-                    }*/
+                    if (coworker != null && coworker.getRestaurantUid() != null) {
+                        selectedRestaurantId.setValue(coworker.getRestaurantUid());
+                    }
                 });
     }
 
@@ -179,11 +179,9 @@ public class SharedViewModel extends ViewModel {
         });
     }
 
-
-
-
-
-
+    public void disconnect() {
+        mWorkmateRepository.disconnect();
+    }
 
 
     //----------------------------------------------------------------------------------------------

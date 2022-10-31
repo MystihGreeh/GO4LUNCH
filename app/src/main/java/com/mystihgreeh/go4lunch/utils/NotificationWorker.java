@@ -14,11 +14,8 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
 import com.mystihgreeh.go4lunch.model.Workmates.WorkmateHelper;
@@ -124,7 +121,7 @@ public class NotificationWorker extends Worker {
     }
 
     public void getRestaurantUser(String userId) {
-        workmateHelper.workmatesFirebase.document(userId).get()
+        workmateHelper.workmatesFirestore.document(userId).get()
                 .addOnCompleteListener( task -> {
                     if (task.isSuccessful ()) {
                         if (task.getResult().exists()){

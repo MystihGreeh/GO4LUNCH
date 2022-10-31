@@ -187,6 +187,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //                                        CONFIGURATION
     // --------------------------------------------------------------------------------------------
 
+    private void createUserInFirestore() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (sharedViewModel.checkIfUserExist(user.getUid())) {
+            if (sharedViewModel.getCurrentUser() == null) {
+                FirebaseUser currentUser = sharedViewModel.getCurrentUser();
+                String urlPicture = (currentUser.getPhotoUrl() != null) ? currentUser.getPhotoUrl().toString() : null;
+                String username = currentUser.getDisplayName();
+                String useremail = currentUser.getEmail();
+                String uid = currentUser.getUid();
+                List<? extends UserInfo> provider = currentUser.getProviderData();
+                for (UserInfo p : provider) {
+                    if (p.getEmail() != null) useremail = p.getEmail();
+                }
+                sharedViewModel.createWorkmate(uid, username, urlPicture, useremail, null, null, null);
+            }
+        } else{
+            sharedViewModel.getCurrentUser();
+        }
+    }
+
     // 1 - Configure Toolbar
     @SuppressLint("NewApi")
     private void configureToolBar() {
@@ -212,9 +232,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //Firebase user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        System.out.println(user + "is connected");
         if (user != null) {
-            String uid = Objects.requireNonNull(sharedViewModel.getCurrentUser()).getUid();
             userNameTextView.setText(user.getDisplayName());
             String useremail = Objects.requireNonNull(sharedViewModel.getCurrentUser()).getEmail();
             List<? extends UserInfo> provider = sharedViewModel.getCurrentUser().getProviderData();
@@ -308,6 +326,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AuthUI.getInstance()
                 .signOut(this)
                 .addOnSuccessListener(this, this.updateUIAfterRESTRequestsCompleted());
+        sharedViewModel.disconnect();
     }
 
     // Create OnCompleteListener called after tasks ended
@@ -412,31 +431,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
     }
 
-    private void createUserInFirestore() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String userId = user.getUid();
-        //String currentUserId = sharedViewModel.getCurrentUser().getUid();
-        if (sharedViewModel.checkIfUserExist(user.getUid())) {
 
-            if (sharedViewModel.getCurrentUser() == null) {
-                FirebaseUser currentUser = sharedViewModel.getCurrentUser();
-                String urlPicture = (currentUser.getPhotoUrl() != null) ? currentUser.getPhotoUrl().toString() : null;
-                String username = currentUser.getDisplayName();
-                String useremail = currentUser.getEmail();
-                String uid = currentUser.getUid();
-                //String restaurantName = currentUser.get();
-                //String restaurantUid = this.getCurrentUser();
-                //String restaurantAddress = this.getCurrentUser();
-                List<? extends UserInfo> provider = currentUser.getProviderData();
-                for (UserInfo p : provider) {
-                    if (p.getEmail() != null) useremail = p.getEmail();
-                }
-                sharedViewModel.createWorkmate(uid, username, urlPicture, useremail, null, null, null);
-            }
-        } else{
-            sharedViewModel.getCurrentUser();
-        }
-    }
 
 
     // ---------------------------------------------------------------------------------------------

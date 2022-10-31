@@ -20,10 +20,10 @@ public class WorkmateHelper {
         return workmateHelper;
     }
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    public CollectionReference workmatesFirebase = db.collection("users");
+    public CollectionReference workmatesFirestore = db.collection("users");
 
     public Task<QuerySnapshot> getAllWorkmates(){
-        return workmatesFirebase.get();
+        return workmatesFirestore.get();
     }
 
     public void checkIfUserExist(String userId) {

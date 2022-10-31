@@ -1,14 +1,13 @@
 package com.mystihgreeh.go4lunch.repository;
 
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,7 +36,21 @@ public class WorkmatesRepository {
     }
 
     public Workmate getActualUser() {
-        //if user == null
+        System.out.println("++++++++++++++++++++++++++++++++" + user);
+        if (user == null){
+
+            FirebaseUser firestoreUser = FirebaseAuth.getInstance().getCurrentUser();
+            String useremail= firestoreUser.getEmail();
+            List<? extends UserInfo> provider = firestoreUser.getProviderData();
+            for (UserInfo p : provider) {
+                if (p.getEmail() != null) {
+                    useremail = p.getEmail();
+                }
+            }
+            user = new Workmate(firestoreUser.getUid(), firestoreUser.getDisplayName(),
+                    String.valueOf(firestoreUser.getPhotoUrl()), useremail, null, null, null);
+        }
+        System.out.println("----------------------------------" + user);
         return user;
     }
 
@@ -55,20 +68,17 @@ public class WorkmatesRepository {
                                         String useremail, String restaurantName, String restaurantUid, String restaurantAddress) {
         Workmate userToCreate = new Workmate(uid, username, urlPicture, useremail, restaurantName, restaurantUid, restaurantAddress);
         user = userToCreate;
-        return workmateHelper.workmatesFirebase.document(uid).set(userToCreate);
+        return workmateHelper.workmatesFirestore.document(uid).set(userToCreate);
     }
 
 
 
 
     //------------------------------------- GET ----------------------------------------------------
-
-    /*public Workmate getUser() {
-        return user;
-    }*/
+    
 
     public Task<DocumentSnapshot> getUser(String uid) {
-        return workmateHelper.workmatesFirebase.document(uid).get();
+        return workmateHelper.workmatesFirestore.document(uid).get();
     }
 
 
@@ -77,34 +87,32 @@ public class WorkmatesRepository {
     }
 
     public void checkIfUserDoesExist(String userId){
-        workmateHelper.workmatesFirebase.document(String.valueOf(getUser(userId).addOnSuccessListener(tast ->
+        workmateHelper.workmatesFirestore.document(String.valueOf(getUser(userId).addOnSuccessListener(task ->
         {
-            if (!tast.exists()) {
+            if (!task.exists()) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-             createUser(user.getUid(), user.getDisplayName(), user.getPhotoUrl().toString(), user.getEmail(), null, null, null);
+                String useremail= user.getEmail();
+                List<? extends UserInfo> provider = user.getProviderData();
+                for (UserInfo p : provider) {
+                    if (p.getEmail() != null) {
+                        useremail = p.getEmail();
+                    }
+                }
+             createUser(user.getUid(), user.getDisplayName(), user.getPhotoUrl().toString(), useremail, null, null, null);
             }
         })));
     }
-    /*public void checkIfUSerDoesExist(Workmate userId) {
-        workmateHelper.workmatesFirebase.document(userId.getUid()).get()
-                .addOnCompleteListener( task -> {
-                    if (task.isSuccessful ()) {
-                        if (!task.getResult().exists()){
-                            createUser(user.getUid(), userId.getUsername(), userId.getUrlPicture(), userId.getUseremail(), null, null, null);
-                        }
 
-                    }
-                });
-    }*/
     //---------------------------- RESTAURANTS PICKED AND LIKED ------------------------------------
 
 
     public Task<Void> updateRestaurantPicked(String id, String name, String address, String userUid){
+        String userid = FirebaseAuth.getInstance().getUid();
+        workmateHelper.workmatesFirestore.document(userid).get();
         user.setRestaurantName(name);
-        //user.setRestaurantAddress(address);
+        user.setRestaurantAddress(address);
         user.setRestaurantUid(id);
-        //user.setWorkmatePickedRestaurant(choice);
-        return workmateHelper.workmatesFirebase.document(userUid).update("restaurantUid", id, "restaurantName", name, "restaurantAddress", address);
+        return workmateHelper.workmatesFirestore.document(userUid).update("restaurantUid", id, "restaurantName", name, "restaurantAddress", address);
     }
 
 
@@ -123,7 +131,7 @@ public class WorkmatesRepository {
 
     private void updateLikedRestaurants(String uid) {
         List<String> likedRestaurantsList = user.getLikedRestaurants();
-        workmateHelper.workmatesFirebase.document(uid).update("likedRestaurants", likedRestaurantsList);
+        workmateHelper.workmatesFirestore.document(uid).update("likedRestaurants", likedRestaurantsList);
     }
 
     public String getPickedRestaurant(){
@@ -136,7 +144,7 @@ public class WorkmatesRepository {
 
     public MutableLiveData<ArrayList<Workmate>> fetchWorkmateEatingThere(String restaurantId) {
         MutableLiveData<ArrayList<Workmate>> workmateList = new MutableLiveData<>();
-        workmateHelper.workmatesFirebase.whereEqualTo("WorkmatePickedRestaurant.restaurantId", restaurantId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        workmateHelper.workmatesFirestore.whereEqualTo("WorkmatePickedRestaurant.restaurantId", restaurantId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 ArrayList<Workmate> list = new ArrayList<>();
@@ -147,5 +155,9 @@ public class WorkmatesRepository {
             }
         });
         return workmateList;
+    }
+
+    public void disconnect() {
+        user = null;
     }
 }
