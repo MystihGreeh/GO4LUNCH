@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.databinding.ActivityRestaurantDetailBinding;
 import com.mystihgreeh.go4lunch.model.Restaurants.Result;
@@ -24,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DetailsWorkmatesAdapter extends RecyclerView.Adapter<DetailsWorkmatesAdapter.ViewHolder> {
 
@@ -45,21 +48,28 @@ public class DetailsWorkmatesAdapter extends RecyclerView.Adapter<DetailsWorkmat
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Workmate item = this.mValues.get(position);
-        holder.mWorkmateName.setText(item.getUsername());
-        System.out.println(mValues.get(1).getUsername());
+        holder.mWorkmateName.setText(mValues.get(position).getUsername());
+        if(!Objects.equals(mValues.get(position).getUrlPicture(), "null")){
+            Glide.with(mContext)
+                    .load(Objects.requireNonNull(mValues.get(position)).getUrlPicture())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(holder.mWorkmatePicture);
+        } else{Glide.with(mContext)
+                .load(R.drawable.avatar)
+                .apply(RequestOptions.circleCropTransform())
+                .into(holder.mWorkmatePicture);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mValues.size();
     }
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final ImageView mWorkmatePicture;
-        public Workmate mItem;
         public final TextView mWorkmateName;
 
 

@@ -55,7 +55,6 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_restaurant_detail);
         initAll();
 
 
@@ -114,14 +113,18 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     private void getPlaceId(){
             String restaurantId = getIntent().getStringExtra("restaurantId");
             getRestaurantDetails(restaurantId);
-            initWorkmateList();
+            initButton();
     }
 
     private void getRestaurantDetails(String restaurantId){
         restaurantDetailsViewModel.fetchRestaurantsDetails(restaurantId);
         restaurantDetailsViewModel.getRestaurantDetailsMutableLiveData(restaurantId).observe(this,this::displayInfoRestaurant);
         restaurantDetailsViewModel.fetchInfoRestaurant(restaurantId);
-        //restaurantDetailsViewModel.fetchWorkmateLikedRestaurant(restaurantId);
+        restaurantDetailsViewModel.fetchWorkmateLikedRestaurant(restaurantId);
+
+        if (restaurantDetailsViewModel.checkIfRestaurantIsPicked(restaurantId)){
+            changePickedStatus(true);
+        }
         initRecyclerView(restaurantId);
 
     }
@@ -131,21 +134,24 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         ViewModelFactory viewModelFactory = Injection.viewModelFactory();
         restaurantDetailsViewModel = ViewModelProviders.of(this, viewModelFactory).get(RestaurantDetailsViewModel.class);
         restaurantDetailsViewModel.fetchWorkmateIsGoing();
+
     }
 
     private void initRecyclerView(String restaurantId){
         //Setting the adapter
         RecyclerView mRecyclerView = binding.workmateJoiningRecyclerView;
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         restaurantDetailsViewModel.fetchWorkmateEatingThere(restaurantId).observe(this,
-                workmates -> mRecyclerView.setAdapter(new DetailsWorkmatesAdapter(new ArrayList<>(workmates), this)));
+                workmates -> {
+            mRecyclerView.setAdapter(new DetailsWorkmatesAdapter(new ArrayList<>(workmates), this));
+                });
 
     }
 
 
-    private void initWorkmateList(){
+    private void initButton(){
         restaurantDetailsViewModel.isRestaurantLiked.observe(this, this::changeLikeStatus);
         restaurantDetailsViewModel.isRestaurantPicked.observe(this, this::changePickedStatus);
     }

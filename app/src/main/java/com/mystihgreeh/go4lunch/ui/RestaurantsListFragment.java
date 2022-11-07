@@ -57,7 +57,6 @@ public class RestaurantsListFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.restaurant_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         configureViewModel();
-        //sharedViewModel.fetchedWorkmates.observe(getViewLifecycleOwner(), workmates ->  getWorkmateHere.addAll(workmates));
 
         sharedViewModel.getRestaurantMutableLiveData().observe(getViewLifecycleOwner(),
                 restaurants -> sharedViewModel.fetchedWorkmates.observe(getViewLifecycleOwner(), workmates -> recyclerView.setAdapter(new RestaurantAdapter(new ArrayList<>(restaurants), workmates))));

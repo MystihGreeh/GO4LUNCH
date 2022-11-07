@@ -115,11 +115,33 @@ public class SettingsActivity extends Activity {
 
         WorkRequest notificationRequest =
                 new PeriodicWorkRequest.Builder(NotificationWorker.class, 24, TimeUnit.HOURS)
-                        .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
+                        .setInitialDelay(10, TimeUnit.SECONDS)
                         .addTag("Notification")
                         .build();
         WorkManager.getInstance(getApplicationContext()).enqueue(notificationRequest);
     }
+
+    /*public void setNotificationForNoon(){
+        Calendar notificationTime = Calendar.getInstance();
+        notificationTime.set(Calendar.HOUR_OF_DAY, TIME_NOTIFICATION);
+        notificationTime.set(Calendar.MINUTE, 0);
+        notificationTime.set(Calendar.MILLISECOND, 0);
+
+        Calendar calendar = Calendar.getInstance();
+
+        if (notificationTime.before(calendar)) {
+            notificationTime.add(Calendar.HOUR_OF_DAY, 24);
+        }
+
+        long timeDiff = notificationTime.getTimeInMillis() - calendar.getTimeInMillis();
+
+        WorkRequest notificationRequest =
+                new PeriodicWorkRequest.Builder(NotificationWorker.class, 24, TimeUnit.HOURS)
+                        .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
+                        .addTag("Notification")
+                        .build();
+        WorkManager.getInstance(getApplicationContext()).enqueue(notificationRequest);
+    }*/
 
     public void disableNotifications(){
         WorkManager.getInstance().cancelAllWorkByTag("Notification");

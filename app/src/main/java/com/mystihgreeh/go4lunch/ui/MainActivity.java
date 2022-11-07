@@ -268,7 +268,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ViewModelFactory viewModelFactory = Injection.viewModelFactory();
         sharedViewModel = ViewModelProviders.of(this, viewModelFactory).get(SharedViewModel.class);
         sharedViewModel.fetchRestaurants(currentLatitude, currentLongitude);
-        //sharedViewModel.fetchWorkmateIsGoing();
         sharedViewModel.getWorkmates();
 
     }
@@ -467,14 +466,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (currentFragment == mapViewActivity) {
                     //moveToRestaurantLocation(requestPlace);
                 } else {
-                    //displayDetailRestaurant(requestPlace);
+                    displayDetailRestaurant(requestPlace);
                 }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-
 
 
     private void displayDetailRestaurant(@NotNull Place requestPlace) {

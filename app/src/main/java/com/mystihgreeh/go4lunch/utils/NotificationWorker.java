@@ -16,6 +16,8 @@ import androidx.work.WorkerParameters;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
 import com.mystihgreeh.go4lunch.model.Workmates.WorkmateHelper;
@@ -27,13 +29,8 @@ import java.util.Calendar;
 public class NotificationWorker extends Worker {
 
     private static final int[] TIME_NOTIFICATION = {12, 00};
-    private PendingIntent pendingIntentAlarm;
-    private SettingsViewModel settingsViewModel;
-    private WorkmateHelper workmateHelper;
-    private WorkmatesRepository mWorkmateRepository;
-    private static Workmate user;
-    private String restaurantUser;
-    String userUid;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public CollectionReference workmatesFirestore = db.collection("users");
 
 
 
@@ -45,7 +42,9 @@ public class NotificationWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        configureNotification();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = user.getUid();
+        getRestaurantUser(userId);
         return Result.success();
     }
 
@@ -56,10 +55,10 @@ public class NotificationWorker extends Worker {
     //                                     NOTIFICATION
     // ---------------------------------------------------------------------------------------------
 
-    private void configureNotification() {
+    private void configureNotification(Workmate user) {
         createNotificationChannel();
-        showNotification(getApplicationContext());
-        //enableNotifications();
+        showNotification(user);
+
     }
 
     private void createNotificationChannel() {
@@ -76,65 +75,46 @@ public class NotificationWorker extends Worker {
     }
 
 
-    private void enableNotifications() {
-        Calendar notificationTime = Calendar.getInstance();
-        notificationTime.set(Calendar.HOUR_OF_DAY, TIME_NOTIFICATION[0]);
-        notificationTime.set(Calendar.MINUTE, TIME_NOTIFICATION[1]);
-        notificationTime.set(Calendar.MILLISECOND, 0);
+    private void showNotification(Workmate user) {
 
-        Calendar calendar = Calendar.getInstance();
-        if (notificationTime.before(calendar)) {
-            notificationTime.add(Calendar.DATE, 1);
-        }
-        PackageManager pm = getApplicationContext().getPackageManager();
-
-        AlarmManager manager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, notificationTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntentAlarm);
-    }
-
-    private void showNotification(Context context) {
-
-
-        String channelId = context.getString(R.string.time_to_eat);
+        String channelId = getApplicationContext().getString(R.string.time_to_eat);
         //Get current User
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String userId = user.getUid();
-        getRestaurantUser(userId);
 
-        if (restaurantUser != null) {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
+        if (user != null && user.getRestaurantName() != null) {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channelId)
                     .setSmallIcon(R.drawable.ic_baseline_fastfood_24)
-                    .setContentTitle(context.getString(R.string.time_to_eat))
-                    .setContentText("Today, you're eating at ")
+                    .setContentTitle(getApplicationContext().getString(R.string.time_to_eat))
+                    .setContentText("Today, you're eating at " + user.getRestaurantName() + " with")
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText("Time to eat"));
-            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
+            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
             int NOTIFICATION_ID = 1;
             notificationManagerCompat.notify(NOTIFICATION_ID, builder.build());
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
 
             // notificationId is a unique int for each notification that you must define
             notificationManager.notify(NOTIFICATION_ID, builder.build());
-        } else {
-
         }
     }
 
-    public void getRestaurantUser(String userId) {
-        workmateHelper.workmatesFirestore.document(userId).get()
-                .addOnCompleteListener( task -> {
-                    if (task.isSuccessful ()) {
-                        if (task.getResult().exists()){
-                            restaurantUser = getActualUser().getRestaurantUid();
-                        }
 
+    // ---------------------------------------------------------------------------------------------
+    //                                     USER IN FIRESTORE
+    // ---------------------------------------------------------------------------------------------
+
+    public void getRestaurantUser(String userId) {
+        workmatesFirestore.document(userId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    Workmate user = documentSnapshot.toObject(Workmate.class);
+                    if (user != null && user.getRestaurantUid() != null) {
+                        configureNotification(user);
                     }
                 });
     }
 
-    public Workmate getActualUser() {
-        return user;
-    }
+
+
+
 
 
 

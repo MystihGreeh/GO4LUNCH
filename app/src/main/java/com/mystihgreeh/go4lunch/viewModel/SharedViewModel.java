@@ -172,10 +172,10 @@ public class SharedViewModel extends ViewModel {
         mWorkmateRepository.getAllUsers().addOnSuccessListener(queryDocumentSnapshots -> {
             for(DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()){
                 Workmate workmate = documentSnapshot.toObject(Workmate.class);
-                /*if (workmate != null && workmate.getWorkmatePickedRestaurant() != null && workmate.getWorkmatePickedRestaurant().getRestaurantId() != null){
-                    String restaurantId = workmate.getWorkmatePickedRestaurant().getRestaurantId();
+                if (workmate != null && workmate.getRestaurantUid() != null ){
+                    String restaurantId = workmate.getRestaurantUid();
                     restaurantPicked.add(restaurantId);
-                }*/
+                }
             }
             workmateId.setValue(restaurantPicked);
         });

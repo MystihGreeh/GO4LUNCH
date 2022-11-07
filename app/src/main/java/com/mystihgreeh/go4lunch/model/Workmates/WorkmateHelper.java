@@ -29,22 +29,10 @@ public class WorkmateHelper {
         return workmatesFirestore.get();
     }
 
-    /*public void checkIfUserExist(String userId) {
-        db.collection("users").whereEqualTo("uid", userId)
-                .limit(1).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            boolean isEmpty = task.getResult().isEmpty();
-                        }
-                    }
-                });
-    }*/
 
     public void getRestaurantUser(String userId) {
         restaurantUser = null;
-        workmateHelper.workmatesFirestore.document(userId).get()
+        workmatesFirestore.document(userId).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     Workmate user = documentSnapshot.toObject(Workmate.class);
                     if (user != null && user.getRestaurantUid() != null) {

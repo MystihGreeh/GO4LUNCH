@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.mystihgreeh.go4lunch.model.RestaurantsDetails.DetailsResult;
 import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
@@ -23,6 +24,7 @@ public class RestaurantDetailsViewModel extends ViewModel {
     RestaurantRepository mRestaurantRepository;
     WorkmatesRepository mWorkmateRepository;
     Workmate workmate;
+    String user;
     DetailsResult restaurantResult;
     public final MutableLiveData<List<Workmate>> mWorkmatesList = new MutableLiveData<>();
     public MutableLiveData<Boolean> isRestaurantLiked = new MutableLiveData<>();
@@ -33,7 +35,8 @@ public class RestaurantDetailsViewModel extends ViewModel {
     public RestaurantDetailsViewModel() {
         mRestaurantRepository = new RestaurantRepository();
         mWorkmateRepository = new WorkmatesRepository();
-        workmate = mWorkmateRepository.getActualUser();
+        user = mWorkmateRepository.getActualUser().getUid();
+        workmate = mWorkmateRepository.user();
     }
 
     public LiveData<DetailsResult> getRestaurantDetail(String placeId) {
@@ -50,11 +53,11 @@ public class RestaurantDetailsViewModel extends ViewModel {
 
     public void fetchInfoRestaurant(String restaurantId) {
         fetchWorkmateIsGoing();
-        isRestaurantLiked.setValue(checkIfRestaurantIsLiked(restaurantId));
+        //isRestaurantLiked.setValue(checkIfRestaurantIsLiked(restaurantId));
         if (workmate.getRestaurantUid() != null) {
             String uidSelection = workmate.getRestaurantUid();
-            if (uidSelection != null)
-                isRestaurantPicked.setValue(uidSelection.equals(restaurantId));
+            if (uidSelection.equals(restaurantId))
+                isRestaurantPicked.setValue(true);
         } else {
             isRestaurantPicked.setValue(false);
         }
@@ -125,12 +128,10 @@ public class RestaurantDetailsViewModel extends ViewModel {
 
     }
 
-    private boolean checkIfRestaurantIsLiked(String restaurantId) {
-        List<String> restaurantLiked = workmate.getLikedRestaurants();
-        if (restaurantLiked != null && restaurantLiked.size() > 0) {
-            for (String uid : restaurantLiked) {
-                if (uid.equals(restaurantResult.getPlaceId())) return true;
-            }
+    public boolean checkIfRestaurantIsPicked(String restaurantId) {
+        String restaurantPicked = workmate.getRestaurantUid();
+        if (restaurantPicked != null) {
+                if (restaurantPicked.equals(restaurantId)) return true;
         }
         return false;
     }

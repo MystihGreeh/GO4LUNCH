@@ -48,7 +48,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Workmate workmate = (Workmate) mWorkmate.get(position);
         holder.mItem = (Workmate) mWorkmate.get(position);
-         if(workmate.getUrlPicture() != null){
+         if(!Objects.equals(workmate.getUrlPicture(), "null")){
              Glide.with(mContext)
                      .load(Objects.requireNonNull(workmate).getUrlPicture())
                      .apply(RequestOptions.circleCropTransform())
@@ -58,7 +58,6 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
                  .apply(RequestOptions.circleCropTransform())
                  .into(holder.mWorkmateAvatar);
          }
-
 
         if(workmate.getRestaurantName() != null){
             holder.mWorkmateName.setText(workmate.getUsername() + " " +

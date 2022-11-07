@@ -160,4 +160,8 @@ public class WorkmatesRepository {
     public void disconnect() {
         user = null;
     }
+
+    public Workmate user(){
+        return user;
+    }
 }
