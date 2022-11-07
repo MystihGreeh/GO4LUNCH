@@ -109,21 +109,19 @@ public class RestaurantDetailsViewModel extends ViewModel {
     }
 
     public MutableLiveData<ArrayList<Workmate>> fetchWorkmateEatingThere(String restaurantId) {
-        /*ArrayList<Workmate> workmateGoing = new ArrayList<>();
-        WorkmatesRepository.getAllUsers().addOnSuccessListener(queryDocumentSnapshots -> {
+        ArrayList<Workmate> workmateGoing = new ArrayList<>();
+        mWorkmateRepository.getAllUsers().addOnSuccessListener(queryDocumentSnapshots -> {
             for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                 Workmate workmate = documentSnapshot.toObject(Workmate.class);
-                if (workmate != null && workmate.getWorkmatePickedRestaurant() != null && workmate.getWorkmatePickedRestaurant().getRestaurantId() != null) {
-                    if (workmate.getWorkmatePickedRestaurant().toString().equals(restaurantId)) {
+                if (workmate != null && workmate.getRestaurantUid() != null) {
+                    if (workmate.getRestaurantUid().equals(restaurantId)) {
                         workmateGoing.add(workmate);
                         fetchedWorkmates.postValue(workmateGoing);
                     }
                 }
             }
         });
-        return fetchedWorkmates;*/
-
-        return mWorkmateRepository.fetchWorkmateEatingThere(restaurantId);
+        return fetchedWorkmates;
 
     }
 

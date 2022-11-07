@@ -27,10 +27,12 @@ import java.util.List;
 
 public class DetailsWorkmatesAdapter extends RecyclerView.Adapter<DetailsWorkmatesAdapter.ViewHolder> {
 
-    private ArrayList<Workmate> mValues;
+    private final ArrayList<Workmate> mValues;
+    private final Context mContext;
 
-    public DetailsWorkmatesAdapter(ArrayList<Workmate> items) {
+    public DetailsWorkmatesAdapter(ArrayList<Workmate> items, Context context) {
         mValues = items;
+        this.mContext = context;
     }
 
     @NonNull
@@ -38,15 +40,14 @@ public class DetailsWorkmatesAdapter extends RecyclerView.Adapter<DetailsWorkmat
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.workmates_joining, parent, false);
-        return new DetailsWorkmatesAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mWorkmateName.setText(mValues.get(position).getUsername());
-        System.out.println(mValues.get(position).getUsername());
-
+        Workmate item = this.mValues.get(position);
+        holder.mWorkmateName.setText(item.getUsername());
+        System.out.println(mValues.get(1).getUsername());
     }
 
     @Override
@@ -58,27 +59,15 @@ public class DetailsWorkmatesAdapter extends RecyclerView.Adapter<DetailsWorkmat
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final ImageView mWorkmatePicture;
-        //public final TextView mContentView;
         public Workmate mItem;
         public final TextView mWorkmateName;
-        //public final TextView mOpeningHour;
-        //public RatingBar mRestaurantRating;
-        //public ConstraintLayout mRestaurantConstraintLayout;
-        //public TextView mDistance;
-        //public TextView mWorkmateHere;
 
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mWorkmatePicture = view.findViewById(R.id.workmate_picture);
-            //mContentView = view.findViewById(R.id.restaurant_item_list_address);
-            mWorkmateName = view.findViewById(R.id.workmate_name);
-            //mOpeningHour = view.findViewById(R.id.restaurant_item_list_info);
-            //mRestaurantRating = view.findViewById(R.id.restaurantItemListRate);
-            //mRestaurantConstraintLayout = view.findViewById(R.id.restaurant_constraint_layout);
-            //mDistance = view.findViewById(R.id.restaurant_item_list_distance);
-            //mWorkmateHere = view.findViewById(R.id.restaurant_item_list_participants_number);
+            mWorkmatePicture = view.findViewById(R.id.workmate_joining_picture);
+            mWorkmateName = view.findViewById(R.id.workmate_joining_name);
         }
 
         @NotNull

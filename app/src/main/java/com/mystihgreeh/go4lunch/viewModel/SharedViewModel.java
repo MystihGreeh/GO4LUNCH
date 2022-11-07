@@ -28,7 +28,6 @@ public class SharedViewModel extends ViewModel {
     public final MutableLiveData<ArrayList<String>> workmateId = new MutableLiveData<>();
     public final MutableLiveData<ArrayList<Workmate>> fetchedWorkmates = new MutableLiveData<>();
     public final MutableLiveData<Place> autoCompleteResult = new MutableLiveData<>();
-    public MediatorLiveData<FirebaseUser> currentFirebaseUser;
 
 
 
@@ -78,7 +77,11 @@ public class SharedViewModel extends ViewModel {
 
 
     public String getUserRestaurant() {
-        return mWorkmateRepository.getPickedRestaurant();
+         return mWorkmateRepository.getPickedRestaurant();
+    }
+
+    public void getRestaurantId(String userId){
+        mWorkmateRepository.getRestaurantId(userId);
     }
 
     public boolean checkIfUserExist(String userId){
@@ -135,34 +138,33 @@ public class SharedViewModel extends ViewModel {
     }
 
 
-    public int getWorkmatesEatingThere(String restaurantId){
+    /*public int getWorkmatesEatingThere(String restaurantId){
         final ArrayList<Workmate> workmateList = new ArrayList<>();
         mWorkmateRepository.getAllUsers().addOnSuccessListener(queryDocumentSnapshots -> {
             for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots.getDocuments()){
                 Workmate workmate = documentSnapshot.toObject(Workmate.class);
-                /*if (workmate != null && workmate.getWorkmatePickedRestaurant() != null && workmate.getWorkmatePickedRestaurant().getRestaurantId() != null){
+                if (workmate != null && workmate.getWorkmatePickedRestaurant() != null && workmate.getWorkmatePickedRestaurant().getRestaurantId() != null){
                     String restaurantPickedId= workmate.getWorkmatePickedRestaurant().getRestaurantId();
                     if (restaurantPickedId.equals(restaurantId)){
                         fetchedWorkmates.postValue(workmateList);
                     }
-                }*/
+                }
             }
         });
         return fetchedWorkmates.getValue().size();
-    }
+    }*/
 
     public void fetchWorkmateIsGoing() {
         ArrayList<Workmate> workmateGoing = new ArrayList<>();
         mWorkmateRepository.getAllUsers().addOnSuccessListener(queryDocumentSnapshots -> {
             for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                 Workmate workmate = documentSnapshot.toObject(Workmate.class);
-                /*if (workmate != null && workmate.getWorkmatePickedRestaurant() != null && workmate.getWorkmatePickedRestaurant().getRestaurantId() != null) {
+                if (workmate != null && workmate.getRestaurantUid() != null) {
                     workmateGoing.add(workmate);
                     fetchedWorkmates.postValue(workmateGoing);
-                }*/
+                }
             }
         });
-
     }
 
     public void fetchPickedRestaurants(){
@@ -183,17 +185,14 @@ public class SharedViewModel extends ViewModel {
         mWorkmateRepository.disconnect();
     }
 
+    public String getupdatedRestaurant() {
+       return mWorkmateRepository.getUpdatedRestaurant();
+    }
+
 
     //----------------------------------------------------------------------------------------------
     //------------------------------------- AUTOCOMPLETE -------------------------------------------
     //----------------------------------------------------------------------------------------------
-
-
-
-    //----------------------------------------------------------------------------------------------
-    //------------------------------------- NOTIFICATION -------------------------------------------
-    //----------------------------------------------------------------------------------------------
-
 
 
 }

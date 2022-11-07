@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.adapter.RestaurantAdapter;
+import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
 import com.mystihgreeh.go4lunch.viewModel.SharedViewModel;
 
 import java.util.ArrayList;
@@ -26,7 +27,6 @@ import java.util.ArrayList;
 public class RestaurantsListFragment extends Fragment {
 
     private SharedViewModel sharedViewModel;
-
 
 
     /**
@@ -57,8 +57,10 @@ public class RestaurantsListFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.restaurant_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         configureViewModel();
+        //sharedViewModel.fetchedWorkmates.observe(getViewLifecycleOwner(), workmates ->  getWorkmateHere.addAll(workmates));
+
         sharedViewModel.getRestaurantMutableLiveData().observe(getViewLifecycleOwner(),
-                restaurants -> recyclerView.setAdapter(new RestaurantAdapter(new ArrayList<>(restaurants), sharedViewModel.fetchedWorkmates.getValue())));
+                restaurants -> sharedViewModel.fetchedWorkmates.observe(getViewLifecycleOwner(), workmates -> recyclerView.setAdapter(new RestaurantAdapter(new ArrayList<>(restaurants), workmates))));
 
         return view;
     }

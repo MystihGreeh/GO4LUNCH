@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,26 +43,24 @@ import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.PHOTO_REF_GOOGLE;
 
 import java.util.ArrayList;
 import java.util.Observer;
+import java.util.zip.Inflater;
 
 public class RestaurantDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private RestaurantDetailsViewModel restaurantDetailsViewModel;
     ActivityRestaurantDetailBinding binding;
-    RecyclerView mRecyclerView;
     String restaurantString;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurant_detail);
+        //setContentView(R.layout.activity_restaurant_detail);
         initAll();
-        //Setting the adapter
-        mRecyclerView = findViewById(R.id.workmates_eating_recyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
     }
+
 
 
     private void initAll(){
@@ -135,8 +134,14 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     }
 
     private void initRecyclerView(String restaurantId){
+        //Setting the adapter
+        RecyclerView mRecyclerView = binding.workmateJoiningRecyclerView;
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         restaurantDetailsViewModel.fetchWorkmateEatingThere(restaurantId).observe(this,
-                workmates -> mRecyclerView.setAdapter(new DetailsWorkmatesAdapter(new ArrayList<>(workmates))));
+                workmates -> mRecyclerView.setAdapter(new DetailsWorkmatesAdapter(new ArrayList<>(workmates), this)));
+
     }
 
 
@@ -198,7 +203,6 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
 
     @Override
     public void onClick(View view) {
-
     }
 
     @Override

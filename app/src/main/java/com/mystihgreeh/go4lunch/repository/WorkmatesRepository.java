@@ -1,9 +1,6 @@
 package com.mystihgreeh.go4lunch.repository;
 
 
-import androidx.lifecycle.MutableLiveData;
-
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -15,7 +12,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
 import com.mystihgreeh.go4lunch.model.Workmates.WorkmateHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WorkmatesRepository {
@@ -36,21 +32,18 @@ public class WorkmatesRepository {
     }
 
     public Workmate getActualUser() {
-        System.out.println("++++++++++++++++++++++++++++++++" + user);
         if (user == null){
-
-            FirebaseUser firestoreUser = FirebaseAuth.getInstance().getCurrentUser();
-            String useremail= firestoreUser.getEmail();
-            List<? extends UserInfo> provider = firestoreUser.getProviderData();
+            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            String useremail= firebaseUser.getEmail();
+            List<? extends UserInfo> provider = firebaseUser.getProviderData();
             for (UserInfo p : provider) {
                 if (p.getEmail() != null) {
                     useremail = p.getEmail();
                 }
             }
-            user = new Workmate(firestoreUser.getUid(), firestoreUser.getDisplayName(),
-                    String.valueOf(firestoreUser.getPhotoUrl()), useremail, null, null, null);
+            user = new Workmate(firebaseUser.getUid(), firebaseUser.getDisplayName(),
+                    String.valueOf(firebaseUser.getPhotoUrl()), useremail, null, null, null);
         }
-        System.out.println("----------------------------------" + user);
         return user;
     }
 
@@ -75,7 +68,7 @@ public class WorkmatesRepository {
 
 
     //------------------------------------- GET ----------------------------------------------------
-    
+
 
     public Task<DocumentSnapshot> getUser(String uid) {
         return workmateHelper.workmatesFirestore.document(uid).get();
@@ -135,14 +128,21 @@ public class WorkmatesRepository {
     }
 
     public String getPickedRestaurant(){
-        if (user != null){
-        return user.getRestaurantUid();}
-        else return null;
+        return workmateHelper.getRestaurantUserId();
+    }
 
+    public String getUpdatedRestaurant(){
+        if (user != null){
+            return user.getRestaurantUid();}
+        else return null;
+    }
+
+    public void getRestaurantId(String userId){
+            workmateHelper.getRestaurantUser(userId);
     }
 
 
-    public MutableLiveData<ArrayList<Workmate>> fetchWorkmateEatingThere(String restaurantId) {
+    /*public MutableLiveData<ArrayList<Workmate>> fetchWorkmateEatingThere(String restaurantId) {
         MutableLiveData<ArrayList<Workmate>> workmateList = new MutableLiveData<>();
         workmateHelper.workmatesFirestore.whereEqualTo("WorkmatePickedRestaurant.restaurantId", restaurantId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -155,7 +155,7 @@ public class WorkmatesRepository {
             }
         });
         return workmateList;
-    }
+    }*/
 
     public void disconnect() {
         user = null;

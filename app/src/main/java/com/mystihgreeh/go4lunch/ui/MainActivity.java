@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_LISTVIEW = 4;
     private static final int FRAGMENT_WORKMATES = 5;
     private SharedViewModel sharedViewModel;
+    String restaurantId = null;
 
 
 
@@ -205,6 +206,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else{
             sharedViewModel.getCurrentUser();
         }
+        String userId = sharedViewModel.getCurrentUser().getUid();
+        sharedViewModel.getRestaurantId(userId);
     }
 
     // 1 - Configure Toolbar
@@ -265,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ViewModelFactory viewModelFactory = Injection.viewModelFactory();
         sharedViewModel = ViewModelProviders.of(this, viewModelFactory).get(SharedViewModel.class);
         sharedViewModel.fetchRestaurants(currentLatitude, currentLongitude);
-        sharedViewModel.fetchWorkmateIsGoing();
+        //sharedViewModel.fetchWorkmateIsGoing();
         sharedViewModel.getWorkmates();
 
     }
@@ -297,8 +300,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id) {
             case R.id.activity_main_drawer_lunch:
-                String restaurantId = sharedViewModel.getUserRestaurant();
-                if (restaurantId != null) {
+                String restaurantUpdatedId = sharedViewModel.getupdatedRestaurant();
+                if (restaurantUpdatedId != null) {
+                    Intent intent = new Intent(this, RestaurantDetailActivity.class);
+                    intent.putExtra("restaurantId", restaurantUpdatedId);
+                    startActivity(intent);
+                } else{
+                    restaurantId = sharedViewModel.getUserRestaurant();
                     Intent intent = new Intent(this, RestaurantDetailActivity.class);
                     intent.putExtra("restaurantId", restaurantId);
                     startActivity(intent);

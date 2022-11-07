@@ -171,11 +171,11 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
     private int checkCoworkersEatingHere(String restaurantId, ArrayList<Workmate> workmatesIds) {
         int counter = 0;
-            /*for (Workmate id: workmatesIds) {
+            for (Workmate id: workmatesIds) {
                 if (id.getRestaurantUid().equals(restaurantId)) {
                     counter++;
                 }
-            }*/
+            }
         System.out.println(workmatesIds);
         return counter;
     }

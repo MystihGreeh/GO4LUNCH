@@ -6,12 +6,15 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class WorkmateHelper {
 
     private static WorkmateHelper workmateHelper;
+    String restaurantUser;
+    Workmate user;
 
     public static WorkmateHelper getInstance() {
         if (workmateHelper == null) {
@@ -26,7 +29,7 @@ public class WorkmateHelper {
         return workmatesFirestore.get();
     }
 
-    public void checkIfUserExist(String userId) {
+    /*public void checkIfUserExist(String userId) {
         db.collection("users").whereEqualTo("uid", userId)
                 .limit(1).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -37,5 +40,23 @@ public class WorkmateHelper {
                         }
                     }
                 });
+    }*/
+
+    public void getRestaurantUser(String userId) {
+        restaurantUser = null;
+        workmateHelper.workmatesFirestore.document(userId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    Workmate user = documentSnapshot.toObject(Workmate.class);
+                    if (user != null && user.getRestaurantUid() != null) {
+                        restaurantUser = user.getRestaurantUid();
+                    }
+                });
     }
+
+    public String getRestaurantUserId(){
+        return restaurantUser;
+    }
+
+
+
 }

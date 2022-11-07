@@ -77,7 +77,6 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
         public final View mView;
         public final ImageView mWorkmateAvatar;
         public final TextView mWorkmateName;
-        //public final TextView mWorkmateEmail;
         public Workmate mItem;
 
 

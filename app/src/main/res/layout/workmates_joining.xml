@@ -7,10 +7,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     tools:ignore="UseCompoundDrawables"
-    tools:listitem="@layout/fragment_workmates">
+    tools:listitem="@layout/activity_restaurant_detail">
 
     <ImageView
-        android:id="@+id/workmate_picture"
+        android:id="@+id/workmate_joining_picture"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:background="@drawable/ic_baseline_account_circle_24"
@@ -20,7 +20,7 @@
         android:layout_marginVertical="@dimen/activity_vertical_margin"/>
 
     <TextView
-        android:id="@+id/workmate_name"
+        android:id="@+id/workmate_joining_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -28,8 +28,10 @@
         android:padding="5dp"
         android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/workmate_picture"
+        app:layout_constraintLeft_toRightOf="@id/workmate_joining_picture"
+        android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="parent"
+        android:text="workmate eating her"
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
