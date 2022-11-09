@@ -1,5 +1,6 @@
 package com.mystihgreeh.go4lunch.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -46,9 +47,10 @@ public class DetailsWorkmatesAdapter extends RecyclerView.Adapter<DetailsWorkmat
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mWorkmateName.setText(mValues.get(position).getUsername());
+        holder.mWorkmateName.setText(mValues.get(position).getUsername() + " " +mContext.getString(R.string.is_joining));
         if(!Objects.equals(mValues.get(position).getUrlPicture(), "null")){
             Glide.with(mContext)
                     .load(Objects.requireNonNull(mValues.get(position)).getUrlPicture())

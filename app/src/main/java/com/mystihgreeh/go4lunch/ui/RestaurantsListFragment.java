@@ -2,6 +2,7 @@ package com.mystihgreeh.go4lunch.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +14,15 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.model.Place;
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.adapter.RestaurantAdapter;
 import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
 import com.mystihgreeh.go4lunch.viewModel.SharedViewModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -57,10 +63,11 @@ public class RestaurantsListFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.restaurant_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         configureViewModel();
+        sharedViewModel.autoCompleteResult.postValue(null);
 
         sharedViewModel.getRestaurantMutableLiveData().observe(getViewLifecycleOwner(),
                 restaurants -> sharedViewModel.fetchedWorkmates.observe(getViewLifecycleOwner(), workmates -> recyclerView.setAdapter(new RestaurantAdapter(new ArrayList<>(restaurants), workmates))));
-
+        //displayDetailRestaurant();
         return view;
     }
 
@@ -76,6 +83,20 @@ public class RestaurantsListFragment extends Fragment {
     public void onResume()
     {
         super.onResume();
+
+    }
+
+    private void displayDetailRestaurant() {
+        if (sharedViewModel.autoCompleteResult != null) {
+            System.out.println(sharedViewModel.autoCompleteResult);
+            sharedViewModel.autoCompleteResult.observe(getViewLifecycleOwner(), place ->{
+                Intent intent = new Intent(requireContext(), RestaurantDetailActivity.class);
+                intent.putExtra("restaurantId", place.getId());
+                requireContext().startActivity(intent);
+
+                    });
+
+        }
 
 
     }

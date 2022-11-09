@@ -458,33 +458,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.map);
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place requestPlace = Autocomplete.getPlaceFromIntent(data);
                 sharedViewModel.autoCompleteResult.setValue(requestPlace);
-                if (currentFragment == mapViewActivity) {
-                    //moveToRestaurantLocation(requestPlace);
-                } else {
-                    displayDetailRestaurant(requestPlace);
-                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
-    private void displayDetailRestaurant(@NotNull Place requestPlace) {
-        if (requestPlace.getTypes() != null) {
-            for (Place.Type type : requestPlace.getTypes()) {
-                if (type == Place.Type.RESTAURANT) {
-                    Intent intent = new Intent(this, RestaurantDetailActivity.class);
-                    intent.putExtra("restaurantId", requestPlace.getId());
-                    startActivity(intent);
-                }
-            }
-        }
-    }
 
 
 }

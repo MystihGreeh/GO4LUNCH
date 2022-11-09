@@ -1,11 +1,8 @@
 package com.mystihgreeh.go4lunch.utils;
 
-import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
@@ -14,23 +11,32 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.common.base.Joiner;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
-import com.mystihgreeh.go4lunch.model.Workmates.WorkmateHelper;
-import com.mystihgreeh.go4lunch.repository.WorkmatesRepository;
-import com.mystihgreeh.go4lunch.viewModel.SettingsViewModel;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 
 public class NotificationWorker extends Worker {
 
     private static final int[] TIME_NOTIFICATION = {12, 00};
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     public CollectionReference workmatesFirestore = db.collection("users");
+    private String restaurantName;
+    private String restaurantAddress;
+    private String usersJoining;
+    private Context context;
+    private Workmate currentUser;
+    private String currentUserRestaurantId;
+    private String notification;
+    private ArrayList<String> users;
 
 
 
@@ -55,9 +61,9 @@ public class NotificationWorker extends Worker {
     //                                     NOTIFICATION
     // ---------------------------------------------------------------------------------------------
 
-    private void configureNotification(Workmate user) {
+    private void configureNotification(Workmate user, ArrayList<String> workmates) {
         createNotificationChannel();
-        showNotification(user);
+        showNotification(user, workmates);
 
     }
 
@@ -75,18 +81,32 @@ public class NotificationWorker extends Worker {
     }
 
 
-    private void showNotification(Workmate user) {
+    private void showNotification(Workmate user, ArrayList<String> workmates) {
 
         String channelId = getApplicationContext().getString(R.string.time_to_eat);
         //Get current User
 
-        if (user != null && user.getRestaurantName() != null) {
+        if (user != null && user.getRestaurantName() != null && users.isEmpty()) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channelId)
                     .setSmallIcon(R.drawable.ic_baseline_fastfood_24)
                     .setContentTitle(getApplicationContext().getString(R.string.time_to_eat))
-                    .setContentText("Today, you're eating at " + user.getRestaurantName() + " with")
+                    .setContentText("Today, you're eating at " + currentUser.getRestaurantName())
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText("Time to eat"));
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText("Today, you're eating at " + currentUser.getRestaurantName() + ", " + currentUser.getRestaurantAddress()));
+            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
+            int NOTIFICATION_ID = 1;
+            notificationManagerCompat.notify(NOTIFICATION_ID, builder.build());
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+
+            // notificationId is a unique int for each notification that you must define
+            notificationManager.notify(NOTIFICATION_ID, builder.build());
+        } else {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channelId)
+                    .setSmallIcon(R.drawable.ic_baseline_fastfood_24)
+                    .setContentTitle(getApplicationContext().getString(R.string.time_to_eat))
+                    .setContentText("Today, you're eating at " + currentUser.getRestaurantName())
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText("Today, you're eating at " + currentUser.getRestaurantName() + ", " + currentUser.getRestaurantAddress() + " with " + convertListToString(workmates)));
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
             int NOTIFICATION_ID = 1;
             notificationManagerCompat.notify(NOTIFICATION_ID, builder.build());
@@ -107,15 +127,38 @@ public class NotificationWorker extends Worker {
                 .addOnSuccessListener(documentSnapshot -> {
                     Workmate user = documentSnapshot.toObject(Workmate.class);
                     if (user != null && user.getRestaurantUid() != null) {
-                        configureNotification(user);
+                        currentUser = user;
+                        currentUserRestaurantId = user.getRestaurantUid();
+                        fetchUsers(currentUserRestaurantId);
                     }
                 });
+
     }
 
 
+    // ---------------------------------------------------------------------------------------------
+    //                      ALL WORKMATES EATING IN THE SAME RESTAURANT AS USER
+    // ---------------------------------------------------------------------------------------------
 
 
+    private void fetchUsers(String restaurantId) {
+        users = new ArrayList<String>();
+        workmatesFirestore.whereEqualTo("restaurantUid", restaurantId).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        ArrayList<String> list = new ArrayList<>();
+                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                            list.add(documentSnapshot.toObject(Workmate.class).getUsername());
+                        }
+                        users.addAll(list);
+                        configureNotification(currentUser, users);}});
 
+    }
+
+    public static String convertListToString(ArrayList<String> listString) {
+        return Joiner.on(", ").join(listString);
+    }
 
 
 }

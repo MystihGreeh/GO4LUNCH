@@ -65,9 +65,6 @@ public class SharedViewModel extends ViewModel {
         this.getUserListFromFirebase();
     }
 
-    /*public void getcurrentWorkmate(){
-        mWorkmateRepository.getActualUser();
-    }*/
 
     public void createWorkmate(String uid, String username, String urlPicture,
                                String useremail, String restaurantName, String restaurantUid, String restaurantAddress){
@@ -137,22 +134,6 @@ public class SharedViewModel extends ViewModel {
         return FirebaseAuth.getInstance().getCurrentUser();
     }
 
-
-    /*public int getWorkmatesEatingThere(String restaurantId){
-        final ArrayList<Workmate> workmateList = new ArrayList<>();
-        mWorkmateRepository.getAllUsers().addOnSuccessListener(queryDocumentSnapshots -> {
-            for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots.getDocuments()){
-                Workmate workmate = documentSnapshot.toObject(Workmate.class);
-                if (workmate != null && workmate.getWorkmatePickedRestaurant() != null && workmate.getWorkmatePickedRestaurant().getRestaurantId() != null){
-                    String restaurantPickedId= workmate.getWorkmatePickedRestaurant().getRestaurantId();
-                    if (restaurantPickedId.equals(restaurantId)){
-                        fetchedWorkmates.postValue(workmateList);
-                    }
-                }
-            }
-        });
-        return fetchedWorkmates.getValue().size();
-    }*/
 
     public void fetchWorkmateIsGoing() {
         ArrayList<Workmate> workmateGoing = new ArrayList<>();

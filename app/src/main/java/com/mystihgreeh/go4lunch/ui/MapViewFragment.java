@@ -105,6 +105,8 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
+        sharedViewModel.autoCompleteResult.postValue(null);
+
 
     }
     protected synchronized void buildGoogleApiClient() {
@@ -113,8 +115,6 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API).build();
         mGoogleApiClient.connect();
-
-        //moveToRestaurantLocation(sharedViewModel.autoCompleteResult);
     }
 
     @Override
@@ -129,6 +129,7 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
+        moveToRestaurantLocation();
 
     }
 
@@ -149,7 +150,6 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
         //move map camera
@@ -226,6 +226,7 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
         sharedViewModel.fetchWorkmateIsGoing();
         sharedViewModel.workmateId.observe(getViewLifecycleOwner(), workmateId ->
         sharedViewModel.getRestaurantMutableLiveData().observe(getViewLifecycleOwner(), results -> setMapMarkers(results, workmateId)));
+
     }
 
 
@@ -255,51 +256,21 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
         });
     }
 
-    private void onTagClick(){
-        mMap.setOnMarkerClickListener(marker -> {
-            String placeId = (String) marker.getTag();
-            Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
-            intent.putExtra("restaurantId", placeId);
-            startActivity(intent);
-            return false;
-        });
-    }
 
-
-    public void displayRestaurant(LatLng latLng, String name, String id) {
-        if (latLng != null) {
-            if (mMap != null) {
-                Bundle bundle = new Bundle();
-                bundle.getSerializable("RestaurantId");
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
-                int iconResource = R.drawable.restaurantavailable;
-                LatLng positionRestaurant = new LatLng(latLng.latitude, latLng.longitude);
+    private void moveToRestaurantLocation() {
+        if (sharedViewModel.autoCompleteResult != null) {
+            System.out.println(sharedViewModel.autoCompleteResult);
+            sharedViewModel.autoCompleteResult.observe(getViewLifecycleOwner(), place ->{
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
                 mMap.addMarker(new MarkerOptions()
-                        .position(positionRestaurant)
-                        .icon(BitmapDescriptorFactory.fromResource(iconResource))
-                        .title(name))
-                        .setTag(id);
-
-                onMarkerClick();
-            }
-            else{
-                Intent intent = new Intent(requireActivity(), RestaurantDetailActivity.class);
-                intent.putExtra("restaurantId", id);
-                startActivity(intent);
-
-            }
+                            .position(place.getLatLng())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.restaurantmarker))
+                            .title(place.getName()));
+            });
         }
+
     }
-
-    /*private void moveToRestaurantLocation(@NotNull MutableLiveData<Place> requestPlace) {
-        if (requestPlace.observe(Observer); != null) {
-            for (Place.Type type : requestPlace.getTypes()) {
-                if (type == Place.Type.RESTAURANT) {
-                    displayRestaurant(requestPlace.getLatLng(), requestPlace.getName(), requestPlace.getId());
-                }
-            }
-        }
-    }*/
 
 
 }
