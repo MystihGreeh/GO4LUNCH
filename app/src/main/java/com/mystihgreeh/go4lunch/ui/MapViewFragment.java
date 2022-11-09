@@ -1,7 +1,7 @@
 package com.mystihgreeh.go4lunch.ui;
 
-import android.content.DialogInterface;
-import android.content.Intent;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -31,19 +30,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.libraries.places.api.model.Place;
 import com.mystihgreeh.go4lunch.R;
-import com.mystihgreeh.go4lunch.viewModel.SharedViewModel;
-import com.mystihgreeh.go4lunch.viewModel.ViewModelFactory;
 import com.mystihgreeh.go4lunch.api.Injection;
 import com.mystihgreeh.go4lunch.model.Restaurants.Result;
+import com.mystihgreeh.go4lunch.viewModel.SharedViewModel;
+import com.mystihgreeh.go4lunch.viewModel.ViewModelFactory;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Observer;
-
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class MapViewFragment extends Fragment implements OnMapReadyCallback, LocationListener, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
@@ -90,7 +85,7 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -5,9 +5,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
 import com.mystihgreeh.go4lunch.model.Workmates.WorkmateHelper;
@@ -47,21 +45,13 @@ public class WorkmatesRepository {
         return user;
     }
 
-
-
-    // --- COLLECTION REFERENCE ---
-
-    public static CollectionReference getUsersCollection() {
-        return FirebaseFirestore.getInstance().collection("users");
-    }
-
     //-------------------------------------- CREATE ------------------------------------------------
 
-    public  Task<Void> createUser(String uid, String username, String urlPicture,
-                                        String useremail, String restaurantName, String restaurantUid, String restaurantAddress) {
+    public void createUser(String uid, String username, String urlPicture,
+                           String useremail, String restaurantName, String restaurantUid, String restaurantAddress) {
         Workmate userToCreate = new Workmate(uid, username, urlPicture, useremail, restaurantName, restaurantUid, restaurantAddress);
         user = userToCreate;
-        return workmateHelper.workmatesFirestore.document(uid).set(userToCreate);
+        workmateHelper.workmatesFirestore.document(uid).set(userToCreate);
     }
 
 
@@ -109,12 +99,10 @@ public class WorkmatesRepository {
     }
 
 
-
     public void addLikedRestaurant(String likedRestaurant) {
         user.addLikedRestaurant(likedRestaurant);
         updateLikedRestaurants(user.getUid());
     }
-
 
 
     public void removeLikedRestaurant(String likedRestaurant) {
@@ -122,14 +110,17 @@ public class WorkmatesRepository {
         updateLikedRestaurants(user.getUid());
     }
 
+
     private void updateLikedRestaurants(String uid) {
         List<String> likedRestaurantsList = user.getLikedRestaurants();
         workmateHelper.workmatesFirestore.document(uid).update("likedRestaurants", likedRestaurantsList);
     }
 
+
     public String getPickedRestaurant(){
         return workmateHelper.getRestaurantUserId();
     }
+
 
     public String getUpdatedRestaurant(){
         if (user != null){
@@ -137,29 +128,16 @@ public class WorkmatesRepository {
         else return null;
     }
 
+
     public void getRestaurantId(String userId){
             workmateHelper.getRestaurantUser(userId);
     }
 
 
-    /*public MutableLiveData<ArrayList<Workmate>> fetchWorkmateEatingThere(String restaurantId) {
-        MutableLiveData<ArrayList<Workmate>> workmateList = new MutableLiveData<>();
-        workmateHelper.workmatesFirestore.whereEqualTo("WorkmatePickedRestaurant.restaurantId", restaurantId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                ArrayList<Workmate> list = new ArrayList<>();
-                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-                    list.add(documentSnapshot.toObject(Workmate.class));
-                }
-                workmateList.setValue(list);
-            }
-        });
-        return workmateList;
-    }*/
-
     public void disconnect() {
         user = null;
     }
+
 
     public Workmate user(){
         return user;

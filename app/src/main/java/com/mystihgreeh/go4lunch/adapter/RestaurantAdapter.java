@@ -1,7 +1,11 @@
 package com.mystihgreeh.go4lunch.adapter;
 
+import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.BASE_URL_GOOGLE;
+import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.KEY_GOOGLE;
+import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.MAX_WIDTH_GOOGLE;
+import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.PHOTO_REF_GOOGLE;
+
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,30 +16,20 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.TextViewCompat;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.mystihgreeh.go4lunch.BuildConfig;
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.model.Restaurants.NearbySearchResponse;
 import com.mystihgreeh.go4lunch.model.Restaurants.Result;
 import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
-import com.mystihgreeh.go4lunch.repository.WorkmatesRepository;
 import com.mystihgreeh.go4lunch.ui.RestaurantDetailActivity;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Observer;
-
-import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.BASE_URL_GOOGLE;
-import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.KEY_GOOGLE;
-import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.MAX_WIDTH_GOOGLE;
-import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.PHOTO_REF_GOOGLE;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link NearbySearchResponse}.
@@ -45,10 +39,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
     private final ArrayList<Result> mValues;
     ArrayList<Workmate> fetchedWorkmates;
-    ArrayList<String> workmateGoingInARestaurant;
-    ArrayList<ArrayList<String>> workmateGoingInThatRestaurant = new ArrayList<>();
-    public final MutableLiveData<ArrayList<String>> workmateId = new MutableLiveData<>();
-    public final MutableLiveData<ArrayList<Workmate>> fetchedWorkmatesHere = new MutableLiveData<>();
 
 
 

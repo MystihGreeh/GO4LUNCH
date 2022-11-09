@@ -16,35 +16,12 @@ import java.util.List;
 
 public class SettingsViewModel extends ViewModel {
 
-    private final WorkmatesRepository mWorkmateRepository;
+
     public final MutableLiveData<ArrayList<Workmate>> workmates = new MutableLiveData<>();
-    public MutableLiveData<String> selectedRestaurantId = new MutableLiveData<>();
-    public final MutableLiveData<ArrayList<String>> workmateId = new MutableLiveData<>();
-    public final MutableLiveData<ArrayList<Workmate>> fetchedWorkmates = new MutableLiveData<>();
+
 
     public LiveData<ArrayList<Workmate>> getWorkmates() { return workmates; }
 
-    RestaurantRepository mRestaurantRepository;
-    MutableLiveData<List<Result>> mRestaurantMutableLiveData;
 
 
-    public SettingsViewModel() {
-        mWorkmateRepository = new WorkmatesRepository();
-    }
-
-    public void getSelectedRestaurant() {
-        String uid = (getCurrentUser() != null) ? getCurrentUser().getUid() : "default";
-        mWorkmateRepository.getUser(uid)
-                .addOnSuccessListener(documentSnapshot -> {
-                    Workmate coworker = documentSnapshot.toObject(Workmate.class);
-                    if (coworker != null && coworker.getRestaurantUid() != null) {
-                        selectedRestaurantId.setValue(coworker.getRestaurantUid());
-                    }
-                });
-    }
-
-
-    public FirebaseUser getCurrentUser(){
-        return FirebaseAuth.getInstance().getCurrentUser();
-    }
 }

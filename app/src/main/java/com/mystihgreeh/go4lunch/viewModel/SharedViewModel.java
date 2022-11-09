@@ -3,7 +3,6 @@ package com.mystihgreeh.go4lunch.viewModel;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -61,17 +60,10 @@ public class SharedViewModel extends ViewModel {
         };
     }
 
-    public void onRefreshUserList(){
-        this.getUserListFromFirebase();
-    }
-
-
     public void createWorkmate(String uid, String username, String urlPicture,
                                String useremail, String restaurantName, String restaurantUid, String restaurantAddress){
         mWorkmateRepository.createUser(uid, username, urlPicture, useremail, restaurantName, restaurantUid, restaurantAddress);
     }
-
-
 
     public String getUserRestaurant() {
          return mWorkmateRepository.getPickedRestaurant();
@@ -85,9 +77,6 @@ public class SharedViewModel extends ViewModel {
         mWorkmateRepository.checkIfUserDoesExist(userId);
         return false;
     }
-
-
-
 
 
     //----------------------------------------------------------------------------------------------
@@ -111,8 +100,6 @@ public class SharedViewModel extends ViewModel {
     public void fetchRestaurants(double currentlatitude, double currentLongitude){
         mRestaurantMutableLiveData = mRestaurantRepository.getRestaurants(currentlatitude, currentLongitude);
     }
-
-
 
 
     //----------------------------------------------------------------------------------------------

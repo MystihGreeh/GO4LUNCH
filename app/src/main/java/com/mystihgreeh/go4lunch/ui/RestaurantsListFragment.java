@@ -9,20 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.libraries.places.api.model.Place;
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.adapter.RestaurantAdapter;
-import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
 import com.mystihgreeh.go4lunch.viewModel.SharedViewModel;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 

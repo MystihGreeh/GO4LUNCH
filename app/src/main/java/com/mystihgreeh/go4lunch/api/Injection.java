@@ -12,7 +12,7 @@ public class Injection {
     }
 
     public static RestaurantRepository createRestaurantRepository() {
-        RestaurantRepository restaurantRepository = RestaurantRepository.getInstance();
+        RestaurantRepository.getInstance();
 
         return new RestaurantRepository();
     }

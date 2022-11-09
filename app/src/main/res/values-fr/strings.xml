@@ -87,6 +87,9 @@
     <!-- NOTIFICATION -->
     <string name="restaurant_notification">Rejoignez votre restaurant</string>
     <string name="time_to_eat">C\'est l\'heure de manger !</string>
+    <string name="today">Aujourd\'hui tu manges à </string>
+    <string name="with"> avec </string>
+    <string name="setting_saved"> Paramètres enregistrés! </string>
 
     <!-- CHOOSEN RESTAURANT -->
     <string name="has_not_decided">n\'a pas encore décidé</string>

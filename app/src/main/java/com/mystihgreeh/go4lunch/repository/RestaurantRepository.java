@@ -26,7 +26,6 @@ public class RestaurantRepository {
     public MutableLiveData<List<Result>> restaurantListMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<DetailsResult> restaurantDetailsMutableLiveData = new MutableLiveData<>();
     private final List<Result> restaurants = new ArrayList<>();
-    private String restaurantSelected;
 
     private static volatile RestaurantRepository INSTANCE;
 
@@ -75,13 +74,6 @@ public class RestaurantRepository {
             }
         });
         return restaurantDetailsMutableLiveData;
-    }
-
-    public void setRestaurantSelected(String restaurantUid){
-        this.restaurantSelected = restaurantUid;
-    }
-    public String getRestaurantSelected(String uidRestaurant){
-        return restaurantSelected;
     }
 
 }

@@ -34,7 +34,7 @@ public class Workmate implements Serializable {
 
     public Workmate() { }
 
-    public Workmate(String uid, String username, @org.jetbrains.annotations.Nullable String urlPicture, String useremail, String restaurantName, String restaurantUid, String restaurantAddress) {
+    public Workmate(String uid, String username, @org.jetbrains.annotations.Nullable String urlPicture, String useremail, @Nullable String restaurantName, @Nullable String restaurantUid, @Nullable String restaurantAddress) {
         this.uid = uid;
         this.username = username;
         this.urlPicture = urlPicture;

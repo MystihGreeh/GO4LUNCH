@@ -87,6 +87,9 @@
     <!-- NOTIFICATION -->
     <string name="restaurant_notification">Go to your restaurant</string>
     <string name="time_to_eat">It\'s time to eat !</string>
+    <string name="today">Today you\'re eating at </string>
+    <string name="with"> with </string>
+    <string name="setting_saved"> Setting saved! </string>
 
     <!-- CHOOSEN RESTAURANT -->
     <string name="has_not_decided">hasn\'t decided yet</string>

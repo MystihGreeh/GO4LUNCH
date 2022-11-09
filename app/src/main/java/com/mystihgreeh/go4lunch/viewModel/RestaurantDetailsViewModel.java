@@ -1,12 +1,13 @@
 package com.mystihgreeh.go4lunch.viewModel;
 
+import static android.content.ContentValues.TAG;
+
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.mystihgreeh.go4lunch.model.RestaurantsDetails.DetailsResult;
 import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
@@ -16,8 +17,6 @@ import com.mystihgreeh.go4lunch.repository.WorkmatesRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.ContentValues.TAG;
-
 public class RestaurantDetailsViewModel extends ViewModel {
 
     LiveData<DetailsResult> mRestaurantDetailsMutableLiveData;
@@ -26,7 +25,6 @@ public class RestaurantDetailsViewModel extends ViewModel {
     Workmate workmate;
     String user;
     DetailsResult restaurantResult;
-    public final MutableLiveData<List<Workmate>> mWorkmatesList = new MutableLiveData<>();
     public MutableLiveData<Boolean> isRestaurantLiked = new MutableLiveData<>();
     public MutableLiveData<Boolean> isRestaurantPicked = new MutableLiveData<>();
     public final MutableLiveData<ArrayList<String>> workmateId = new MutableLiveData<>();
@@ -37,10 +35,6 @@ public class RestaurantDetailsViewModel extends ViewModel {
         mWorkmateRepository = new WorkmatesRepository();
         user = mWorkmateRepository.getActualUser().getUid();
         workmate = mWorkmateRepository.user();
-    }
-
-    public LiveData<DetailsResult> getRestaurantDetail(String placeId) {
-        return mRestaurantRepository.getRestaurantDetails(placeId);
     }
 
     public LiveData<DetailsResult> getRestaurantDetailsMutableLiveData(String placeId){
@@ -131,7 +125,7 @@ public class RestaurantDetailsViewModel extends ViewModel {
     public boolean checkIfRestaurantIsPicked(String restaurantId) {
         String restaurantPicked = workmate.getRestaurantUid();
         if (restaurantPicked != null) {
-                if (restaurantPicked.equals(restaurantId)) return true;
+            return restaurantPicked.equals(restaurantId);
         }
         return false;
     }

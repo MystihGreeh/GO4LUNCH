@@ -10,17 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.database.annotations.NotNull;
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
 import com.mystihgreeh.go4lunch.ui.RestaurantDetailActivity;
-
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -46,8 +43,8 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Workmate workmate = (Workmate) mWorkmate.get(position);
-        holder.mItem = (Workmate) mWorkmate.get(position);
+        Workmate workmate = mWorkmate.get(position);
+        holder.mItem = mWorkmate.get(position);
          if(!Objects.equals(workmate.getUrlPicture(), "null")){
              Glide.with(mContext)
                      .load(Objects.requireNonNull(workmate).getUrlPicture())
@@ -80,7 +77,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
 
     @Override
     public int getItemCount() {
-        return (int)(mWorkmate.size());
+        return mWorkmate.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

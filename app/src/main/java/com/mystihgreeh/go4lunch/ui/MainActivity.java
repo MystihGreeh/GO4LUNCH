@@ -1,42 +1,31 @@
 package com.mystihgreeh.go4lunch.ui;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
 import android.annotation.SuppressLint;
-import android.app.AlarmManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -62,20 +51,12 @@ import com.google.firebase.auth.UserInfo;
 import com.mystihgreeh.go4lunch.BuildConfig;
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.api.Injection;
-import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
-import com.mystihgreeh.go4lunch.repository.WorkmatesRepository;
-import com.mystihgreeh.go4lunch.viewModel.SettingsViewModel;
 import com.mystihgreeh.go4lunch.viewModel.SharedViewModel;
 import com.mystihgreeh.go4lunch.viewModel.ViewModelFactory;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
-
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -94,13 +75,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SharedViewModel sharedViewModel;
     String restaurantId = null;
 
-
-
-    private final String type = "restaurant";
     public double currentLatitude;
     public double currentLongitude;
     private final int AUTOCOMPLETE_REQUEST_CODE = 1;
-    public String selectedRestaurantId;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
 
@@ -108,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //FOR DESIGN
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
-    ArrayAdapter<String> adapter;
     BottomNavigationView bottomNavigationView;
 
 

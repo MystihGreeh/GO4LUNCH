@@ -2,31 +2,23 @@ package com.mystihgreeh.go4lunch.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.mystihgreeh.go4lunch.R;
-import com.mystihgreeh.go4lunch.databinding.ActivityRestaurantDetailBinding;
-import com.mystihgreeh.go4lunch.model.Restaurants.Result;
 import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
-import com.mystihgreeh.go4lunch.adapter.WorkmatesAdapter;
-import com.mystihgreeh.go4lunch.ui.MainActivity;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class DetailsWorkmatesAdapter extends RecyclerView.Adapter<DetailsWorkmatesAdapter.ViewHolder> {

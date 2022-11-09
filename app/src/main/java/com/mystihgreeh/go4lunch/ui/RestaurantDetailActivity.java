@@ -1,24 +1,21 @@
 package com.mystihgreeh.go4lunch.ui;
 
-import android.content.Context;
+import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.BASE_URL_GOOGLE;
+import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.KEY_GOOGLE;
+import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.MAX_WIDTH_GOOGLE;
+import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.PHOTO_REF_GOOGLE;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,38 +25,25 @@ import com.bumptech.glide.request.RequestOptions;
 import com.mystihgreeh.go4lunch.BuildConfig;
 import com.mystihgreeh.go4lunch.R;
 import com.mystihgreeh.go4lunch.adapter.DetailsWorkmatesAdapter;
-import com.mystihgreeh.go4lunch.adapter.RestaurantAdapter;
 import com.mystihgreeh.go4lunch.api.Injection;
 import com.mystihgreeh.go4lunch.databinding.ActivityRestaurantDetailBinding;
 import com.mystihgreeh.go4lunch.model.RestaurantsDetails.DetailsResult;
 import com.mystihgreeh.go4lunch.viewModel.RestaurantDetailsViewModel;
-import com.mystihgreeh.go4lunch.viewModel.SharedViewModel;
 import com.mystihgreeh.go4lunch.viewModel.ViewModelFactory;
 
-import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.BASE_URL_GOOGLE;
-import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.KEY_GOOGLE;
-import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.MAX_WIDTH_GOOGLE;
-import static com.mystihgreeh.go4lunch.api.GooglePlacesApi.PHOTO_REF_GOOGLE;
-
 import java.util.ArrayList;
-import java.util.Observer;
-import java.util.zip.Inflater;
 
 public class RestaurantDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private RestaurantDetailsViewModel restaurantDetailsViewModel;
     ActivityRestaurantDetailBinding binding;
-    String restaurantString;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initAll();
-
-
     }
-
 
 
     private void initAll(){
@@ -144,10 +128,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         restaurantDetailsViewModel.fetchWorkmateEatingThere(restaurantId).observe(this,
-                workmates -> {
-            mRecyclerView.setAdapter(new DetailsWorkmatesAdapter(new ArrayList<>(workmates), this));
-                });
-
+                workmates -> mRecyclerView.setAdapter(new DetailsWorkmatesAdapter(new ArrayList<>(workmates), this)));
     }
 
 

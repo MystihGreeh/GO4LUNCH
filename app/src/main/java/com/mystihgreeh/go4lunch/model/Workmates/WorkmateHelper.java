@@ -1,12 +1,8 @@
 package com.mystihgreeh.go4lunch.model.Workmates;
 
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -14,7 +10,6 @@ public class WorkmateHelper {
 
     private static WorkmateHelper workmateHelper;
     String restaurantUser;
-    Workmate user;
 
     public static WorkmateHelper getInstance() {
         if (workmateHelper == null) {
