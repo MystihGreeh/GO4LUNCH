@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.util.Log;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -24,20 +25,20 @@ public class RestaurantDetailsViewModel extends ViewModel {
     WorkmatesRepository mWorkmateRepository;
     Workmate workmate;
     String user;
-    DetailsResult restaurantResult;
     public MutableLiveData<Boolean> isRestaurantLiked = new MutableLiveData<>();
     public MutableLiveData<Boolean> isRestaurantPicked = new MutableLiveData<>();
     public final MutableLiveData<ArrayList<String>> workmateId = new MutableLiveData<>();
     public final MutableLiveData<ArrayList<Workmate>> fetchedWorkmates = new MutableLiveData<>();
 
-    public RestaurantDetailsViewModel() {
-        mRestaurantRepository = new RestaurantRepository();
-        mWorkmateRepository = new WorkmatesRepository();
+    public RestaurantDetailsViewModel(WorkmatesRepository workmatesRepository, RestaurantRepository restaurantRepository) {
+        mRestaurantRepository = restaurantRepository;
+        mWorkmateRepository = workmatesRepository;
         user = mWorkmateRepository.getActualUser().getUid();
         workmate = mWorkmateRepository.user();
     }
 
     public LiveData<DetailsResult> getRestaurantDetailsMutableLiveData(String placeId){
+        isRestaurantLiked.setValue(mWorkmateRepository.getLikedRestaurant(getUserId(), placeId).getValue());
         return mRestaurantDetailsMutableLiveData;
     }
 
@@ -47,28 +48,33 @@ public class RestaurantDetailsViewModel extends ViewModel {
 
     public void fetchInfoRestaurant(String restaurantId) {
         fetchWorkmateIsGoing();
-        //isRestaurantLiked.setValue(checkIfRestaurantIsLiked(restaurantId));
-        if (workmate.getRestaurantUid() != null) {
-            String uidSelection = workmate.getRestaurantUid();
-            if (uidSelection.equals(restaurantId))
+        String pickedRestaurantUid = mWorkmateRepository.getPickedRestaurant();
+
+        if (pickedRestaurantUid != null) {
+            if (pickedRestaurantUid.equals(restaurantId)) {
                 isRestaurantPicked.setValue(true);
-        } else {
-            isRestaurantPicked.setValue(false);
-        }
+            } else {
+                isRestaurantPicked.setValue(false);
+            }
+        }else {
+            isRestaurantPicked.setValue(false);}
+
     }
 
     public void updateRestaurantLiked(DetailsResult restaurant) {
-        if (isRestaurantLiked.getValue()) {
-            isRestaurantLiked.setValue(false);
-            mWorkmateRepository.removeLikedRestaurant(restaurant.getPlaceId());
-        } else {
-            isRestaurantLiked.setValue(true);
-            mWorkmateRepository.addLikedRestaurant(restaurant.getPlaceId());
-        }
+        if (mWorkmateRepository.getLikedRestaurant(getUserId(), restaurant.getPlaceId()).getValue() != null) {
+            if (mWorkmateRepository.getLikedRestaurant(getUserId(), restaurant.getPlaceId()).getValue()) {
+                mWorkmateRepository.removeLikedRestaurant(restaurant.getPlaceId());
+                isRestaurantLiked.setValue(mWorkmateRepository.getLikedRestaurant(getUserId(), restaurant.getPlaceId()).getValue());
+            } else {
+                mWorkmateRepository.addLikedRestaurant(restaurant.getPlaceId());
+                isRestaurantLiked.setValue(mWorkmateRepository.getLikedRestaurant(getUserId(), restaurant.getPlaceId()).getValue());
+            }
+        } else isRestaurantLiked.setValue(mWorkmateRepository.getLikedRestaurant(getUserId(), restaurant.getPlaceId()).getValue());
     }
 
     public void updatePickedRestaurant(DetailsResult restaurant) {
-        if (isRestaurantPicked.getValue()) {
+        if (isRestaurantPicked.getValue() ) {
             isRestaurantPicked.setValue(false);
             mWorkmateRepository.updateRestaurantPicked(null, null, null, workmate.getUid())
                     .addOnCompleteListener(result -> Log.i(TAG, "restaurant not picked yet"));
@@ -81,15 +87,6 @@ public class RestaurantDetailsViewModel extends ViewModel {
         fetchWorkmateIsGoing();
     }
 
-    public void fetchWorkmateLikedRestaurant(String restaurantId) {
-        if (workmate.getLikedRestaurants() != null) {
-            List<String> likedRestaurant = workmate.getLikedRestaurants();
-            String restaurantUid = restaurantResult.getPlaceId();
-            if (likedRestaurant != null && restaurantUid != null && likedRestaurant.contains(restaurantUid)) {
-                isRestaurantLiked.setValue(true);
-            }
-        }
-    }
 
     public void fetchWorkmateIsGoing(){
         ArrayList<String> workmateGoing = new ArrayList<>();
@@ -122,12 +119,25 @@ public class RestaurantDetailsViewModel extends ViewModel {
 
     }
 
-    public boolean checkIfRestaurantIsPicked(String restaurantId) {
-        String restaurantPicked = workmate.getRestaurantUid();
-        if (restaurantPicked != null) {
-            return restaurantPicked.equals(restaurantId);
-        }
-        return false;
+    public MutableLiveData<Boolean> getLikedRestaurant(String userId, String restaurantId){
+       return mWorkmateRepository.getLikedRestaurant(userId, restaurantId);
     }
+
+
+
+
+    public String getUserId(){
+        return workmate.getUid();
+    }
+
+    public void clearRestaurantId() {
+        mWorkmateRepository.clearRestaurantId();
+    }
+
+    public void getRestaurantId(String userId){
+        mWorkmateRepository.getRestaurantId(userId);
+    }
+
+
 
 }

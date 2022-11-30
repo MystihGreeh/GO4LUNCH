@@ -166,7 +166,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                     counter++;
                 }
             }
-        System.out.println(workmatesIds);
         return counter;
     }
 

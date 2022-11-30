@@ -10,7 +10,13 @@ import com.mystihgreeh.go4lunch.repository.WorkmatesRepository;
 public class ViewModelFactory extends SharedViewModel implements ViewModelProvider.Factory {
 
 
-    public ViewModelFactory(WorkmatesRepository mWorkmatesRepository, RestaurantRepository restaurantRepository) {
+    private final RestaurantRepository restaurantRepository;
+    private final WorkmatesRepository workmatesRepository;
+
+    public ViewModelFactory(WorkmatesRepository mWorkmatesRepository, RestaurantRepository mRestaurantRepository) {
+        super(mWorkmatesRepository, mRestaurantRepository);
+        this.restaurantRepository = mRestaurantRepository;
+        this.workmatesRepository = mWorkmatesRepository;
 
 
     }
@@ -21,11 +27,11 @@ public class ViewModelFactory extends SharedViewModel implements ViewModelProvid
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
 
         if (modelClass.isAssignableFrom(SharedViewModel.class)) {
-            return (T) new SharedViewModel();
+            return (T) new SharedViewModel(workmatesRepository, restaurantRepository);
         }
 
         if (modelClass.isAssignableFrom(RestaurantDetailsViewModel.class)) {
-            return (T) new RestaurantDetailsViewModel();
+            return (T) new RestaurantDetailsViewModel(workmatesRepository, restaurantRepository);
         }
 
         if (modelClass.isAssignableFrom(SettingsViewModel.class)) {

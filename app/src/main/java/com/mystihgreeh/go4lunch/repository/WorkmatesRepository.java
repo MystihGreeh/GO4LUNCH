@@ -1,6 +1,8 @@
 package com.mystihgreeh.go4lunch.repository;
 
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -142,4 +144,14 @@ public class WorkmatesRepository {
     public Workmate user(){
         return user;
     }
+
+    public void clearRestaurantId() {
+        workmateHelper.clearRestaurantId();
+    }
+
+
+    public MutableLiveData<Boolean> getLikedRestaurant(String userId, String restaurantId){
+        return workmateHelper.getLikedRestaurants(userId, restaurantId);
+    }
+
 }

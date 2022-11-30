@@ -280,11 +280,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Intent intent = new Intent(this, RestaurantDetailActivity.class);
                     intent.putExtra("restaurantId", restaurantUpdatedId);
                     startActivity(intent);
-                } else{
-                    restaurantId = sharedViewModel.getUserRestaurant();
-                    Intent intent = new Intent(this, RestaurantDetailActivity.class);
-                    intent.putExtra("restaurantId", restaurantId);
-                    startActivity(intent);
                 }
 
                 break;
@@ -416,7 +411,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-
     // ---------------------------------------------------------------------------------------------
     //                                      PLACE AUTOCOMPLETE
     // ---------------------------------------------------------------------------------------------
@@ -442,6 +436,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 
 
 

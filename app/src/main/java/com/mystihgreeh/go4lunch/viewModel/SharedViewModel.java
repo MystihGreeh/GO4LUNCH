@@ -21,13 +21,18 @@ import java.util.List;
 
 public class SharedViewModel extends ViewModel {
 
-    private final WorkmatesRepository mWorkmateRepository;
+    private WorkmatesRepository mWorkmateRepository;
     public final MutableLiveData<ArrayList<Workmate>> workmates = new MutableLiveData<>();
     public MutableLiveData<String> selectedRestaurantId = new MutableLiveData<>();
     public final MutableLiveData<ArrayList<String>> workmateId = new MutableLiveData<>();
     public final MutableLiveData<ArrayList<Workmate>> fetchedWorkmates = new MutableLiveData<>();
     public final MutableLiveData<Place> autoCompleteResult = new MutableLiveData<>();
 
+    public SharedViewModel(WorkmatesRepository workmatesRepository, RestaurantRepository restaurantRepository) {
+        this.mWorkmateRepository = workmatesRepository;
+        this.mRestaurantRepository = restaurantRepository;
+        mRestaurantMutableLiveData = new MutableLiveData<>();
+    }
 
 
 
@@ -87,11 +92,7 @@ public class SharedViewModel extends ViewModel {
     MutableLiveData<List<Result>> mRestaurantMutableLiveData;
 
 
-    public SharedViewModel() {
-        mWorkmateRepository = new WorkmatesRepository();
-        mRestaurantRepository = new RestaurantRepository();
-        mRestaurantMutableLiveData = new MutableLiveData<>();
-    }
+
 
     public MutableLiveData<List<Result>> getRestaurantMutableLiveData(){
         return mRestaurantMutableLiveData;

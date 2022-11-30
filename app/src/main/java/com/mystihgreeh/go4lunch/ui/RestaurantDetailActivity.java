@@ -37,6 +37,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
 
     private RestaurantDetailsViewModel restaurantDetailsViewModel;
     ActivityRestaurantDetailBinding binding;
+    String restaurantId;
 
 
     @Override
@@ -90,26 +91,27 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
             binding.restaurantRate.setNumStars(3);
         } else binding.restaurantRate.setNumStars(0);
         //LIKE AND CHOOSE
-        binding.likeImg.setOnClickListener(view -> restaurantDetailsViewModel.updateRestaurantLiked(restaurantDetailsResult));
-        binding.favoriteButton.setOnClickListener(v -> restaurantDetailsViewModel.updatePickedRestaurant(restaurantDetailsResult));
+        binding.likeImg.setOnClickListener(view ->
+                restaurantDetailsViewModel.updateRestaurantLiked(restaurantDetailsResult));
+                //restaurantDetailsViewModel.getLikedRestaurant(restaurantDetailsViewModel.getUserId(), restaurantDetailsResult.getPlaceId());
+
+        binding.favoriteButton.setOnClickListener(v ->
+                restaurantDetailsViewModel.updatePickedRestaurant(restaurantDetailsResult));
+
     }
 
     private void getPlaceId(){
-            String restaurantId = getIntent().getStringExtra("restaurantId");
+            restaurantId = getIntent().getStringExtra("restaurantId");
             getRestaurantDetails(restaurantId);
-            initButton();
+
     }
 
     private void getRestaurantDetails(String restaurantId){
         restaurantDetailsViewModel.fetchRestaurantsDetails(restaurantId);
         restaurantDetailsViewModel.getRestaurantDetailsMutableLiveData(restaurantId).observe(this,this::displayInfoRestaurant);
         restaurantDetailsViewModel.fetchInfoRestaurant(restaurantId);
-        restaurantDetailsViewModel.fetchWorkmateLikedRestaurant(restaurantId);
-
-        if (restaurantDetailsViewModel.checkIfRestaurantIsPicked(restaurantId)){
-            changePickedStatus(true);
-        }
         initRecyclerView(restaurantId);
+        initButton(restaurantId);
 
     }
 
@@ -132,9 +134,10 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     }
 
 
-    private void initButton(){
-        restaurantDetailsViewModel.isRestaurantLiked.observe(this, this::changeLikeStatus);
+    private void initButton(String restaurantId){
+        restaurantDetailsViewModel.getLikedRestaurant(restaurantDetailsViewModel.getUserId(), restaurantId).observe(this, this::changeLikeStatus);
         restaurantDetailsViewModel.isRestaurantPicked.observe(this, this::changePickedStatus);
+
     }
 
     private void changeLikeStatus(Boolean isLiked){
@@ -149,6 +152,8 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         Drawable drawable = ContextCompat.getDrawable(this, pickedImg);
         drawable.mutate().setColorFilter(checkColor, PorterDuff.Mode.MULTIPLY);
         binding.favoriteButton.setImageDrawable(drawable);
+        restaurantDetailsViewModel.clearRestaurantId();
+        restaurantDetailsViewModel.getRestaurantId(restaurantDetailsViewModel.getUserId());
     }
 
     /**
