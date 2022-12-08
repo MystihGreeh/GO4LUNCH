@@ -21,7 +21,7 @@ import java.util.List;
 
 public class SharedViewModel extends ViewModel {
 
-    private WorkmatesRepository mWorkmateRepository;
+    public WorkmatesRepository mWorkmateRepository;
     public final MutableLiveData<ArrayList<Workmate>> workmates = new MutableLiveData<>();
     public MutableLiveData<String> selectedRestaurantId = new MutableLiveData<>();
     public final MutableLiveData<ArrayList<String>> workmateId = new MutableLiveData<>();
@@ -157,11 +157,6 @@ public class SharedViewModel extends ViewModel {
     public String getupdatedRestaurant() {
        return mWorkmateRepository.getUpdatedRestaurant();
     }
-
-
-    //----------------------------------------------------------------------------------------------
-    //------------------------------------- AUTOCOMPLETE -------------------------------------------
-    //----------------------------------------------------------------------------------------------
 
 
 }

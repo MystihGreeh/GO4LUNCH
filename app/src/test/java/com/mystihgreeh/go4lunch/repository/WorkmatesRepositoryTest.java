@@ -2,9 +2,23 @@ package com.mystihgreeh.go4lunch.repository;
 
 import static org.junit.Assert.*;
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+
+import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 public class WorkmatesRepositoryTest {
+    @Rule
+    public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
+
+    @Mock
+    //private CatFactsApi catFactsApi;
+
+    @InjectMocks
+    private WorkmatesRepository workmatesRepository;
+
 
     @Test
     public void getInstance() {
