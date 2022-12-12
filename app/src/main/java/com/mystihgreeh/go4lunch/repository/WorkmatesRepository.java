@@ -149,9 +149,12 @@ public class WorkmatesRepository {
         workmateHelper.clearRestaurantId();
     }
 
-
     public MutableLiveData<Boolean> getLikedRestaurant(String userId, String restaurantId){
         return workmateHelper.getLikedRestaurants(userId, restaurantId);
+    }
+
+    public MutableLiveData<Boolean> isLiked(){
+        return workmateHelper.isLiked();
     }
 
 }

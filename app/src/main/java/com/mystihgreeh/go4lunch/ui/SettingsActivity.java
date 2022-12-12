@@ -1,12 +1,25 @@
 package com.mystihgreeh.go4lunch.ui;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
@@ -22,8 +35,10 @@ public class SettingsActivity extends Activity {
 
     ActivitySettingsBinding binding;
     private static final int TIME_NOTIFICATION = 12;
+    private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 1;
 
 
+    @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
@@ -50,6 +65,7 @@ public class SettingsActivity extends Activity {
     //                                     SHARED PREFERENCES
     // ---------------------------------------------------------------------------------------------
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void loadNotificationSettings(){
         SharedPreferences sharedPreferences= this
                 .getSharedPreferences("notificationSettings", Context.MODE_PRIVATE);
@@ -60,6 +76,8 @@ public class SettingsActivity extends Activity {
                     .getBoolean("notifications", true);
 
             binding.notificationCheckbox.setChecked(notifications);
+            notificationPermission();
+
 
         } else {
             binding.notificationCheckbox.setChecked(false);
@@ -114,4 +132,30 @@ public class SettingsActivity extends Activity {
     public void disableNotifications(){
         WorkManager.getInstance().cancelAllWorkByTag("Notification");
     }
+
+    public void notificationPermission() {
+        int locationPermissionCheck = 0;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (Build.VERSION.SDK_INT >= 33) {
+                locationPermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS);
+            }
+        }
+
+        if (locationPermissionCheck != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                if (Build.VERSION.SDK_INT >= 33) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATION_PERMISSION_REQUEST_CODE);
+                    //Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    //startActivity(intent);
+                }
+            }
+        } else {
+            Toast.makeText(this, "Notification permission granted", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+
 }

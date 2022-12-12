@@ -83,8 +83,7 @@ public class RestaurantDetailsViewModelTest  {
     public void testGetRestaurantDetailsMutableLiveData() {
         MutableLiveData<DetailsResult> restaurantLiveData = new MutableLiveData<>();
         restaurantLiveData.setValue(restaurant1);
-        Mockito.doReturn(restaurantLiveData).when(viewModel.mRestaurantDetailsMutableLiveData);
-        //Mockito.when(viewModel.mRestaurantDetailsMutableLiveData).thenReturn(restaurantLiveData);
+        Mockito.when(viewModel.mRestaurantDetailsMutableLiveData).thenReturn(restaurantLiveData);
     }
 
     @Test

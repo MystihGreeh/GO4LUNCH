@@ -2,6 +2,8 @@ package com.mystihgreeh.go4lunch.ui;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
+import android.Manifest;
+import android.Manifest.permission;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -9,13 +11,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.gms.analytics.CampaignTrackingReceiver;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -41,7 +49,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class MapViewFragment extends Fragment implements OnMapReadyCallback, LocationListener, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+        GoogleApiClient.OnConnectionFailedListener, ActivityCompat.OnRequestPermissionsResultCallback{
 
     private GoogleMap mMap;
     Location mLastLocation;
@@ -53,6 +61,9 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
     private SharedViewModel sharedViewModel;
 
 
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
@@ -79,7 +90,7 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
                 mMap.setMyLocationEnabled(true);
             }
             uiSettings();
-            initViewModel();
+            initViewModel();;
         });
 
         return view;
@@ -125,7 +136,7 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
-        //moveToRestaurantLocation();
+        moveToRestaurantLocation();
 
     }
 
@@ -268,6 +279,11 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
         }
 
     }
+
+
+
+
+
 
 
 }

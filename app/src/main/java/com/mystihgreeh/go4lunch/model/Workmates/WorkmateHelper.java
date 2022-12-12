@@ -58,6 +58,10 @@ public class WorkmateHelper {
         restaurantUser = null;
     }
 
+    public MutableLiveData<Boolean> isLiked() {
+        return isLiked;
+    }
+
     public MutableLiveData<Boolean> getLikedRestaurants(String userId, String restaurantId) {
         checkIfLiked(userId, restaurantId);
         return isLiked;
@@ -78,9 +82,6 @@ public class WorkmateHelper {
                             }
                         } else isLiked.setValue(false);
                     }
-
                 });
-
     }
-
 }

@@ -2,6 +2,7 @@ package com.mystihgreeh.go4lunch.ui;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +22,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public double currentLongitude;
     private final int AUTOCOMPLETE_REQUEST_CODE = 1;
 
+
     private FusedLocationProviderClient fusedLocationProviderClient;
 
 
@@ -108,7 +111,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
+
     }
+
+
 
     // get current location
     @SuppressLint("MissingPermission")

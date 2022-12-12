@@ -33,9 +33,10 @@ public class RestaurantDetailsViewModel extends ViewModel {
     public RestaurantDetailsViewModel(WorkmatesRepository workmatesRepository, RestaurantRepository restaurantRepository) {
         mRestaurantRepository = restaurantRepository;
         mWorkmateRepository = workmatesRepository;
+
     }
 
-    public void initViewModel (){
+    public void initViewModel(){
         user = mWorkmateRepository.getActualUser().getUid();
         workmate = mWorkmateRepository.user();
     }
@@ -64,9 +65,10 @@ public class RestaurantDetailsViewModel extends ViewModel {
 
     }
 
+
     public void updateRestaurantLiked(DetailsResult restaurant) {
-        if (mWorkmateRepository.getLikedRestaurant(getUserId(), restaurant.getPlaceId()).getValue() != null) {
-            if (mWorkmateRepository.getLikedRestaurant(getUserId(), restaurant.getPlaceId()).getValue()) {
+        if (mWorkmateRepository.isLiked().getValue() != null) {
+            if (mWorkmateRepository.isLiked().getValue()) {
                 mWorkmateRepository.removeLikedRestaurant(restaurant.getPlaceId());
                 isRestaurantLiked.setValue(mWorkmateRepository.getLikedRestaurant(getUserId(), restaurant.getPlaceId()).getValue());
             } else {
@@ -125,8 +127,6 @@ public class RestaurantDetailsViewModel extends ViewModel {
     public MutableLiveData<Boolean> getLikedRestaurant(String userId, String restaurantId){
        return mWorkmateRepository.getLikedRestaurant(userId, restaurantId);
     }
-
-
 
 
     public String getUserId(){

@@ -94,6 +94,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         binding.likeImg.setOnClickListener(view ->
                 restaurantDetailsViewModel.updateRestaurantLiked(restaurantDetailsResult));
 
+
         binding.favoriteButton.setOnClickListener(v ->
                 restaurantDetailsViewModel.updatePickedRestaurant(restaurantDetailsResult));
 
@@ -102,7 +103,6 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     private void getPlaceId(){
             restaurantId = getIntent().getStringExtra("restaurantId");
             getRestaurantDetails(restaurantId);
-
     }
 
     private void getRestaurantDetails(String restaurantId){
@@ -111,15 +111,14 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         restaurantDetailsViewModel.fetchInfoRestaurant(restaurantId);
         initRecyclerView(restaurantId);
         initButton(restaurantId);
-
     }
 
 
     private void initViewModel() {
         ViewModelFactory viewModelFactory = Injection.viewModelFactory();
         restaurantDetailsViewModel = ViewModelProviders.of(this, viewModelFactory).get(RestaurantDetailsViewModel.class);
-        restaurantDetailsViewModel.fetchWorkmateIsGoing();
         restaurantDetailsViewModel.initViewModel();
+        restaurantDetailsViewModel.fetchWorkmateIsGoing();
 
     }
 

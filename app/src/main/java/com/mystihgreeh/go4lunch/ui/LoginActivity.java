@@ -1,12 +1,16 @@
 package com.mystihgreeh.go4lunch.ui;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
     private List<AuthUI.IdpConfig> providers;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
 
 
@@ -30,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         setupProviders();
         initIdentification();
+        requestPermission();
     }
 
     private void initIdentification() {
@@ -90,6 +96,17 @@ public class LoginActivity extends AppCompatActivity {
 
     protected Boolean isCurrentUserLogged() {
         return (this.getCurrentUser() != null);
+    }
+
+    private void requestPermission(){
+        int locationPermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if (locationPermissionCheck != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        } else {
+            Toast.makeText(this, "Location permission granted", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
