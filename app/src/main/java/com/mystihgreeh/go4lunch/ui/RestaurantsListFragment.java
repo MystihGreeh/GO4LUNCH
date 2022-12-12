@@ -57,10 +57,10 @@ public class RestaurantsListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         configureViewModel();
         sharedViewModel.autoCompleteResult.postValue(null);
-
+        sharedViewModel.emptyAutoCompleteResult();
         sharedViewModel.getRestaurantMutableLiveData().observe(getViewLifecycleOwner(),
                 restaurants -> sharedViewModel.fetchedWorkmates.observe(getViewLifecycleOwner(), workmates -> recyclerView.setAdapter(new RestaurantAdapter(new ArrayList<>(restaurants), workmates))));
-        //displayDetailRestaurant();
+        displayDetailRestaurant();
         return view;
     }
 
@@ -81,12 +81,12 @@ public class RestaurantsListFragment extends Fragment {
 
     private void displayDetailRestaurant() {
         if (sharedViewModel.autoCompleteResult != null) {
-            System.out.println(sharedViewModel.autoCompleteResult);
             sharedViewModel.autoCompleteResult.observe(getViewLifecycleOwner(), place ->{
-                Intent intent = new Intent(requireContext(), RestaurantDetailActivity.class);
-                intent.putExtra("restaurantId", place.getId());
-                requireContext().startActivity(intent);
-
+                if (place != null) {
+                    Intent intent = new Intent(requireContext(), RestaurantDetailActivity.class);
+                    intent.putExtra("restaurantId", place.getId());
+                    requireContext().startActivity(intent);
+                }
                     });
 
         }

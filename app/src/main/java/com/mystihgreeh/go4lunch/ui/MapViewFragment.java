@@ -81,8 +81,11 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
             uiSettings();
             initViewModel();
         });
+
         return view;
     }
+
+
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
@@ -100,7 +103,6 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
-        sharedViewModel.autoCompleteResult.postValue(null);
 
 
     }
@@ -114,7 +116,6 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
 
     @Override
     public void onConnected(Bundle bundle) {
-
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
@@ -124,7 +125,7 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
-        moveToRestaurantLocation();
+        //moveToRestaurantLocation();
 
     }
 
@@ -254,14 +255,15 @@ public class MapViewFragment extends Fragment implements OnMapReadyCallback, Loc
 
     private void moveToRestaurantLocation() {
         if (sharedViewModel.autoCompleteResult != null) {
-            System.out.println(sharedViewModel.autoCompleteResult);
             sharedViewModel.autoCompleteResult.observe(getViewLifecycleOwner(), place ->{
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-                mMap.addMarker(new MarkerOptions()
+                if (place != null){
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+                    mMap.addMarker(new MarkerOptions()
                             .position(place.getLatLng())
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.restaurantmarker))
                             .title(place.getName()));
+                }
             });
         }
 

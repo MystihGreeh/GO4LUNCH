@@ -3,9 +3,11 @@ package com.mystihgreeh.go4lunch.viewModel;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.mystihgreeh.go4lunch.model.Restaurants.Result;
+import com.mystihgreeh.go4lunch.model.RestaurantsDetails.DetailsResult;
 import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
 import com.mystihgreeh.go4lunch.repository.RestaurantRepository;
 import com.mystihgreeh.go4lunch.repository.WorkmatesRepository;
@@ -22,8 +24,8 @@ import java.util.ArrayList;
 
 public class RestaurantDetailsViewModelTest  {
 
-    public ArrayList<Result> restaurants;
-    public Result restaurant1;
+    public ArrayList<DetailsResult> restaurants;
+    public DetailsResult restaurant1;
     public LatLng location;
 
     @InjectMocks
@@ -33,7 +35,7 @@ public class RestaurantDetailsViewModelTest  {
 
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
-    public SharedViewModel viewModel;
+    public RestaurantDetailsViewModel viewModel;
     public Workmate user1;
     public Workmate user2;
     public Workmate user3;
@@ -44,7 +46,7 @@ public class RestaurantDetailsViewModelTest  {
     @Before
     public void setup() throws Exception {
         initMocks(this);
-        viewModel = new SharedViewModel(workmateRepository, restaurantRepository);
+        viewModel = new RestaurantDetailsViewModel(workmateRepository, restaurantRepository);
         user1 = new Workmate("001", "Jean DUPONT",
                 "https://i.pinimg.com/originals/cd/71/1f/cd711fca60134229d08e3f8e6604674b.jpg",
                 "jean@google.com", null, null, null);
@@ -66,8 +68,7 @@ public class RestaurantDetailsViewModelTest  {
         workmates.add(user3);
         workmates.add(user4);
 
-        restaurant1 = new Result("", null, "", "",
-                "", "", null, null, null, null, null, null, null, null, null, null, null, null);
+        restaurant1 = new DetailsResult(null, null, null , null, null, null, null);
         restaurants = new ArrayList<>();
         restaurants.add(restaurant1);
         location = new LatLng(48.00, 2.00);
@@ -80,6 +81,10 @@ public class RestaurantDetailsViewModelTest  {
 
     @Test
     public void testGetRestaurantDetailsMutableLiveData() {
+        MutableLiveData<DetailsResult> restaurantLiveData = new MutableLiveData<>();
+        restaurantLiveData.setValue(restaurant1);
+        Mockito.doReturn(restaurantLiveData).when(viewModel.mRestaurantDetailsMutableLiveData);
+        //Mockito.when(viewModel.mRestaurantDetailsMutableLiveData).thenReturn(restaurantLiveData);
     }
 
     @Test

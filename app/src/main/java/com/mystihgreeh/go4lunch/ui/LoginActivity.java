@@ -71,7 +71,6 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Error", Toast.LENGTH_LONG).show();
             }
-
         }
     }
 

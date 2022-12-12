@@ -159,4 +159,7 @@ public class SharedViewModel extends ViewModel {
     }
 
 
+    public void emptyAutoCompleteResult() {
+        autoCompleteResult.setValue(null);
+    }
 }

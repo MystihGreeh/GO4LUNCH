@@ -52,6 +52,7 @@ public class WorkmatesListFragment extends Fragment implements View.OnClickListe
 
         configureViewModel();
         sharedViewModel.getUserListFromFirebase();
+        sharedViewModel.emptyAutoCompleteResult();
         sharedViewModel.getWorkmates().observe(getViewLifecycleOwner(), workmates -> recyclerView.setAdapter(new WorkmatesAdapter( workmates, requireContext())));
 
 

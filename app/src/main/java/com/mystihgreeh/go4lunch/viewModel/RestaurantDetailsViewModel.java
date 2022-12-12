@@ -33,6 +33,9 @@ public class RestaurantDetailsViewModel extends ViewModel {
     public RestaurantDetailsViewModel(WorkmatesRepository workmatesRepository, RestaurantRepository restaurantRepository) {
         mRestaurantRepository = restaurantRepository;
         mWorkmateRepository = workmatesRepository;
+    }
+
+    public void initViewModel (){
         user = mWorkmateRepository.getActualUser().getUid();
         workmate = mWorkmateRepository.user();
     }
