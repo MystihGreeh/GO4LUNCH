@@ -36,14 +36,13 @@ public class LoginActivity extends AppCompatActivity {
         setupProviders();
         initIdentification();
         requestPermission();
+
     }
 
     private void initIdentification() {
         ImageView loginButton = findViewById(R.id.main_activity_button_login);
-        loginButton.setOnClickListener(v -> startSignIn());
-        if (this.isCurrentUserLogged()) {
-            this.startMainActivity();
-        }
+        loginButton.setOnClickListener(v ->
+                startSignIn());
     }
 
     private void setupProviders(){
@@ -102,11 +101,15 @@ public class LoginActivity extends AppCompatActivity {
         int locationPermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
 
         if (locationPermissionCheck != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getApplicationContext().getString(R.string.location_denied),Toast.LENGTH_LONG).show();
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         } else {
-            Toast.makeText(this, "Location permission granted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getApplicationContext().getString(R.string.location_granted),Toast.LENGTH_LONG).show();
+            if (this.isCurrentUserLogged()) {
+                this.startMainActivity();
+            }
         }
+
     }
 
 }

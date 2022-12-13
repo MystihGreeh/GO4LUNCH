@@ -12,6 +12,8 @@
     <string name="twitter_consumer_secret" translatable="false">kgv8tR9dvQSywfm6PcreKxyZhCxzCdY5hWm7OMd7BuHa2q9Xkv</string>
     <string name="twitter_token" translatable="false">301010003-EjMkghcoXHb7hOL9neagNkIzg3KVj9PLgrMEasaW</string>
     <string name="twitter_token_secret">K35D15FERvwgMnheQFmW128nms2oKtrKzzORMOtZOFMer</string>
+    <string name="location_granted"> Location permission granted </string>
+    <string name="location_denied"> Location permission denied </string>
 
     <string name="title_activity_main">MainActivity</string>
 
@@ -90,6 +92,9 @@
     <string name="today">Today you\'re eating at </string>
     <string name="with"> with </string>
     <string name="setting_saved"> Setting saved! </string>
+    <string name="nottification_granted"> Notification permission granted </string>
+    <string name="nottification_denied"> Notification permission denied </string>
+
 
     <!-- CHOOSEN RESTAURANT -->
     <string name="has_not_decided">hasn\'t decided yet</string>

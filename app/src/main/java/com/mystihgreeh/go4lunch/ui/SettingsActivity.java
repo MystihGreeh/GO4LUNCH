@@ -43,6 +43,7 @@ public class SettingsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         initView();
+        notificationPermission();
         loadNotificationSettings();
         binding.saveButton.setOnClickListener(view -> {
             saveSettings(view);
@@ -65,18 +66,17 @@ public class SettingsActivity extends Activity {
     //                                     SHARED PREFERENCES
     // ---------------------------------------------------------------------------------------------
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     private void loadNotificationSettings(){
         SharedPreferences sharedPreferences= this
                 .getSharedPreferences("notificationSettings", Context.MODE_PRIVATE);
 
         if(sharedPreferences!= null) {
-
             boolean notifications = sharedPreferences
-                    .getBoolean("notifications", true);
+                    .getBoolean("notifications", false);
 
             binding.notificationCheckbox.setChecked(notifications);
-            notificationPermission();
+
 
 
         } else {
@@ -142,16 +142,15 @@ public class SettingsActivity extends Activity {
         }
 
         if (locationPermissionCheck != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getApplicationContext().getString(R.string.nottification_denied),Toast.LENGTH_LONG).show();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                binding.notificationCheckbox.setChecked(false);
                 if (Build.VERSION.SDK_INT >= 33) {
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATION_PERMISSION_REQUEST_CODE);
-                    //Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    //startActivity(intent);
                 }
             }
         } else {
-            Toast.makeText(this, "Notification permission granted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getApplicationContext().getString(R.string.nottification_granted),Toast.LENGTH_LONG).show();
         }
 
     }

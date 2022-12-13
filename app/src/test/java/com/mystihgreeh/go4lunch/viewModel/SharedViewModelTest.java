@@ -84,7 +84,7 @@ public class SharedViewModelTest {
 
     @Test
     public void testGetRestaurantId() {
-        Mockito.when(viewModel.getUserRestaurant()).thenReturn(restaurant1.getPlaceId());
+        //Mockito.when(viewModel.getUserRestaurant()).thenReturn(restaurant1.getPlaceId());
         Mockito.when(workmateRepository.getPickedRestaurant()).thenReturn(restaurant1.getPlaceId());
     }
 

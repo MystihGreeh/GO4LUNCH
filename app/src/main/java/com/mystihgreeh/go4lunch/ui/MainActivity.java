@@ -81,9 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public double currentLongitude;
     private final int AUTOCOMPLETE_REQUEST_CODE = 1;
 
-
     private FusedLocationProviderClient fusedLocationProviderClient;
-
 
     //FOR DESIGN
     private Toolbar toolbar;
@@ -98,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Initialize the SDK
         String key = BuildConfig.API_KEY;
         Places.initialize(getApplicationContext(), key);
-
         // Initializing currentLocation
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -109,8 +106,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getCurrentLocation();
             }
         }
-
-
 
     }
 
@@ -124,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 currentLatitude = location.getLatitude();
                 currentLongitude = location.getLongitude();
                 initAll();
+
             } else {
                 LocationRequest locationRequest = new LocationRequest().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                         .setInterval(10000)
@@ -140,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 };
                 fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
             }
+
         });
     }
 
@@ -152,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.configureBottomView();
         this.showFirstFragment();
         this.createUserInFirestore();
-
     }
 
     @Override

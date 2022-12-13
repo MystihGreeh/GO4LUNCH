@@ -12,6 +12,8 @@
     <string name="twitter_consumer_secret" translatable="false">kgv8tR9dvQSywfm6PcreKxyZhCxzCdY5hWm7OMd7BuHa2q9Xkv</string>
     <string name="twitter_token" translatable="false">301010003-EjMkghcoXHb7hOL9neagNkIzg3KVj9PLgrMEasaW</string>
     <string name="twitter_token_secret">K35D15FERvwgMnheQFmW128nms2oKtrKzzORMOtZOFMer</string>
+    <string name="location_granted"> Géo-localisation autorisée </string>
+    <string name="location_denied"> Géo-localisation non autorisée </string>
 
     <string name="title_activity_main">MainActivity</string>
 
@@ -90,6 +92,8 @@
     <string name="today">Aujourd\'hui tu manges à </string>
     <string name="with"> avec </string>
     <string name="setting_saved"> Paramètres enregistrés! </string>
+    <string name="nottification_granted"> Notifications autorisées </string>
+    <string name="nottification_denied"> Notifications non autorisées </string>
 
     <!-- CHOOSEN RESTAURANT -->
     <string name="has_not_decided">n\'a pas encore décidé</string>
