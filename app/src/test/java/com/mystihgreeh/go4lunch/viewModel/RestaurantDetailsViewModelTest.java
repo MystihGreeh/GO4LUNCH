@@ -6,14 +6,13 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.mystihgreeh.go4lunch.model.Restaurants.Result;
+import com.mystihgreeh.go4lunch.UtilsTest.LiveDataTestUtils;
 import com.mystihgreeh.go4lunch.model.RestaurantsDetails.DetailsResult;
 import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
 import com.mystihgreeh.go4lunch.repository.RestaurantRepository;
 import com.mystihgreeh.go4lunch.repository.WorkmatesRepository;
 
-import junit.framework.TestCase;
-
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,6 +32,7 @@ public class RestaurantDetailsViewModelTest  {
     @InjectMocks
     public RestaurantRepository restaurantRepository = Mockito.mock(RestaurantRepository.class);
 
+
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
     public RestaurantDetailsViewModel viewModel;
@@ -41,10 +41,12 @@ public class RestaurantDetailsViewModelTest  {
     public Workmate user3;
     public Workmate user4;
     public Workmate user5;
-    ArrayList<Workmate> workmates = new ArrayList<>();
+    ArrayList<Workmate> workmatesList = new ArrayList<>();
+    MutableLiveData<ArrayList<Workmate>> workmatesEatingThere = new MutableLiveData<>();
+
 
     @Before
-    public void setup() throws Exception {
+    public void setup(){
         initMocks(this);
         viewModel = new RestaurantDetailsViewModel(workmateRepository, restaurantRepository);
         user1 = new Workmate("001", "Jean DUPONT",
@@ -63,10 +65,11 @@ public class RestaurantDetailsViewModelTest  {
                 "https://pakistani.pk/uploads/reviews/photos/original/04/d6/58/Black-Widow-2-10-1582135965.jpg",
                 "aurelien@google.com", null, null, null);
 
-        workmates.add(user1);
-        workmates.add(user2);
-        workmates.add(user3);
-        workmates.add(user4);
+        workmatesList.add(user1);
+        workmatesList.add(user2);
+        workmatesList.add(user3);
+        workmatesList.add(user4);
+        workmatesEatingThere.setValue(workmatesList);
 
         restaurant1 = new DetailsResult(null, null, null , null, null, null, null);
         restaurants = new ArrayList<>();
@@ -74,32 +77,31 @@ public class RestaurantDetailsViewModelTest  {
         location = new LatLng(48.00, 2.00);
     }
 
-    @Test
-    public void testGetUserId() {
-        Mockito.when(workmateRepository.getActualUser()).thenReturn(user1);
-    }
-
+    //Test Livedata
     @Test
     public void testGetRestaurantDetailsMutableLiveData() {
         MutableLiveData<DetailsResult> restaurantLiveData = new MutableLiveData<>();
+        MutableLiveData<Boolean> booleanLiveData = new MutableLiveData<>();
         restaurantLiveData.setValue(restaurant1);
-        Mockito.when(viewModel.mRestaurantDetailsMutableLiveData).thenReturn(restaurantLiveData);
+        Mockito.when(restaurantRepository.getRestaurantDetails(restaurant1.getPlaceId())).thenReturn(restaurantLiveData);
+        Mockito.when(workmateRepository.getActualUser()).thenReturn(user1);
+        Mockito.when(workmateRepository.user()).thenReturn(user1);
+        Mockito.when(workmateRepository.getLikedRestaurant(user1.getUid(), restaurant1.getPlaceId())).thenReturn(booleanLiveData);
+        viewModel.initViewModel();
+        viewModel.fetchRestaurantsDetails(restaurant1.getPlaceId());
+        LiveDataTestUtils.observeForTesting(viewModel.getRestaurantDetailsMutableLiveData(restaurant1.getPlaceId()),
+                livedata -> Assert.assertEquals(viewModel.getRestaurantDetailsMutableLiveData(restaurant1.getPlaceId()), restaurantLiveData)
+        );
     }
+
 
     @Test
-    public void testFetchRestaurantsDetails() {
+    public void testGetUserId() {
+        Mockito.when(workmateRepository.getActualUser()).thenReturn(user1);
+        Mockito.when(workmateRepository.user()).thenReturn(user1);
+        viewModel.initViewModel();
+        Assert.assertSame(viewModel.getUserId(), user1.getUid());
     }
-
-
-    @Test
-    public void testFetchWorkmateLikedRestaurant() {
-    }
-
-    @Test
-    public void testFetchWorkmateEatingThere() {
-    }
-
-
 
 
 }

@@ -1,16 +1,19 @@
 package com.mystihgreeh.go4lunch.viewModel;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.mystihgreeh.go4lunch.UtilsTest.LiveDataTestUtils;
 import com.mystihgreeh.go4lunch.model.Restaurants.Result;
 import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
 import com.mystihgreeh.go4lunch.repository.RestaurantRepository;
 import com.mystihgreeh.go4lunch.repository.WorkmatesRepository;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SharedViewModelTest {
 
@@ -41,7 +45,7 @@ public class SharedViewModelTest {
     ArrayList<Workmate> workmates = new ArrayList<>();
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         initMocks(this);
         viewModel = new SharedViewModel(workmateRepository, restaurantRepository);
         user1 = new Workmate("001", "Jean DUPONT",
@@ -66,26 +70,30 @@ public class SharedViewModelTest {
         workmates.add(user4);
 
         restaurant1 = new Result("", null, "", "",
-                "", "", null, null, null, null, null, null, null, null, null, null, null, null);
+                "", "", null, null, "123456789", null, null, null, null, null, null, null, null, null);
         restaurants = new ArrayList<>();
         restaurants.add(restaurant1);
         location = new LatLng(48.00, 2.00);
     }
 
-    @Test
-    public void testGetCurrentUser() {
-        Mockito.when(workmateRepository.getActualUser()).thenReturn(user1);
-    }
+
 
     @Test
-    public void testGetSelectedRestaurant() {
+    public void testGetUserRestaurant() {
         Mockito.when(workmateRepository.getPickedRestaurant()).thenReturn(restaurant1.getName());
+        Assert.assertSame(viewModel.getUserRestaurant(), restaurant1.getName());
     }
 
+
+    //Test Livedata
     @Test
-    public void testGetRestaurantId() {
-        //Mockito.when(viewModel.getUserRestaurant()).thenReturn(restaurant1.getPlaceId());
-        Mockito.when(workmateRepository.getPickedRestaurant()).thenReturn(restaurant1.getPlaceId());
+    public void testGetRestaurantMutableLiveData() {
+        MutableLiveData<List<Result>> restaurantsLiveData = new MutableLiveData<>();
+        restaurantsLiveData.setValue(restaurants);
+        Mockito.when(restaurantRepository.getRestaurants(location.latitude, location.longitude)).thenReturn(restaurantsLiveData);
+        viewModel.fetchRestaurants(location.latitude, location.longitude);
+        LiveDataTestUtils.observeForTesting(viewModel.getRestaurantMutableLiveData(), livedata -> assertEquals(viewModel.getRestaurantMutableLiveData(), restaurantsLiveData)
+                );
     }
 
 

@@ -4,7 +4,6 @@ import static android.content.ContentValues.TAG;
 
 import android.util.Log;
 
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -16,7 +15,6 @@ import com.mystihgreeh.go4lunch.repository.RestaurantRepository;
 import com.mystihgreeh.go4lunch.repository.WorkmatesRepository;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class RestaurantDetailsViewModel extends ViewModel {
 
@@ -112,17 +110,22 @@ public class RestaurantDetailsViewModel extends ViewModel {
         mWorkmateRepository.getAllUsers().addOnSuccessListener(queryDocumentSnapshots -> {
             for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                 Workmate workmate = documentSnapshot.toObject(Workmate.class);
-                if (workmate != null && workmate.getRestaurantUid() != null) {
-                    if (workmate.getRestaurantUid().equals(restaurantId)) {
-                        workmateGoing.add(workmate);
-                        fetchedWorkmates.postValue(workmateGoing);
-                    }
-                }
+                getWorkmatesEatingThere(workmate, workmateGoing, restaurantId);
             }
         });
         return fetchedWorkmates;
 
     }
+
+    public void getWorkmatesEatingThere(Workmate workmate, ArrayList<Workmate> workmateGoing, String restaurantId) {
+        if (workmate != null && workmate.getRestaurantUid() != null) {
+            if (workmate.getRestaurantUid().equals(restaurantId)) {
+                workmateGoing.add(workmate);
+                fetchedWorkmates.postValue(workmateGoing);
+            }
+        }
+    }
+
 
     public MutableLiveData<Boolean> getLikedRestaurant(String userId, String restaurantId){
        return mWorkmateRepository.getLikedRestaurant(userId, restaurantId);

@@ -27,15 +27,14 @@ public class SharedViewModel extends ViewModel {
     public final MutableLiveData<ArrayList<String>> workmateId = new MutableLiveData<>();
     public final MutableLiveData<ArrayList<Workmate>> fetchedWorkmates = new MutableLiveData<>();
     public final MutableLiveData<Place> autoCompleteResult = new MutableLiveData<>();
+    RestaurantRepository mRestaurantRepository;
+    MutableLiveData<List<Result>> mRestaurantMutableLiveData;
 
     public SharedViewModel(WorkmatesRepository workmatesRepository, RestaurantRepository restaurantRepository) {
         this.mWorkmateRepository = workmatesRepository;
         this.mRestaurantRepository = restaurantRepository;
         mRestaurantMutableLiveData = new MutableLiveData<>();
     }
-
-
-
     @SuppressWarnings({"FieldCanBeLocal"})
 
 
@@ -87,11 +86,6 @@ public class SharedViewModel extends ViewModel {
     //----------------------------------------------------------------------------------------------
     //------------------------------------- RESTAURANTS --------------------------------------------
     //----------------------------------------------------------------------------------------------
-
-    RestaurantRepository mRestaurantRepository;
-    MutableLiveData<List<Result>> mRestaurantMutableLiveData;
-
-
 
 
     public MutableLiveData<List<Result>> getRestaurantMutableLiveData(){

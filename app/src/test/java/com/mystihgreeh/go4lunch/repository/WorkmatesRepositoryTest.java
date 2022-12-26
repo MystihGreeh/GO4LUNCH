@@ -1,19 +1,23 @@
 package com.mystihgreeh.go4lunch.repository;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.MutableLiveData;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.mystihgreeh.go4lunch.UtilsTest.LiveDataTestUtils;
 import com.mystihgreeh.go4lunch.model.Restaurants.Result;
 import com.mystihgreeh.go4lunch.model.Workmates.Workmate;
-import com.mystihgreeh.go4lunch.viewModel.SharedViewModel;
+import com.mystihgreeh.go4lunch.model.Workmates.WorkmateHelper;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -24,6 +28,8 @@ public class WorkmatesRepositoryTest {
     @Mock
     public WorkmatesRepository workmatesRepository = Mockito.mock(WorkmatesRepository.class);
 
+    public WorkmateHelper workmateHelper = Mockito.mock(WorkmateHelper.class);
+
 
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
@@ -32,10 +38,16 @@ public class WorkmatesRepositoryTest {
     public Workmate user3;
     public Workmate user4;
     public Workmate user5;
+    public Result restaurant1;
     ArrayList<Workmate> workmates = new ArrayList<>();
+    @Mock
+    private Task<QuerySnapshot> mockedUserTask;
+
 
     @Before
     public void setup() throws Exception {
+        given(workmateHelper.getAllWorkmates()).willReturn(mockedUserTask);
+
         initMocks(this);
         user1 = new Workmate("001", "Jean DUPONT",
                 "https://i.pinimg.com/originals/cd/71/1f/cd711fca60134229d08e3f8e6604674b.jpg",
@@ -57,57 +69,31 @@ public class WorkmatesRepositoryTest {
         workmates.add(user2);
         workmates.add(user3);
         workmates.add(user4);
+
+        restaurant1 = new Result("", null, "", "",
+                "", "", null, null, "123456789", null, null, null, null, null, null, null, null, null);
     }
-
-
-    @Test
-    public void getInstance() {
-    }
-
-    @Test
-    public void getActualUser() {
-    }
-
-    @Test
-    public void createUser() {
-    }
-
-    @Test
-    public void getUser() {
-        Mockito.when(workmatesRepository.getActualUser()).thenReturn(user1);
-    }
-
-    @Test
-    public void getPickedRestaurant() {
-    }
-
-    @Test
-    public void getUpdatedRestaurant() {
-    }
-
-
 
 
 
     @Test
-    public void getAllUsers() {
+    public void getPickedRestaurant() {
+        Mockito.when(workmateHelper.getRestaurantUserId()).thenReturn(user1.getRestaurantUid());
+        Assert.assertEquals(workmatesRepository.getPickedRestaurant(), user1.getRestaurantUid());
     }
+
+    
 
     @Test
-    public void checkIfUserDoesExist() {
+    public void testGetLikedRestaurant() {
+        MutableLiveData<Boolean> likedRestaurant = new MutableLiveData<>();
+        workmateHelper.checkIfLiked(user1.getUid(), restaurant1.getPlaceId());
+        likedRestaurant.setValue(null);
+        Mockito.when(workmateHelper.getLikedRestaurants(user1.getUid(), restaurant1.getPlaceId())).thenReturn(likedRestaurant);
+        Mockito.when(workmateHelper.isLiked()).thenReturn(likedRestaurant);
+        LiveDataTestUtils.observeForTesting(workmateHelper.isLiked(), livedata ->
+                assertEquals(workmateHelper.isLiked, likedRestaurant.getValue())
+        );
     }
-
-    @Test
-    public void updateRestaurantPicked() {
-    }
-
-    @Test
-    public void addLikedRestaurant() {
-    }
-
-    @Test
-    public void removeLikedRestaurant() {
-    }
-
 
 }

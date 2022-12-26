@@ -17,7 +17,7 @@ import java.util.List;
 public class WorkmatesRepository {
 
     private final WorkmateHelper workmateHelper;
-    private static Workmate user;
+    public static Workmate user;
     private static volatile WorkmatesRepository INSTANCE;
 
     public static WorkmatesRepository getInstance() {
@@ -55,8 +55,6 @@ public class WorkmatesRepository {
         user = userToCreate;
         workmateHelper.workmatesFirestore.document(uid).set(userToCreate);
     }
-
-
 
 
     //------------------------------------- GET ----------------------------------------------------
@@ -156,5 +154,6 @@ public class WorkmatesRepository {
     public MutableLiveData<Boolean> isLiked(){
         return workmateHelper.isLiked();
     }
+
 
 }

@@ -2,24 +2,20 @@ package com.mystihgreeh.go4lunch.model.Workmates;
 
 
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class WorkmateHelper {
 
     private static WorkmateHelper workmateHelper;
-    String restaurantUser;
+    public String restaurantUser;
     ArrayList<String> likedRestaurantIds;
-    MutableLiveData<Boolean> isLiked = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isLiked = new MutableLiveData<>();
 
 
 
