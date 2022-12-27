@@ -82,10 +82,10 @@ public class NotificationWorker extends Worker {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channelId)
                     .setSmallIcon(R.drawable.ic_baseline_fastfood_24)
                     .setContentTitle(getApplicationContext().getString(R.string.time_to_eat))
-                    .setContentText(getApplicationContext().getString(R.string.today) + currentUser.getRestaurantName())
+                    .setContentText(getApplicationContext().getString(R.string.today) + " " + currentUser.getRestaurantName())
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(getApplicationContext().getString(R.string.today)
-                            + currentUser.getRestaurantName() + ", " + currentUser.getRestaurantAddress()));
+                            + " "    + currentUser.getRestaurantName() + ", " + currentUser.getRestaurantAddress()));
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
             int NOTIFICATION_ID = 1;
             notificationManagerCompat.notify(NOTIFICATION_ID, builder.build());
@@ -97,11 +97,11 @@ public class NotificationWorker extends Worker {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channelId)
                     .setSmallIcon(R.drawable.ic_baseline_fastfood_24)
                     .setContentTitle(getApplicationContext().getString(R.string.time_to_eat))
-                    .setContentText(getApplicationContext().getString(R.string.today) + currentUser.getRestaurantName())
+                    .setContentText(getApplicationContext().getString(R.string.today) + " " + currentUser.getRestaurantName())
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(getApplicationContext().getString(R.string.today) +
-                            currentUser.getRestaurantName() + ", " + currentUser.getRestaurantAddress()
-                            + getApplicationContext().getString(R.string.with) + convertListToString(workmates)));
+                                    " " + currentUser.getRestaurantName() + ", " + currentUser.getRestaurantAddress()
+                            + " " + getApplicationContext().getString(R.string.with) + " " + convertListToString(workmates)));
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
             int NOTIFICATION_ID = 1;
             notificationManagerCompat.notify(NOTIFICATION_ID, builder.build());
